@@ -1,7 +1,5 @@
-// src/utils/PrivateRoute.tsx
-
+import { auth } from "src/services/firebase";
 import { Navigate, Outlet } from "react-router";
-import { auth } from "../services/firebase";
 
 const PrivateRoute = () => {
   const user = auth.currentUser;

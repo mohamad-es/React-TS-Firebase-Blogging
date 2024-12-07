@@ -1,18 +1,23 @@
-import "./App.css";
-import PostBlog from "./PostBlog";
+import { BrowserRouter, Route, Routes } from "react-router";
+import Register from "./auth/Register";
+import PrivateRoute from "./utils/PrivateRoutes";
+import Landing from "./pages/Landing";
+import Login from "./auth/Login";
+import Layout from "./layout";
 
 function App() {
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        overflow: "auto",
-      }}
-    >
-      <PostBlog />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/blogs" element={<Register />} />
+          </Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
