@@ -8,7 +8,6 @@ const WriteBlog = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm();
 
   const createBlog = async (values: FieldValues) => {

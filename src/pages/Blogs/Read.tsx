@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "src/config/firebaseConfig";
 import { useParams } from "react-router";
+import { TBlog } from "src/types/blog";
 
 const GetSingleBlog = () => {
   const params = useParams();
-  const [blog, setBlog] = useState(null);
+  const [blog, setBlog] = useState<TBlog | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<null | string>(null);
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -19,12 +20,12 @@ const GetSingleBlog = () => {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          setBlog({ id: docSnap.id, ...docSnap.data() });
+          setBlog({ id: docSnap.id, ...docSnap.data() } as TBlog);
         } else {
           setError("No such document!");
         }
       } catch (err) {
-        setError(err.message);
+        err instanceof Error ? setError(err.message) : console.log(err);
       } finally {
         setLoading(false);
       }
