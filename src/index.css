@@ -2,10 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+
+@layer base {
+  *:focus-visible {
+    @apply border-none outline-none
+  }
+
+  input {
+    @apply rounded-md border border-gray-400 px-4 text-sm
+  }
+
+  label {
+    @apply text-sm text-gray-800
+  }
+
+  .panel {
+    @apply shadow-lg p-10 bg-white rounded-xl;
+  }
+
+  .btn-green {
+    @apply bg-green-500 text-white px-5 py-1.5 rounded-md transition-all hover:shadow-lg
+  }
+
+  .btn-blue {
+    @apply bg-blue-500 text-white px-5 py-1.5 rounded-md transition-all hover:shadow-lg
+  }
+
+    .btn-red {
+    @apply bg-red-500 text-white px-5 py-1.5 rounded-md transition-all hover:shadow-lg
+  }
 }

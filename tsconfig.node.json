@@ -5,13 +5,14 @@
     "lib": ["ES2023"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "typeRoots": ["node_modules/@types", "node_modules/firebase"],
+    "types": ["firebase"],
     "baseUrl": ".",
     "paths": {
       "public/*": ["./public/*"],
       "src/*": ["./src/*"],
-      "components/*": ["./src/components/*"],
+      "components/*": ["./src/components/*"]
     },
-
 
     /* Bundler mode */
     "moduleResolution": "bundler",

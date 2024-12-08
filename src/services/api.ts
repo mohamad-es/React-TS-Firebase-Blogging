@@ -1,5 +1,5 @@
 import axios from "axios";
-import { auth } from "./firebase";
+import { auth } from "./firebaseConfig";
 
 const api = axios.create({
   baseURL:
@@ -9,7 +9,7 @@ const api = axios.create({
 api.interceptors.request.use(async (config) => {
   const user = auth.currentUser;
   if (user) {
-    const token = user.getIdToken();
+    const token = user.accessToken;
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;

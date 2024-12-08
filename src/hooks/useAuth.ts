@@ -4,7 +4,7 @@ import {
   getIdToken,
   signOut,
 } from "firebase/auth";
-import { auth } from "../services/firebase";
+import { auth } from "../services/firebaseConfig";
 
 export const signUp = async (email: string, password: string) => {
   const userCredential = await createUserWithEmailAndPassword(
