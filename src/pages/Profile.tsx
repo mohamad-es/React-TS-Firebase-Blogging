@@ -1,4 +1,3 @@
-import { auth } from "src/services/firebaseConfig";
 import UserBlogs from "src/components/UserBlogs";
 import banner from "src/assets/banner.webp";
 import { logOut } from "src/hooks/useAuth";

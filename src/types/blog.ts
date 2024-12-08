@@ -1,16 +1,9 @@
 export type TBlog = {
-  name: string;
-  fields: {
-    title: {
-      stringValue: string;
-    };
-    content: {
-      stringValue: string;
-    };
-    authorId: {
-      stringValue: string;
-    };
-  };
+  id: string;
+  title: string;
+  content: string;
+  userId: string;
   createTime: string;
   updateTime: string;
 };
+

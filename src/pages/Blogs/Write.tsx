@@ -1,6 +1,6 @@
 import { FieldValues, useForm } from "react-hook-form";
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "src/services/firebaseConfig";
+import { db } from "src/config/firebaseConfig";
 import { useParams } from "react-router";
 
 const WriteBlog = () => {

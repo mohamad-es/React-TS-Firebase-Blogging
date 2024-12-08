@@ -1,13 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import Register from "./auth/Register";
+import Register from "./pages/auth/Register";
 import PrivateRoute from "./utils/PrivateRoutes";
 import Landing from "./pages/Landing";
-import Login from "./auth/Login";
+import Login from "./pages/auth/Login";
 import Layout from "./layout";
 import Profile from "./pages/Profile";
-import WriteBlog from "./pages/Blogs/Write";
+import WriteBlog from "./pages/blogs/Write";
 import About from "./pages/About";
-import ReadBlog from "./pages/Blogs/Read";
+import ReadBlog from "./pages/blogs/Read";
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route element={<PrivateRoute />}>
             <Route path="/:uid" element={<Profile />} />
-            <Route path="/:blid" element={<ReadBlog />} />
+            <Route path="/blog/:blogid" element={<ReadBlog />} />
             <Route path="/:uid/write" element={<WriteBlog />} />
           </Route>
         </Route>

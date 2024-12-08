@@ -23,6 +23,14 @@
     @apply text-sm text-gray-800
   }
 
+  h2 {
+    @apply text-xl font-extrabold text-gray-900
+  }
+
+  p {
+    @apply text-sm tracking-wide text-gray-700 line-clamp-3
+  }
+
   .panel {
     @apply shadow-lg p-10 bg-white rounded-xl;
   }

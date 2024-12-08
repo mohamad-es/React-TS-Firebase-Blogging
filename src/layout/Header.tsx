@@ -1,7 +1,7 @@
 import { onAuthStateChanged, User } from "@firebase/auth";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { auth } from "src/services/firebaseConfig";
+import { auth } from "src/config/firebaseConfig";
 import banner from "src/assets/landing-banner.png";
 
 const Header = () => {
@@ -52,7 +52,7 @@ const Header = () => {
                 to={`${user.uid}`}
                 className="hover:bg-gray-200 transition-all  px-4 py-2 rounded-lg"
               >
-                My Profile
+                Profile
               </Link>
             </div>
           ) : (

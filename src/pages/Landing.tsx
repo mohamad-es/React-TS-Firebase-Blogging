@@ -1,58 +1,52 @@
+import { collection, query, getDocs, limit } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import api from "src/services/api";
+import { db } from "src/config/firebaseConfig";
 import { TBlog } from "src/types/blog";
-import banner from "src/assets/banner.webp";
-
-type TBlogsData = {
-  data: {
-    documents: TBlog[];
-  };
-};
 
 const Landing = () => {
-  const [blogs, setBlogs] = useState<null | TBlogsData>(null);
+  const [blogs, setBlogs] = useState<TBlog[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
-    const fetchBlogs = async () => {
-      const getBlogs = await api.get("/blogs");
-      setBlogs(getBlogs);
-      return getBlogs;
+    const getLatestBlogs = async () => {
+      const blogRef = collection(db, "blogs");
+      const q = query(blogRef, limit(5));
+      try {
+        const querySnapshot = await getDocs(q);
+        const fetchBlogs: TBlog[] = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as TBlog[];
+        setBlogs(fetchBlogs);
+      } catch (error) {
+        error instanceof Error ? setError(error.message) : console.log(error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchBlogs();
+    getLatestBlogs();
   }, []);
+
+  if (loading) return <div>loading ...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (blogs.length === 0) return <div>no blog found.</div>;
 
   return (
     <div className="panel">
-      {!blogs ? (
-        <div>loading ...</div>
-      ) : blogs?.data.documents.length === 0 ? (
-        <div>There is no blog added yet</div>
-      ) : (
-        <div className="space-y-3">
-          <h1 className="text-3xl">Latest Blogs</h1>
-          {blogs.data.documents.map((item) => (
-            <div
-              key={item.name}
-              className="border-b px-3 py-5  gap-5 last-of-type:border-none"
-            >
-              <div className=" mb-3 h-32 overflow-hidden rounded-md w-full">
-                <img
-                  src={banner}
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="">
-                <h3 className="text-2xl">{item.fields.title.stringValue}</h3>
-                <p className="text-sm text-gray-500">{item.createTime}</p>
-                <div className="text-sm mt-2 line-clamp-4 text-gray-800">
-                  {item.fields.content.stringValue}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      <h1>Lastest Blogs</h1>
+      <ul>
+        {blogs?.map((item) => (
+          <li
+            className="py-5 border-b last-of-type:border-none"
+            key={item.createTime}
+          >
+            <h2>{item?.title}</h2>
+            <p className="mt-2">{item?.content}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
