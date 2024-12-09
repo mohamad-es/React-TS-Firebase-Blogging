@@ -1,50 +1,43 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite + Firebase
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+❗❗ Please attention
 
-Currently, two official plugins are available:
+this template works with Firebase; you must set up your Firebase first.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+I will show you how to configure this app with your Firebase config. (these steps are for those who know the Firebase and Firestore Database)
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- step 1
+  create a collection named ###blogs###, and this collection must have these fields:  1_userId 2_content 3_title
 
-- Configure the top-level `parserOptions` property like this:
+- step 2
+  create a folder in the root of direction in src folder name **config** and create new file name firebaseConfig.ts
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- step 3
+  your firebaseConfig.ts must be look like this:
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+  ```ts
+  import { initializeApp } from "firebase/app";
+  import { getAuth } from "firebase/auth";
+  import { getFirestore } from "firebase/firestore";
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+  const firebaseConfig = {
+  apiKey: "your API key",
+  authDomain: "your authDomain",
+  projectId: "your projectId",
+  storageBucket: "your storageBucket",
+  messagingSenderId: "your messagingSenderId",
+  appId: "your appId",
+  measurementId: "your measurementId",
+  };
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  export const auth = getAuth(app);
+  export const db = getFirestore(app);
+  ```
+
+- step 4
+  install node_modules with ```npm i``` and start your developement with ```npm run dev```
+
+easy as heaven.
