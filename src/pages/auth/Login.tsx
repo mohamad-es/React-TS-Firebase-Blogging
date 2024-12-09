@@ -1,61 +1,97 @@
-import { useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 import { logIn } from "src/hooks/useAuth";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: "all",
+  });
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLogin = async (values: FieldValues) => {
     try {
-      setError(null); // Reset errors
-      const userCredential = await logIn(email, password);
-      setSuccess(`User registered successfully: ${userCredential.email}`);
+      const currentUser = await logIn(values.email, values.password);
+      toast.success(`User Login Successfully`, {
+        position: "top-right",
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        theme: "light",
+      });
+      navigate(`/${currentUser.uid}`);
     } catch (err: any) {
-      setError(err.message);
+      toast.error(err.message, {
+        position: "top-right",
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        theme: "light",
+      });
     }
   };
 
   return (
     <div className="panel">
-      <h1 className="text-3xl mb-7">Login</h1>
-      <div className="flex items-end justify-between">
+      <div className="mx-auto w-1/3">
+        <h1 className="text-3xl mb-7">Login</h1>
         <form
-          className="grid gap-5 grid-cols-1 w-1/3"
-          onSubmit={handleRegister}
+          className="grid gap-5 grid-cols-1 "
+          onSubmit={handleSubmit(handleLogin)}
         >
           <div className="flex flex-col">
             <label className="mb-2">Email</label>
             <input
-              className="h-8"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              {...register("email", {
+                required: {
+                  value: true,
+                  message: "Email is required",
+                },
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Please enter a valid email address",
+                },
+              })}
+              className="placeholder:text-sm h-10"
+              placeholder="type email ..."
             />
+            <div className="text-red-500 text-sm mt-2">
+              {errors["email"]?.message}
+            </div>
           </div>
           <div className="flex flex-col">
             <label className="mb-2">Password</label>
             <input
-              className="h-8"
+              {...register("password", {
+                required: {
+                  value: true,
+                  message: "Password is required",
+                },
+                pattern: {
+                  value: /^[A-Za-z\d@$!%*?&]{6,}$/,
+                  message:
+                    "Password must be at least 6 characters and include only letters, numbers, or special characters.",
+                },
+              })}
+              className="placeholder:text-sm h-10"
+              placeholder="type password ..."
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
             />
+            <div className="text-red-500 text-sm mt-2">
+              {errors["password"]?.message}
+            </div>
           </div>
-        <button className="btn-green" type="submit">
-          Login
-        </button>
+          <button className="btn btn-primary mt-3 text-white" type="submit">
+            Login
+          </button>
         </form>
       </div>
-
-      {success && <p style={{ color: "green" }}>{success}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
-}
+};
 
-export default Login
+export default Login;

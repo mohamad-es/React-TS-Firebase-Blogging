@@ -10,12 +10,12 @@
 }
 
 @layer base {
-  *:focus-visible {
-    @apply border-none outline-none
-  }
+  /* *:focus-visible {
+    @apply outline-gray-500
+  } */
 
-  input {
-    @apply rounded-md border border-gray-400 px-4 text-sm 
+    input {
+    @apply input outline outline-1 outline-gray-400
   }
 
   label {

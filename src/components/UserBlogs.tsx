@@ -3,6 +3,7 @@ import { query, getDocs, collection, where } from "firebase/firestore";
 import { db } from "src/config/firebaseConfig";
 import { useNavigate, useParams } from "react-router";
 import { TBlog } from "src/types/blog";
+import galleryImg from "src/assets/default-gallery.jpg";
 
 const UserBlogs = () => {
   const navigate = useNavigate();
@@ -36,10 +37,10 @@ const UserBlogs = () => {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-  if (blogs.length === 0) return <div>No blogs found.</div>;
+  if (blogs.length === 0) return <div className="mt-5">No blog writed yet.</div>;
 
   return (
-    <div>
+    <div className="mt-5">
       <h3 className="mb-2 text-lg">Blog posted</h3>
       <ul className="grid grid-cols-3 gap-6">
         {blogs.map((blog) => (
@@ -48,10 +49,12 @@ const UserBlogs = () => {
             className="border rounded-lg overflow-hidden cursor-pointer"
             key={blog.id}
           >
-            <div className="bg-gray-100 w-full h-28"></div>
-            <div className="px-3 mt-4 pb-2">
-              <div className="text-base min-h-16">{blog.title}</div>
-              <p className="text-sm text-gray-700 text-ellipsis line-clamp-3">
+            <div className="bg-gray-100 w-full h-52 relative">
+              <img src={galleryImg} alt="" className="absolute w-full h-full" />
+            </div>
+            <div className="px-3 mt-2 pb-2">
+              <div className="text-base mb-4 font-bold">{blog.title}</div>
+              <p className="text-sm text-gray-700 text-ellipsis line-clamp-3 mb-3">
                 {blog.content}
               </p>
               {blog.create_time && (
