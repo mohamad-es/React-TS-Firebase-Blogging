@@ -1,6 +1,6 @@
 import { FieldValues, useForm } from "react-hook-form";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "src/config/firebaseConfig";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { auth, db } from "src/config/firebaseConfig";
 import { useParams } from "react-router";
 
 const WriteBlog = () => {
@@ -16,7 +16,9 @@ const WriteBlog = () => {
       await addDoc(blogRef, {
         title: values.title,
         content: values.content,
-        userId: params.uid,
+        user_id: params.uid,
+        user_email: auth.currentUser?.email,
+        create_time: serverTimestamp(),
       });
     } catch (error) {
       console.log(error);

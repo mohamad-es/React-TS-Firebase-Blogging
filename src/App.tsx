@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import WriteBlog from "./pages/blogs/Write";
 import About from "./pages/About";
 import ReadBlog from "./pages/blogs/Read";
+import EditBlog from "./pages/blogs/Edit";
 
 function App() {
   return (
@@ -20,8 +21,9 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route element={<PrivateRoute />}>
             <Route path="/:uid" element={<Profile />} />
-            <Route path="/blog/:blogid" element={<ReadBlog />} />
             <Route path="/:uid/write" element={<WriteBlog />} />
+            <Route path="/blog/:blogid" element={<ReadBlog />} />
+            <Route path="/blog/:blogid/edit" element={<EditBlog />} />
           </Route>
         </Route>
       </Routes>

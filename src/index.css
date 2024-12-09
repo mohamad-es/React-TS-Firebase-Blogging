@@ -9,14 +9,13 @@
   font-family: sans-serif;
 }
 
-
 @layer base {
   *:focus-visible {
     @apply border-none outline-none
   }
 
   input {
-    @apply rounded-md border border-gray-400 px-4 text-sm
+    @apply rounded-md border border-gray-400 px-4 text-sm 
   }
 
   label {
@@ -28,7 +27,7 @@
   }
 
   p {
-    @apply text-sm tracking-wide text-gray-700 line-clamp-3
+    @apply text-sm tracking-wide text-gray-700 
   }
 
   .panel {

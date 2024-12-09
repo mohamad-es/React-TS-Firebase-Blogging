@@ -14,7 +14,7 @@ const UserBlogs = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       const blogsRef = collection(db, "blogs");
-      const q = query(blogsRef, where("userId", "==", params.uid));
+      const q = query(blogsRef, where("user_id", "==", params.uid));
 
       try {
         const querySnapshot = await getDocs(q);
@@ -54,6 +54,9 @@ const UserBlogs = () => {
               <p className="text-sm text-gray-700 text-ellipsis line-clamp-3">
                 {blog.content}
               </p>
+              {blog.create_time && (
+                <div>{`create at ${blog?.create_time}`}</div>
+              )}
             </div>
           </li>
         ))}

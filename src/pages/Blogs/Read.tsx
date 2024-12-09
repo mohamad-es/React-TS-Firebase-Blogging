@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "src/config/firebaseConfig";
-import { useParams } from "react-router";
+import { auth } from "src/config/firebaseConfig";
+import { Link, useParams } from "react-router";
 import { TBlog } from "src/types/blog";
+import { getSingleBlog } from "src/services/blogServices";
 
 const GetSingleBlog = () => {
   const params = useParams();
@@ -11,30 +11,13 @@ const GetSingleBlog = () => {
   const [error, setError] = useState<null | string>(null);
 
   useEffect(() => {
-    const fetchBlog = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const docRef = doc(db, "blogs", params.blogid!); // Replace "blogs" with your collection name
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          setBlog({ id: docSnap.id, ...docSnap.data() } as TBlog);
-        } else {
-          setError("No such document!");
-        }
-      } catch (err) {
-        err instanceof Error ? setError(err.message) : console.log(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (params.blogid) {
-      fetchBlog();
-    }
-  }, [params.blogid]);
+    getSingleBlog({
+      blogId: params.blogid!,
+      setBlog,
+      setError,
+      setLoading,
+    });
+  }, []);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -45,12 +28,15 @@ const GetSingleBlog = () => {
         <>
           <h1 className="text-3xl font-extrabold mb-10">{blog.title}</h1>
           <p>{blog.content}</p>
-          <p className="mt-4">
-            <strong>Author ID:</strong> {blog.userId}
-          </p>
         </>
       ) : (
         <p>Blog not found.</p>
+      )}
+
+      {blog?.userId === auth.currentUser?.uid && (
+        <Link to={"edit"} className="btn btn-primary text-white mt-5 w-32">
+          Edit 📝
+        </Link>
       )}
     </div>
   );
