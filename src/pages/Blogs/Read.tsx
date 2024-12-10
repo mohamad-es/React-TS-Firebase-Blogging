@@ -33,7 +33,7 @@ const GetSingleBlog = () => {
         <p>Blog not found.</p>
       )}
 
-      {blog?.userId === auth.currentUser?.uid && (
+      {blog?.user_id === auth.currentUser?.uid && (
         <Link to={"edit"} className="btn btn-primary text-white mt-5 w-32">
           Edit 📝
         </Link>

@@ -18,7 +18,7 @@ const WriteBlog = () => {
         content: values.content,
         user_id: params.uid,
         user_email: auth.currentUser?.email,
-        create_time: serverTimestamp(),
+        create_time: new Date(),
       });
     } catch (error) {
       console.log(error);

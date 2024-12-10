@@ -1,5 +1,4 @@
 import UserBlogs from "src/components/UserBlogs";
-import { logOut } from "src/hooks/useAuth";
 import { auth } from "src/config/firebaseConfig";
 import UserProfileIcon from "src/components/icons/UserProfileIcon";
 import { useNavigate } from "react-router";

@@ -1,60 +1,36 @@
-import React, { useState } from "react";
+import React from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
+import AuthForm from "./_components/AuthForm";
+import { auth_data } from "src/data/auth";
+import { FieldValues } from "react-hook-form";
+import { toastInstance } from "src/utils/Toast";
+import { useNavigate } from "react-router-dom";
 
 const Register: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleRegister = async (values: FieldValues) => {
     try {
-      setError(null); // Reset errors
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      setSuccess(`User registered successfully: ${userCredential.user.email}`);
-    } catch (err: any) {
-      setError(err.message);
+      const currentUser = await createUserWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+      toastInstance({
+        text: auth_data.register.toast_message,
+        type: "success",
+      });
+      navigate(`/${currentUser.user.uid}`);
+    } catch (err) {
+      err instanceof Error
+        ? toastInstance({ text: err.message, type: "error" })
+        : console.log(err);
     }
   };
 
   return (
-    <div className="panel">
-      <h1 className="text-3xl mb-7">Register</h1>
-      <div className="flex items-end justify-between">
-        <form
-          className="grid gap-5 grid-cols-1 w-1/3"
-          onSubmit={handleRegister}
-        >
-          <div className="flex flex-col">
-            <label className="mb-2">Email</label>
-            <input
-              className="h-8"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="flex flex-col">
-            <label className="mb-2">Password</label>
-            <input
-              className="h-8"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button className="btn-blue" type="submit">
-            Register
-          </button>
-        </form>
-      </div>
-      {success && <p style={{ color: "green" }}>{success}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+    <AuthForm auth_data={auth_data.register} submitFunction={handleRegister} />
   );
 };
 

@@ -35,13 +35,19 @@ const UserBlogs = () => {
     fetchBlogs();
   }, [params.uid]);
 
+  // Function to convert timestamp to a readable date
+  const convertTimestampToDate = (timestamp: { seconds: number; nanoseconds: number }) => {
+    const milliseconds = timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6;
+    return new Date(milliseconds).toLocaleString();
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-  if (blogs.length === 0) return <div className="mt-5">No blog writed yet.</div>;
+  if (blogs.length === 0) return <div className="mt-5">No blog written yet.</div>;
 
   return (
     <div className="mt-5">
-      <h3 className="mb-2 text-lg">Blog posted</h3>
+      <h3 className="mb-2 text-lg">Blog Posts</h3>
       <ul className="grid grid-cols-3 gap-6">
         {blogs.map((blog) => (
           <li
@@ -58,7 +64,9 @@ const UserBlogs = () => {
                 {blog.content}
               </p>
               {blog.create_time && (
-                <div>{`create at ${blog?.create_time}`}</div>
+                <div className="text-sm text-gray-500">
+                  {convertTimestampToDate(blog.create_time)}
+                </div>
               )}
             </div>
           </li>

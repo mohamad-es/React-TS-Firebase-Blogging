@@ -80,7 +80,7 @@ const Header = () => {
                 <div className="dropdown dropdown-hover">
                   <div
                     tabIndex={0}
-                    className="btn bg-white hover:bg-gray-200 border-none shadow-none h-9 min-h-5 m-1"
+                    className="btn font-light tracking-wide bg-white hover:bg-gray-200 border-none shadow-none h-9 min-h-5 m-1"
                   >
                     {auth.currentUser?.email}
                   </div>
