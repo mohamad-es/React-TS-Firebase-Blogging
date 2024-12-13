@@ -5,10 +5,11 @@ import Landing from "./pages/Landing";
 import Login from "./pages/auth/Login";
 import Layout from "./layout";
 import Profile from "./pages/Profile";
-import WriteBlog from "./pages/blogs/Write";
 import About from "./pages/About";
-import ReadBlog from "./pages/blogs/Read";
-import EditBlog from "./pages/blogs/Edit";
+import EditBlog from "./pages/Blogs/Edit";
+import WriteBlog from "./pages/Blogs/Write";
+import ReadBlog from "./pages/Blogs/Read";
+
 
 function App() {
   return (

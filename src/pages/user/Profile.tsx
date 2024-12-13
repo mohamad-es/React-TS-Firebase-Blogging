@@ -3,8 +3,8 @@ import UserProfileIcon from "src/components/icons/UserProfileIcon";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { TBlog } from "src/types/blog";
-import { getBlogListByQuery } from "src/services/blogServices";
 import { where, } from "firebase/firestore";
+import { getBlogListByQuery } from "src/services/blogServices";
 
 const Profile = () => {
   const params = useParams();
@@ -38,7 +38,6 @@ const Profile = () => {
     <div className="panel">
       <div className="flex flex-col items-center justify-center w-full gap-2 mb-20">
         <UserProfileIcon size={60} />
-        <div>{params.uemail}</div>
       </div>
 
       <div className="mt-5">

@@ -12,3 +12,8 @@ export type TInput = {
     message: string;
   };
 };
+
+export type TIcon = {
+  size: number;
+  color?: string;
+};

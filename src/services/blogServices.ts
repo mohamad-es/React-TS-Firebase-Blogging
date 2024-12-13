@@ -1,4 +1,4 @@
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "src/config/firebaseConfig";
 import { TBlog } from "src/types/blog";
 
@@ -7,6 +7,13 @@ type TGetSingleBlog = {
   setLoading: Function;
   setError: Function;
   setBlog: Function;
+};
+
+type TGetListByQuery = {
+  filterQuery: any[];
+  setBlogs: Function;
+  setError: Function;
+  setLoading: Function;
 };
 
 export const getSingleBlog = async ({
@@ -40,4 +47,24 @@ export const getSingleBlog = async ({
   }
 };
 
-
+export const getBlogListByQuery = async ({
+  filterQuery,
+  setBlogs,
+  setError,
+  setLoading,
+}: TGetListByQuery) => {
+  const blogRef = collection(db, "blogs");
+  const q = query(blogRef, filterQuery);
+  try {
+    const querySnapshot = await getDocs(q);
+    const fetchBlogs: TBlog[] = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as TBlog[];
+    setBlogs(fetchBlogs);
+  } catch (error) {
+    error instanceof Error ? setError(error.message) : console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};

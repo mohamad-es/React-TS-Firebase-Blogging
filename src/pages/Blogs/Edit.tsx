@@ -1,12 +1,14 @@
-import { addDoc, collection,doc,updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
-import { db } from "src/config/firebaseConfig";
+import { useNavigate, useParams } from "react-router-dom";
+import CircleCheckIcon from "src/components/icons/CircleCheckIcon";
+import { auth, db } from "src/config/firebaseConfig";
 import { getSingleBlog } from "src/services/blogServices";
 import { TBlog } from "src/types/blog";
 
 const EditBlog = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const [blog, setBlog] = useState<TBlog | null>(null);
   const [loading, setLoading] = useState(true);
@@ -20,10 +22,7 @@ const EditBlog = () => {
       setError,
       setLoading,
     });
-
-    
   }, []);
-
 
   useEffect(() => {
     if (blog) {
@@ -34,26 +33,32 @@ const EditBlog = () => {
 
   const createBlog = async (values: FieldValues) => {
     try {
-      const blogRef = doc(db, "blogs",params.blogid!);
+      const blogRef = doc(db, "blogs", params.blogid!);
       await updateDoc(blogRef, {
         title: values.title,
         content: values.content,
       });
+      navigate(`/${auth.currentUser?.uid}`);
     } catch (error) {
       console.log(error);
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="panel flex pt-10 justify-center">
+        <div className="loading loading-infinity" />
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="panel">
       {/* <h1 className="text-xl px-3 mb-10">Write new blog</h1> */}
       <form onSubmit={handleSubmit(createBlog)} className="w-full">
-        <div className="flex justify-end">
-          <button className="btn-green px-3 rounded-lg">
-            Publish update ✔
+        <div className="flex justify-end mb-5">
+          <button className="btn btn-success text-white px-3 rounded-lg">
+            Publish <CircleCheckIcon size={20} />
           </button>
         </div>
         <div className="flex flex-col">
@@ -61,12 +66,12 @@ const EditBlog = () => {
             {...register("title", { required: true })}
             type="text"
             placeholder="your title here"
-            className="h-16 text-2xl border-none"
+            className="h-16 text-2xl border-none outline-none focus-visible:outline-none"
           />
           <textarea
             {...register("content", { required: true })}
             placeholder="You Content Here"
-            className="px-4 mt-4"
+            className="px-4 mt-4 outline-none focus-visible:outline-none"
             rows={10}
           />
         </div>

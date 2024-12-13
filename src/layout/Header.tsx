@@ -1,19 +1,14 @@
 import { onAuthStateChanged, User } from "@firebase/auth";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { auth } from "src/config/firebaseConfig";
 import banner from "src/assets/banner.png";
 import GithubIcon from "src/components/icons/GithubIcon";
-import UserProfileIcon from "src/components/icons/UserProfileIcon";
-import { logOut } from "src/hooks/useAuth";
-import { toast } from "react-toastify";
-import ExitIcon from "src/components/icons/ExitIcon";
+import Navbar from "./_components/Navbar";
 
 const Header = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -51,86 +46,7 @@ const Header = () => {
           />
         </div>
 
-        <div className="flex justify-between items-center px-5 py-2 z-20">
-          <div className="flex gap-2">
-            <Link
-              to={"/"}
-              className="hover:bg-gray-200 transition-all px-4 py-2 rounded-lg"
-            >
-              Home
-            </Link>
-            <Link
-              to={"/about"}
-              className="hover:bg-gray-200 transition-all px-4 py-2 rounded-lg"
-            >
-              About
-            </Link>
-          </div>
-          <div className="flex gap-2">
-            {loading ? (
-              <div className="loading loading-infinity me-20" />
-            ) : user ? (
-              <div className="flex gap-4">
-                <Link
-                  to={`${user.uid}/write`}
-                  className="hover:bg-gray-200 px-4 transition-all gap-2 py-2 rounded-lg border border-gray-400 flex justify-between"
-                >
-                  Write 📝
-                </Link>
-                <div className="dropdown dropdown-hover">
-                  <div
-                    tabIndex={0}
-                    className="btn font-light tracking-wide bg-white hover:bg-gray-200 border-none shadow-none h-9 min-h-5 m-1"
-                  >
-                    {auth.currentUser?.email}
-                  </div>
-                  <ul
-                    tabIndex={0}
-                    className="menu dropdown-content bg-base-100 rounded-box z-40 w-52 p-2 shadow"
-                  >
-                    <li>
-                      <Link
-                        to={`${user.uid}`}
-                        className="flex justify-between items-center gap-1"
-                      >
-                        Profile
-                        <UserProfileIcon size={24} />
-                      </Link>
-                    </li>
-                    <li>
-                      <button
-                        onClick={() => {
-                          logOut();
-                          toast.success("User Successfully Loged out");
-                          navigate("/");
-                        }}
-                        className="flex justify-between"
-                      >
-                        Logout
-                        <ExitIcon size={24} />
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            ) : (
-              <div className="flex gap-2 items-center">
-                <Link
-                  className="hover:bg-gray-200 transition-all  px-4 py-2 rounded-lg"
-                  to={"/login"}
-                >
-                  Login
-                </Link>
-                <Link
-                  className="hover:bg-gray-200 transition-all  px-4 py-2 rounded-lg"
-                  to={"/register"}
-                >
-                  Register
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
+        <Navbar loading={loading} user={user} />
       </div>
     </div>
   );

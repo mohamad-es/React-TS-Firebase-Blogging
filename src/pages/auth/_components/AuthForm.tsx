@@ -5,9 +5,10 @@ import auth_banner from "src/assets/auht-banner.png";
 type Props = {
   auth_data: TAuthForms;
   submitFunction: SubmitHandler<FieldValues>;
+  loading: boolean;
 };
 
-const AuthForm = ({ auth_data, submitFunction }: Props) => {
+const AuthForm = ({ auth_data, submitFunction, loading }: Props) => {
   const {
     register,
     handleSubmit,
@@ -45,7 +46,11 @@ const AuthForm = ({ auth_data, submitFunction }: Props) => {
           ))}
 
           <button className="btn btn-primary mt-3 text-white" type="submit">
-            {auth_data.button}
+            {loading ? (
+              <div className="loading loading-infinity" />
+            ) : (
+              auth_data.button
+            )}
           </button>
         </form>
       </div>

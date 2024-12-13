@@ -10,39 +10,39 @@
 }
 
 @layer base {
-  /* *:focus-visible {
-    @apply outline-gray-500
-  } */
-
-    input {
-    @apply input outline outline-1 outline-gray-400
+  input {
+    @apply input outline outline-1 outline-gray-400;
   }
 
   label {
-    @apply text-sm text-gray-800
+    @apply text-sm text-gray-800;
   }
 
   h2 {
-    @apply text-xl font-extrabold text-gray-900
+    @apply text-xl font-extrabold text-gray-900;
   }
 
   p {
-    @apply text-sm tracking-wide text-gray-700 
+    @apply text-sm tracking-wide text-gray-700;
   }
 
   .panel {
     @apply shadow-lg p-10 bg-white rounded-xl;
   }
 
-  .btn-green {
-    @apply bg-green-500 text-white px-5 py-1.5 rounded-md transition-all hover:shadow-lg
+  .btn {
+    @apply !h-10 !min-h-10 !tracking-wide;
   }
 
-  .btn-blue {
-    @apply bg-blue-500 text-white px-5 py-1.5 rounded-md transition-all hover:shadow-lg
+  .btn-primary {
+    @apply !text-white;
   }
 
-    .btn-red {
-    @apply bg-red-500 text-white px-5 py-1.5 rounded-md transition-all hover:shadow-lg
+  .btn-success {
+    @apply !text-white !bg-green-500
+  }
+
+  .btn-error {
+    @apply !text-white !bg-red-500;
   }
 }
