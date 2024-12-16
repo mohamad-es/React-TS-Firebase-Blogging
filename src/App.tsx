@@ -1,14 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import Register from "./pages/auth/Register";
 import PrivateRoute from "./utils/PrivateRoutes";
-import Landing from "./pages/Landing";
 import Login from "./pages/auth/Login";
 import Layout from "./layout";
-import Profile from "./pages/Profile";
 import About from "./pages/About";
 import EditBlog from "./pages/Blogs/Edit";
 import WriteBlog from "./pages/Blogs/Write";
 import ReadBlog from "./pages/Blogs/Read";
+import Profile from "./pages/Profile";
+import Home from "./pages/Home";
 
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route index element={<Landing />} />
+          <Route index element={<Home/>} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

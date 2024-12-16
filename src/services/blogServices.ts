@@ -1,4 +1,12 @@
-import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  QueryConstraint,
+} from "firebase/firestore";
+import { Dispatch, SetStateAction } from "react";
 import { db } from "src/config/firebaseConfig";
 import { TBlog } from "src/types/blog";
 
@@ -10,10 +18,10 @@ type TGetSingleBlog = {
 };
 
 type TGetListByQuery = {
-  filterQuery: any[];
-  setBlogs: Function;
-  setError: Function;
-  setLoading: Function;
+  filterQuery: QueryConstraint[];
+  setBlogs: Dispatch<SetStateAction<TBlog[]>>;
+  setError: Dispatch<SetStateAction<string | null>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 export const getSingleBlog = async ({
@@ -54,7 +62,7 @@ export const getBlogListByQuery = async ({
   setLoading,
 }: TGetListByQuery) => {
   const blogRef = collection(db, "blogs");
-  const q = query(blogRef, filterQuery);
+  const q = query(blogRef, ...filterQuery);
   try {
     const querySnapshot = await getDocs(q);
     const fetchBlogs: TBlog[] = querySnapshot.docs.map((doc) => ({

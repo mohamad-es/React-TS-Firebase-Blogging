@@ -24,6 +24,10 @@ const WriteBlog = () => {
         create_time: new Date(),
       });
       setLoading(false);
+      toastInstance({
+        text: "Blog successfully created",
+        type: "success",
+      });
       navigate(`/${auth.currentUser?.uid}`);
     } catch (error) {
       setLoading(false);
@@ -61,7 +65,7 @@ const WriteBlog = () => {
           <textarea
             {...register("content", { required: true })}
             placeholder="You Content Here"
-            className="px-4 mt-4 focus-visible:outline-none outline-none border-none"
+            className="px-4 mt-4 focus-visible:outline-none outline-none border-none whitespace-pre-wrap"
             rows={10}
           />
         </div>

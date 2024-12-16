@@ -1,15 +1,19 @@
-import { useState, useEffect } from "react";
-import { auth } from "src/config/firebaseConfig";
-import { Link, useParams } from "react-router";
+import { useState, useEffect, Fragment } from "react";
+import { auth, db } from "src/config/firebaseConfig";
+import { Link, useParams, useNavigate } from "react-router";
 import { TBlog } from "src/types/blog";
 import { getSingleBlog } from "src/services/blogServices";
 import PencilIcon from "src/components/icons/PencilIcon";
 import TrashIcon from "src/components/icons/TrashIcon";
+import { deleteDoc, doc } from "firebase/firestore";
+import { toastInstance } from "src/utils/Toast";
 
 const ReadBlog = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const [blog, setBlog] = useState<TBlog | null>(null);
   const [loading, setLoading] = useState(true);
+  const [btnLoading, setBtnLoading] = useState(false);
   const [error, setError] = useState<null | string>(null);
 
   useEffect(() => {
@@ -19,7 +23,31 @@ const ReadBlog = () => {
       setError,
       setLoading,
     });
-  }, []);
+  }, [params.blogid]);
+
+  const deleteBlog = async () => {
+    if (!params.blogid) {
+      setError("Invalid blog ID");
+      return;
+    }
+
+    const confirm = window.confirm(
+      "Are you sure you want to delete this blog?"
+    );
+    if (!confirm) return;
+    setBtnLoading(true);
+
+    try {
+      await deleteDoc(doc(db, "blogs", params.blogid));
+      setBtnLoading(false);
+      toastInstance({ text: "Blog deleted successfully!", type: "success" });
+      navigate(`/${auth.currentUser?.uid}`); // Redirect to the blogs list or another page
+    } catch (err) {
+      setBtnLoading(false);
+      console.error("Error deleting blog:", err);
+      setError("Failed to delete the blog.");
+    }
+  };
 
   if (loading)
     return (
@@ -37,9 +65,15 @@ const ReadBlog = () => {
             Edit
             <PencilIcon size={20} color="white" />
           </Link>
-          <button className="btn btn-error">
-            Delete
-            <TrashIcon size={20} />
+          <button className="btn btn-error w-28" onClick={deleteBlog}>
+            {btnLoading ? (
+              <div className="loading loading-infinity" />
+            ) : (
+              <Fragment>
+                Delete
+                <TrashIcon size={20} />
+              </Fragment>
+            )}
           </button>
         </div>
       )}
