@@ -9,6 +9,7 @@ import WriteBlog from "./pages/Blogs/Write";
 import ReadBlog from "./pages/Blogs/Read";
 import Profile from "./pages/Profile";
 import Home from "./pages/Home";
+import AllBlogs from "./pages/Blogs/All";
 
 
 function App() {
@@ -16,13 +17,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route index element={<Home/>} />
+          <Route index element={<Home />} />
+          <Route path="/blogs" element={<AllBlogs />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route element={<PrivateRoute />}>
             <Route path="/:uid" element={<Profile />} />
-            <Route path="/:uid/write" element={<WriteBlog />} />
+            <Route path="/write" element={<WriteBlog />} />
             <Route path="/blog/:blogid" element={<ReadBlog />} />
             <Route path="/blog/:blogid/edit" element={<EditBlog />} />
           </Route>

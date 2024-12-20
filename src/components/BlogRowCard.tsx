@@ -19,7 +19,7 @@ const BlogRowCard = ({ blog }: Props) => {
         <div className="text-sm flex items-center gap-2 tracking-wide">
           <UserProfileIcon size={32} />
           <div className="flex flex-col">
-            <Link to={`/${blog.user_email}`} className="text-sm text-blue-500">
+            <Link to={`/${blog.user_id}`} className="text-sm text-blue-500">
               {blog.user_email}
             </Link>
             <div className="text-xs text-gray-500">

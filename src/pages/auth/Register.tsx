@@ -6,7 +6,7 @@ import { auth_data } from "src/data/auth";
 import { FieldValues } from "react-hook-form";
 import { toastInstance } from "src/utils/Toast";
 import { useNavigate } from "react-router-dom";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
@@ -15,22 +15,29 @@ const Register: React.FC = () => {
   const handleRegister = async (values: FieldValues) => {
     setLoading(true);
     try {
+      // Create user in Firebase Authentication
       const currentUser = await createUserWithEmailAndPassword(
         auth,
         values.email,
         values.password
       );
+
+      // Get user UID from Firebase Authentication
+      const userId = currentUser.user.uid;
+
+      // Save user to Firestore
       const userRef = collection(db, "users");
       await addDoc(userRef, {
-        email: currentUser.user.email,
-        id: currentUser.user.uid,
+        email: values.email,
+        user_id: userId,
       });
+
       setLoading(false);
       toastInstance({
         text: auth_data.register.toast_message,
         type: "success",
       });
-      navigate(`/${currentUser.user.uid}`);
+      navigate(`/${userId}`);
     } catch (err) {
       setLoading(false);
       err instanceof Error

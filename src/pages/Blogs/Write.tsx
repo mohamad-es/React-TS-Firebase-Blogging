@@ -1,16 +1,16 @@
 import { FieldValues, useForm } from "react-hook-form";
 import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "src/config/firebaseConfig";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import CircleCheckIcon from "src/components/icons/CircleCheckIcon";
 import { toastInstance } from "src/utils/Toast";
 import { Fragment, useState } from "react";
 
 const WriteBlog = () => {
   const navigate = useNavigate();
-  const params = useParams();
   const { register, handleSubmit } = useForm();
   const [loading, setLoading] = useState(false);
+
 
   const createBlog = async (values: FieldValues) => {
     setLoading(true);
@@ -19,7 +19,7 @@ const WriteBlog = () => {
       await addDoc(blogRef, {
         title: values.title,
         content: values.content,
-        user_id: params.uid,
+        user_id: auth.currentUser?.uid,
         user_email: auth.currentUser?.email,
         create_time: new Date(),
       });

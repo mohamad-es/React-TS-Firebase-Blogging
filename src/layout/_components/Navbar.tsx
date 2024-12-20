@@ -24,6 +24,12 @@ const Navbar = ({ user, loading }: Props) => {
           Home
         </Link>
         <Link
+          to={"/blogs"}
+          className="hover:bg-gray-200 transition-all px-4 py-2 rounded-lg"
+        >
+          Blogs
+        </Link>
+        <Link
           to={"/about"}
           className="hover:bg-gray-200 transition-all px-4 py-2 rounded-lg"
         >
@@ -35,7 +41,7 @@ const Navbar = ({ user, loading }: Props) => {
           <div className="loading loading-infinity me-20" />
         ) : user ? (
           <div className="flex gap-4">
-            <Link to={`${user.uid}/write`} className="btn border border-gray-400 bg-white">
+            <Link to="/write" className="btn border border-gray-400 bg-white">
               Write
               <NoteBookIcon size={20} />
             </Link>

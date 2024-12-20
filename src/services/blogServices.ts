@@ -17,6 +17,12 @@ type TGetSingleBlog = {
   setBlog: Function;
 };
 
+type TGetAllBlogs = {
+  setBlogs: Dispatch<SetStateAction<TBlog[]>>;
+  setError: Dispatch<SetStateAction<string | null>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+};
+
 type TGetListByQuery = {
   filterQuery: QueryConstraint[];
   setBlogs: Dispatch<SetStateAction<TBlog[]>>;
@@ -70,6 +76,39 @@ export const getBlogListByQuery = async ({
       ...doc.data(),
     })) as TBlog[];
     setBlogs(fetchBlogs);
+  } catch (error) {
+    error instanceof Error ? setError(error.message) : console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+
+export const getAllBlogs = async ({
+  setBlogs,
+  setError,
+  setLoading,
+}: TGetAllBlogs) => {
+  setLoading(true);
+  setError(null);
+
+  try {
+    // Reference the blogs collection
+    const blogRef = collection(db, "blogs");
+
+    // Fetch all documents in the collection
+    const querySnapshot = await getDocs(blogRef);
+
+    // Map the documents to TBlog array
+    const blogs: TBlog[] = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as TBlog[];
+
+    // Update state with fetched blogs
+    setBlogs(blogs);
   } catch (error) {
     error instanceof Error ? setError(error.message) : console.log(error);
   } finally {
