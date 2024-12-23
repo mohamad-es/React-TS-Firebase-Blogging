@@ -1,8 +1,10 @@
 import { doc, updateDoc } from "firebase/firestore";
+import { CheckmarkBadge01Icon } from "hugeicons-react";
 import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import CircleCheckIcon from "src/components/icons/CircleCheckIcon";
+import ErrorAlert from "src/components/global/ErrorAlert";
+import Loading from "src/components/global/Loading";
 import { auth, db } from "src/config/firebaseConfig";
 import { getSingleBlog } from "src/services/blogServices";
 import { TBlog } from "src/types/blog";
@@ -44,13 +46,8 @@ const EditBlog = () => {
     }
   };
 
-  if (loading)
-    return (
-      <div className="panel flex pt-10 justify-center">
-        <div className="loading loading-infinity" />
-      </div>
-    );
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <Loading />;
+  if (error) return <ErrorAlert text={error} />;
 
   return (
     <div className="panel">
@@ -58,7 +55,7 @@ const EditBlog = () => {
       <form onSubmit={handleSubmit(createBlog)} className="w-full">
         <div className="flex justify-end mb-5">
           <button className="btn btn-success text-white px-3 rounded-lg">
-            Publish <CircleCheckIcon size={20} />
+            Publish <CheckmarkBadge01Icon size={20} />
           </button>
         </div>
         <div className="flex flex-col">

@@ -2,15 +2,17 @@ import { FieldValues, useForm } from "react-hook-form";
 import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "src/config/firebaseConfig";
 import { useNavigate } from "react-router";
-import CircleCheckIcon from "src/components/icons/CircleCheckIcon";
 import { toastInstance } from "src/utils/Toast";
 import { Fragment, useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import styles
+import { CheckmarkBadge01Icon, CheckmarkCircle02Icon } from "hugeicons-react";
 
 const WriteBlog = () => {
+  const [content, setContent] = useState("");
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const [loading, setLoading] = useState(false);
-
 
   const createBlog = async (values: FieldValues) => {
     setLoading(true);
@@ -18,7 +20,7 @@ const WriteBlog = () => {
       const blogRef = collection(db, "blogs");
       await addDoc(blogRef, {
         title: values.title,
-        content: values.content,
+        content,
         user_id: auth.currentUser?.uid,
         user_email: auth.currentUser?.email,
         create_time: new Date(),
@@ -40,17 +42,21 @@ const WriteBlog = () => {
     }
   };
 
+  const handleContentChange = (value: string) => {
+    setContent(value);
+  };
+
   return (
-    <div className="panel">
+    <div>
       <form onSubmit={handleSubmit(createBlog)} className="w-full">
         <div className="flex justify-end mb-5">
-          <button className="btn btn-success w-28 px-1">
+          <button className="btn btn-primary font-medium px-3">
             {loading ? (
               <div className="loading loading-infinity" />
             ) : (
               <Fragment>
                 Publish
-                <CircleCheckIcon size={20} />
+                <CheckmarkCircle02Icon size={20} />
               </Fragment>
             )}
           </button>
@@ -59,14 +65,15 @@ const WriteBlog = () => {
           <input
             {...register("title", { required: true })}
             type="text"
-            placeholder="your title here"
-            className="h-16 text-2xl focus-visible:outline-none outline-none border-none"
+            placeholder="New blog title here..."
+            className="h-16 text-4xl font-bold focus-visible:outline-none outline-none border-none"
           />
-          <textarea
-            {...register("content", { required: true })}
-            placeholder="You Content Here"
-            className="px-4 mt-4 focus-visible:outline-none outline-none border-none whitespace-pre-wrap"
-            rows={10}
+          <ReactQuill
+            theme="snow"
+            value={content}
+            onChange={handleContentChange}
+            className="mt-10"
+            placeholder="your content here ..."
           />
         </div>
       </form>

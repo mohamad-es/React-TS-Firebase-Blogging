@@ -3,10 +3,12 @@ import { auth, db } from "src/config/firebaseConfig";
 import { Link, useParams, useNavigate } from "react-router";
 import { TBlog } from "src/types/blog";
 import { getSingleBlog } from "src/services/blogServices";
-import PencilIcon from "src/components/icons/PencilIcon";
-import TrashIcon from "src/components/icons/TrashIcon";
 import { deleteDoc, doc } from "firebase/firestore";
 import { toastInstance } from "src/utils/Toast";
+import { RenderHtml } from "src/components/RenderHtml";
+import { Delete01Icon, PencilEdit01Icon } from "hugeicons-react";
+import Loading from "src/components/global/Loading";
+import ErrorAlert from "src/components/global/ErrorAlert";
 
 const ReadBlog = () => {
   const params = useParams();
@@ -41,7 +43,7 @@ const ReadBlog = () => {
       await deleteDoc(doc(db, "blogs", params.blogid));
       setBtnLoading(false);
       toastInstance({ text: "Blog deleted successfully!", type: "success" });
-      navigate(`/${auth.currentUser?.uid}`); // Redirect to the blogs list or another page
+      navigate(`/${auth.currentUser?.uid}`);
     } catch (err) {
       setBtnLoading(false);
       console.error("Error deleting blog:", err);
@@ -49,21 +51,16 @@ const ReadBlog = () => {
     }
   };
 
-  if (loading)
-    return (
-      <div className="panel flex pt-10 justify-center">
-        <div className="loading loading-infinity" />
-      </div>
-    );
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <Loading />;
+  if (error) return <ErrorAlert text={error} />;
 
   return (
-    <div className="panel">
+    <div>
       {blog?.user_id === auth.currentUser?.uid && (
         <div className="flex justify-end gap-3 mb-5">
           <Link to={"edit"} className="btn btn-primary">
             Edit
-            <PencilIcon size={20} color="white" />
+            <PencilEdit01Icon size={20} color="white" />
           </Link>
           <button className="btn btn-error w-28" onClick={deleteBlog}>
             {btnLoading ? (
@@ -71,7 +68,7 @@ const ReadBlog = () => {
             ) : (
               <Fragment>
                 Delete
-                <TrashIcon size={20} />
+                <Delete01Icon size={20} />
               </Fragment>
             )}
           </button>
@@ -80,7 +77,7 @@ const ReadBlog = () => {
       {blog ? (
         <>
           <h1 className="text-3xl font-extrabold mb-10">{blog.title}</h1>
-          <p>{blog.content}</p>
+          <RenderHtml htmlString={blog.content} />
         </>
       ) : (
         <p>Blog not found.</p>

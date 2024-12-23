@@ -1,6 +1,5 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { TAuthForms } from "src/types/auth";
-import auth_banner from "src/assets/auht-banner.png";
 
 type Props = {
   auth_data: TAuthForms;
@@ -18,10 +17,7 @@ const AuthForm = ({ auth_data, submitFunction, loading }: Props) => {
   });
 
   return (
-    <div className="panel flex justify-between">
-      <div>
-        <img src={auth_banner} alt="" className="w-80" />
-      </div>
+    <div className="flex flex-1 justify-center items-center">
       <div className="w-96">
         <h1 className="text-3xl mb-7">{auth_data.title}</h1>
         <form

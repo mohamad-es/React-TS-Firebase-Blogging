@@ -2,9 +2,9 @@ import mohammad from "src/assets/Mohammad.png";
 
 const About = () => {
   return (
-    <div className="panel p">
-      <div className="grid items-center grid-cols-12">
-        <div className="w-40 h-40 overflow-hidden rounded-lg relative col-span-2">
+    <div>
+      <div className="">
+        <div className="w-40 h-40 overflow-hidden rounded-full relative col-span-2">
           <img
             src={mohammad}
             alt=""

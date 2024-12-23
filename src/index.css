@@ -6,7 +6,22 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: sans-serif;
+}
+
+body {
+  font-family: "Inter";
+}
+
+.c-gray {
+  color: #4b5563;
+}
+
+.bc-gray {
+  background: #F9FAFB;
+}
+
+.c-black {
+  color:#000000
 }
 
 @layer base {
@@ -15,15 +30,19 @@
   }
 
   label {
-    @apply text-sm text-gray-800;
+    @apply text-sm c-black;
   }
 
   h2 {
-    @apply text-xl font-extrabold text-gray-900;
+    @apply text-2xl font-bold c-black;
+  }
+
+  h3 {
+    @apply text-xl font-bold c-black
   }
 
   p {
-    @apply text-sm tracking-wide text-gray-700;
+    @apply text-sm tracking-wide c-gray;
   }
 
   .panel {
@@ -31,7 +50,7 @@
   }
 
   .btn {
-    @apply !h-10 !min-h-10 !tracking-wide;
+    @apply !h-10 !min-h-10 !tracking-wide !rounded-xl;
   }
 
   .btn-primary {
@@ -39,7 +58,7 @@
   }
 
   .btn-success {
-    @apply !text-white !bg-green-500
+    @apply !text-white !bg-green-500;
   }
 
   .btn-error {

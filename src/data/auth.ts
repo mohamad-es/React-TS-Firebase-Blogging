@@ -8,7 +8,7 @@ export const auth_data: TAuthData = {
         name: "email",
         label: "Email",
         type: "email",
-        placeholder: "type email ...",
+        placeholder: "Email",
         required: {
           value: true,
           message: "Email is required",
@@ -22,7 +22,7 @@ export const auth_data: TAuthData = {
         name: "password",
         label: "Password",
         type: "password",
-        placeholder: "type password ...",
+        placeholder: "Password",
         required: {
           value: true,
           message: "Password is required",
@@ -45,7 +45,7 @@ export const auth_data: TAuthData = {
         name: "email",
         label: "Email",
         type: "email",
-        placeholder: "type email ...",
+        placeholder: "Email",
         required: {
           value: true,
           message: "Email is required",
@@ -59,7 +59,7 @@ export const auth_data: TAuthData = {
         name: "password",
         label: "Password",
         type: "password",
-        placeholder: "type password ...",
+        placeholder: "Password",
         required: {
           value: true,
           message: "Password is required",
