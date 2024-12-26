@@ -1,21 +1,26 @@
-import { doc, updateDoc } from "firebase/firestore";
-import { CheckmarkBadge01Icon } from "hugeicons-react";
-import { useEffect, useState } from "react";
+import { collection, doc, updateDoc } from "firebase/firestore";
+import { CheckmarkCircle02Icon } from "hugeicons-react";
+import { Fragment, useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
+import ReactQuill from "react-quill";
 import { useNavigate, useParams } from "react-router-dom";
 import ErrorAlert from "src/components/global/ErrorAlert";
 import Loading from "src/components/global/Loading";
 import { auth, db } from "src/config/firebaseConfig";
 import { getSingleBlog } from "src/services/blogServices";
 import { TBlog } from "src/types/blog";
+import { toastInstance } from "src/utils/Toast";
 
 const EditBlog = () => {
-  const navigate = useNavigate();
   const params = useParams();
+
+  const navigate = useNavigate();
+  const { register, handleSubmit,setValue } = useForm();
+
+  const [content, setContent] = useState("");
   const [blog, setBlog] = useState<TBlog | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
-  const { register, handleSubmit, setValue } = useForm();
 
   useEffect(() => {
     getSingleBlog({
@@ -27,49 +32,75 @@ const EditBlog = () => {
   }, []);
 
   useEffect(() => {
-    if (blog) {
-      setValue("title", blog?.title);
-      setValue("content", blog?.content);
-    }
+    setContent(blog?.content!);
   }, [blog]);
 
-  const createBlog = async (values: FieldValues) => {
+  const updateBlog = async (values: FieldValues) => {
+    setLoading(true);
     try {
       const blogRef = doc(db, "blogs", params.blogid!);
       await updateDoc(blogRef, {
         title: values.title,
-        content: values.content,
+        content,
+        user_id: auth.currentUser?.uid,
+        user_email: auth.currentUser?.email,
+        create_time: new Date(),
+      });
+      setLoading(false);
+      toastInstance({
+        text: "Blog successfully updated",
+        type: "success",
       });
       navigate(`/${auth.currentUser?.uid}`);
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      error instanceof Error
+        ? toastInstance({
+            text: error.message,
+            type: "error",
+          })
+        : console.log(error);
     }
+  };
+
+  const handleContentChange = (value: string) => {
+    setContent(value);
   };
 
   if (loading) return <Loading />;
   if (error) return <ErrorAlert text={error} />;
 
+  setValue("title", blog?.title);
+  
+
   return (
-    <div className="panel">
-      {/* <h1 className="text-xl px-3 mb-10">Write new blog</h1> */}
-      <form onSubmit={handleSubmit(createBlog)} className="w-full">
+    <div>
+      <form onSubmit={handleSubmit(updateBlog)} className="w-full">
         <div className="flex justify-end mb-5">
-          <button className="btn btn-success text-white px-3 rounded-lg">
-            Publish <CheckmarkBadge01Icon size={20} />
+          <button className="btn btn-primary font-medium px-3">
+            {loading ? (
+              <div className="loading loading-infinity" />
+            ) : (
+              <Fragment>
+                Publish
+                <CheckmarkCircle02Icon size={20} />
+              </Fragment>
+            )}
           </button>
         </div>
         <div className="flex flex-col">
           <input
             {...register("title", { required: true })}
             type="text"
-            placeholder="your title here"
-            className="h-16 text-2xl border-none outline-none focus-visible:outline-none"
+            placeholder="New blog title here..."
+            className="h-16 text-4xl font-bold focus-visible:outline-none outline-none border-none"
           />
-          <textarea
-            {...register("content", { required: true })}
-            placeholder="You Content Here"
-            className="px-4 mt-4 outline-none focus-visible:outline-none"
-            rows={10}
+          <ReactQuill
+            theme="snow"
+            value={content}
+            onChange={handleContentChange}
+            className="mt-10"
+            placeholder="your content here ..."
           />
         </div>
       </form>

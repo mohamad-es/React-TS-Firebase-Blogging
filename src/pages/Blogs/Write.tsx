@@ -6,7 +6,7 @@ import { toastInstance } from "src/utils/Toast";
 import { Fragment, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import styles
-import { CheckmarkBadge01Icon, CheckmarkCircle02Icon } from "hugeicons-react";
+import { CheckmarkCircle02Icon } from "hugeicons-react";
 
 const WriteBlog = () => {
   const [content, setContent] = useState("");
@@ -46,6 +46,7 @@ const WriteBlog = () => {
     setContent(value);
   };
 
+
   return (
     <div>
       <form onSubmit={handleSubmit(createBlog)} className="w-full">
@@ -75,6 +76,7 @@ const WriteBlog = () => {
             className="mt-10"
             placeholder="your content here ..."
           />
+         
         </div>
       </form>
     </div>

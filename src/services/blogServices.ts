@@ -3,8 +3,10 @@ import {
   doc,
   getDoc,
   getDocs,
+  limit,
   query,
   QueryConstraint,
+  where,
 } from "firebase/firestore";
 import { Dispatch, SetStateAction } from "react";
 import { db } from "src/config/firebaseConfig";
@@ -84,22 +86,21 @@ export const getBlogListByQuery = async ({
 };
 
 
-
-
 export const getAllBlogs = async ({
   setBlogs,
   setError,
   setLoading,
-}: TGetAllBlogs) => {
+  page,
+  blogsPerPage,
+}: TGetAllBlogs & { page: number; blogsPerPage: number }) => {
   setLoading(true);
   setError(null);
 
   try {
-    // Reference the blogs collection
+    // Reference the blogs collection with limit and pagination
     const blogRef = collection(db, "blogs");
-
-    // Fetch all documents in the collection
-    const querySnapshot = await getDocs(blogRef);
+    const queryRef = query(blogRef, limit(blogsPerPage * page));
+    const querySnapshot = await getDocs(queryRef);
 
     // Map the documents to TBlog array
     const blogs: TBlog[] = querySnapshot.docs.map((doc) => ({
@@ -114,4 +115,22 @@ export const getAllBlogs = async ({
   } finally {
     setLoading(false);
   }
+};
+
+
+export const searchBlogs = async (searchQuery: string) => {
+  const blogsCollectionRef = collection(db, "blogs");
+  const q = query(
+    blogsCollectionRef,
+    where("title", ">=", searchQuery),
+    where("title", "<=", searchQuery + "\uf8ff") // Allows partial matching
+  );
+
+  const querySnapshot = await getDocs(q);
+  const blogs: any[] = [];
+  querySnapshot.forEach((doc) => {
+    blogs.push({ ...doc.data(), id: doc.id });
+  });
+
+  return blogs;
 };

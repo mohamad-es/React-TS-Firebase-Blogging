@@ -6,7 +6,7 @@ import { getSingleBlog } from "src/services/blogServices";
 import { deleteDoc, doc } from "firebase/firestore";
 import { toastInstance } from "src/utils/Toast";
 import { RenderHtml } from "src/components/RenderHtml";
-import { Delete01Icon, PencilEdit01Icon } from "hugeicons-react";
+import { Delete01Icon, PencilEdit01Icon, UserIcon } from "hugeicons-react";
 import Loading from "src/components/global/Loading";
 import ErrorAlert from "src/components/global/ErrorAlert";
 
@@ -56,7 +56,13 @@ const ReadBlog = () => {
 
   return (
     <div>
-      {blog?.user_id === auth.currentUser?.uid && (
+      <Link to={`/${blog?.user_id}`} className="flex items-center gap-2 mb-10">
+        <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-semibold">
+          {blog?.user_email.substring(0, 1).toUpperCase()}
+        </div>
+        <div className="c-gray">{blog?.user_email}</div>
+      </Link>
+      {/* {blog?.user_id === auth.currentUser?.uid && (
         <div className="flex justify-end gap-3 mb-5">
           <Link to={"edit"} className="btn btn-primary">
             Edit
@@ -73,7 +79,7 @@ const ReadBlog = () => {
             )}
           </button>
         </div>
-      )}
+      )} */}
       {blog ? (
         <>
           <h1 className="text-3xl font-extrabold mb-10">{blog.title}</h1>
