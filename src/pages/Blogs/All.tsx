@@ -45,12 +45,12 @@ const AllBlogs = () => {
   if (loading && page === 1) return <Loading />;
   if (error) return <ErrorAlert text={error} />;
   if (blogs.length === 0 && !loading)
-    return <NotFound text={blogs_data.not_found} />;
+    return <NotFound text={blogs_data.all.not_found} />;
 
   return (
     <div>
       <div className="flex justify-between">
-        <h2>{blogs_data.title}</h2>
+        <h2>{blogs_data.all.title}</h2>
         <input
           className="input h-10 outline-1 outline-slate-300 w-80 focus-visible:outline-none"
           type="text"

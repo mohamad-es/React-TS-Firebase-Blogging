@@ -1,8 +1,12 @@
 import { Timestamp } from "firebase/firestore";
 
 export type TBlogData = {
-  title: string;
-  not_found: string;
+  all: {
+    title: string;
+    not_found: string;
+  };
+  read: {};
+  update: {};
 };
 
 export type TBlog = {
@@ -14,4 +18,3 @@ export type TBlog = {
   create_time: Timestamp;
   update_time: Timestamp;
 };
-

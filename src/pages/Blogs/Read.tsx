@@ -6,9 +6,9 @@ import { getSingleBlog } from "src/services/blogServices";
 import { deleteDoc, doc } from "firebase/firestore";
 import { toastInstance } from "src/utils/Toast";
 import { RenderHtml } from "src/components/RenderHtml";
-import { Delete01Icon, PencilEdit01Icon, UserIcon } from "hugeicons-react";
 import Loading from "src/components/global/Loading";
 import ErrorAlert from "src/components/global/ErrorAlert";
+import { Delete01Icon, PencilEdit01Icon } from "hugeicons-react";
 
 const ReadBlog = () => {
   const params = useParams();
@@ -55,39 +55,50 @@ const ReadBlog = () => {
   if (error) return <ErrorAlert text={error} />;
 
   return (
-    <div>
-      <Link to={`/${blog?.user_id}`} className="flex items-center gap-2 mb-10">
-        <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-semibold">
-          {blog?.user_email.substring(0, 1).toUpperCase()}
-        </div>
-        <div className="c-gray">{blog?.user_email}</div>
-      </Link>
-      {/* {blog?.user_id === auth.currentUser?.uid && (
-        <div className="flex justify-end gap-3 mb-5">
-          <Link to={"edit"} className="btn btn-primary">
-            Edit
-            <PencilEdit01Icon size={20} color="white" />
+    <div className="grid grid-cols-12 relative gap-10">
+      <div className="col-span-8">
+        {blog ? (
+          <>
+            <h1 className="text-3xl font-extrabold mb-10">{blog.title}</h1>
+            <RenderHtml htmlString={blog.content} />
+          </>
+        ) : (
+          <p>Blog not found.</p>
+        )}
+      </div>
+
+      <div className="col-span-4">
+        {blog?.user_id === auth.currentUser?.uid && (
+          <div className="flex justify-end gap-3 fixed bottom-10 mb-5">
+            <Link to={"edit"} className="btn btn-primary">
+              Edit
+              <PencilEdit01Icon size={20} color="white" />
+            </Link>
+            <button className="btn btn-error w-28" onClick={deleteBlog}>
+              {btnLoading ? (
+                <div className="loading loading-infinity" />
+              ) : (
+                <Fragment>
+                  Delete
+                  <Delete01Icon size={20} />
+                </Fragment>
+              )}
+            </button>
+          </div>
+        )}
+        <div className="fixed flex flex-col justify-between border h-80 w-96 p-5 rounded-lg">
+          <div className="flex items-center gap-2 mb-10">
+            <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-semibold">
+              {blog?.user_email.substring(0, 1).toUpperCase()}
+            </div>
+            <div className="c-gray">{blog?.user_email}</div>
+          </div>
+          <Link to={`/${blog?.user_id}`} className="btn btn-primary">
+            {" "}
+            View Profile{" "}
           </Link>
-          <button className="btn btn-error w-28" onClick={deleteBlog}>
-            {btnLoading ? (
-              <div className="loading loading-infinity" />
-            ) : (
-              <Fragment>
-                Delete
-                <Delete01Icon size={20} />
-              </Fragment>
-            )}
-          </button>
         </div>
-      )} */}
-      {blog ? (
-        <>
-          <h1 className="text-3xl font-extrabold mb-10">{blog.title}</h1>
-          <RenderHtml htmlString={blog.content} />
-        </>
-      ) : (
-        <p>Blog not found.</p>
-      )}
+      </div>
     </div>
   );
 };

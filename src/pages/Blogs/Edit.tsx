@@ -1,4 +1,4 @@
-import { collection, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { CheckmarkCircle02Icon } from "hugeicons-react";
 import { Fragment, useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
