@@ -2,15 +2,11 @@ import { TLayoutData } from "src/types/layout";
 
 export const layout_data: TLayoutData = {
   header: {
-    title: "React blogging app",
+    title: "Blogging app",
     navbar: [
       {
-        title: "Home",
-        link: "/",
-      },
-      {
         title: "Blogs",
-        link: "/blogs",
+        link: "/",
       },
       {
         title: "About",

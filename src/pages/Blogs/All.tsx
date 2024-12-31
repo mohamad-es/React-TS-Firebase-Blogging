@@ -15,7 +15,7 @@ const AllBlogs = () => {
   const [filteredBlogs, setFilteredBlogs] = useState<TBlog[]>([]);
   const [searchLoading, setSearchLoading] = useState<boolean>(false); // Add loading state for search
   const [page, setPage] = useState(1);
-  const blogsPerPage = 5;
+  const blogsPerPage = 6;
 
   useEffect(() => {
     getAllBlogs({ setBlogs, setError, setLoading, page, blogsPerPage });
@@ -30,16 +30,16 @@ const AllBlogs = () => {
   ) => {
     const query = event.target.value;
     setSearchQuery(query);
-    setSearchLoading(true); // Show loading when starting search
+    setSearchLoading(true); 
 
     if (query) {
       const blogs = await searchBlogs(query);
       setFilteredBlogs(blogs);
     } else {
-      setFilteredBlogs([]); // Clear the results if the query is empty
+      setFilteredBlogs([]); 
     }
 
-    setSearchLoading(false); // Hide loading after search is completed
+    setSearchLoading(false); 
   };
 
   if (loading && page === 1) return <Loading />;
@@ -48,25 +48,25 @@ const AllBlogs = () => {
     return <NotFound text={blogs_data.all.not_found} />;
 
   return (
-    <div>
-      <div className="flex justify-between">
+    <div className="min-h-96">
+      <div className="flex justify-between sticky top-0 py-3 items-center bg-white z-10">
         <h2>{blogs_data.all.title}</h2>
-        <input
-          className="input h-10 outline-1 outline-slate-300 w-80 focus-visible:outline-none"
-          type="text"
-          placeholder="Search blog title"
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
-      </div>
 
-      {/* Show loading spinner during search */}
-      {searchLoading && (
-        // <Loading />
-        <div className="text-center fixed end-1/2 top-1/2 mt-4">
-          <Loading /> {/* You can customize this with a spinner or text */}
+        <div className="relative">
+          <input
+            className="input h-10 outline-1 outline-slate-300 w-80 focus-visible:outline-none"
+            type="text"
+            placeholder="Search blog title"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+          {searchLoading && (
+            <div className="text-center absolute top-2.5 end-3">
+              <div className="loading loading-spinner loading-sm"/>
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       <div className="grid grid-cols-3 gap-8 mt-8">
         {(searchQuery ? filteredBlogs : blogs).map((blog) => (
@@ -74,7 +74,7 @@ const AllBlogs = () => {
         ))}
       </div>
 
-      {blogs.length % blogsPerPage === 0 && (
+      {!searchQuery && blogs.length % blogsPerPage === 0 && (
         <div className="text-center mt-8">
           <button onClick={loadMore} className="btn btn-primary">
             Load More

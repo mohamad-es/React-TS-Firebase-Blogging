@@ -2,10 +2,10 @@ import { doc, updateDoc } from "firebase/firestore";
 import { CheckmarkCircle02Icon } from "hugeicons-react";
 import { Fragment, useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import ReactQuill from "react-quill";
 import { useNavigate, useParams } from "react-router-dom";
 import ErrorAlert from "src/components/global/ErrorAlert";
 import Loading from "src/components/global/Loading";
+import RichTextEditor from "src/components/RichTextEditor";
 import { auth, db } from "src/config/firebaseConfig";
 import { getSingleBlog } from "src/services/blogServices";
 import { TBlog } from "src/types/blog";
@@ -44,7 +44,7 @@ const EditBlog = () => {
         content,
         user_id: auth.currentUser?.uid,
         user_email: auth.currentUser?.email,
-        create_time: new Date(),
+        update_time: new Date(),
       });
       setLoading(false);
       toastInstance({
@@ -63,9 +63,7 @@ const EditBlog = () => {
     }
   };
 
-  const handleContentChange = (value: string) => {
-    setContent(value);
-  };
+  
 
   if (loading) return <Loading />;
   if (error) return <ErrorAlert text={error} />;
@@ -95,13 +93,8 @@ const EditBlog = () => {
             placeholder="New blog title here..."
             className="h-16 text-4xl font-bold focus-visible:outline-none outline-none border-none"
           />
-          <ReactQuill
-            theme="snow"
-            value={content}
-            onChange={handleContentChange}
-            className="mt-10"
-            placeholder="your content here ..."
-          />
+
+          <RichTextEditor content={content} setContent={setContent}/>
         </div>
       </form>
     </div>

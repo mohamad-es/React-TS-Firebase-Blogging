@@ -24,6 +24,16 @@ body {
   color:#000000
 }
 
+/* Add this to your global CSS file */
+pre{
+  background-color: #2d2d2d !important; /* Dark background */
+  color: #f8f8f2 !important; /* Light text color */
+  padding: 16px;
+  border-radius: 4px;
+  display: block;
+  overflow-x: auto;
+}
+
 @layer base {
   input {
     @apply input outline outline-1 outline-gray-400;
@@ -34,7 +44,7 @@ body {
   }
 
   h1{
-    @apply text-2xl font-bold c-black
+    @apply text-5xl font-bold c-black
   }
 
   h2 {

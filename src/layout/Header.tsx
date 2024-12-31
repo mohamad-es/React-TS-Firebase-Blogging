@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { logOut } from "src/hooks/useAuth";
 import { toastInstance } from "src/utils/Toast";
 import {
+  ArrowDown01Icon,
   Logout01Icon,
   PencilEdit02Icon,
   UserCircle02Icon,
@@ -43,23 +44,24 @@ const Header = () => {
         </div>
         <div className="flex gap-2">
           {loading ? (
-            <div className="loading loading-infinity" />
+            <div className="loading loading-bars" />
           ) : user ? (
             <div className="flex gap-4 items-center">
               <Link
                 to="/write"
-                className="flex items-center gap-2 border btn btn-outline"
+                className="flex items-center gap-2 me-10 "
               >
                 {layout_data.header.write}
                 <PencilEdit02Icon size={20} />
               </Link>
 
-              <div className="dropdown dropdown-hover">
+              <div className="dropdown">
                 <div
                   tabIndex={0}
-                  className="btn font-light tracking-wide bg-white hover:bg-gray-200 border-none shadow-none h-9 min-h-5 m-1"
+                  className="btn font-light tracking-wide bg-gray-900 hover:bg-gray-800 text-white !rounded-lg border-none shadow-none h-9 min-h-5 m-1"
                 >
                   {auth.currentUser?.email}
+                  <ArrowDown01Icon/>
                 </div>
                 <ul
                   tabIndex={0}

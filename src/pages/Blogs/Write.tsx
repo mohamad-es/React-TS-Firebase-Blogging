@@ -4,9 +4,9 @@ import { auth, db } from "src/config/firebaseConfig";
 import { useNavigate } from "react-router";
 import { toastInstance } from "src/utils/Toast";
 import { Fragment, useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import styles
+import "react-quill/dist/quill.snow.css"; 
 import { CheckmarkCircle02Icon } from "hugeicons-react";
+import RichTextEditor from "src/components/RichTextEditor";
 
 const WriteBlog = () => {
   const [content, setContent] = useState("");
@@ -42,11 +42,6 @@ const WriteBlog = () => {
     }
   };
 
-  const handleContentChange = (value: string) => {
-    setContent(value);
-  };
-
-
   return (
     <div>
       <form onSubmit={handleSubmit(createBlog)} className="w-full">
@@ -69,14 +64,8 @@ const WriteBlog = () => {
             placeholder="New blog title here..."
             className="h-16 text-4xl font-bold focus-visible:outline-none outline-none border-none"
           />
-          <ReactQuill
-            theme="snow"
-            value={content}
-            onChange={handleContentChange}
-            className="mt-10"
-            placeholder="your content here ..."
-          />
-         
+
+          <RichTextEditor content={content} setContent={setContent}/>
         </div>
       </form>
     </div>
