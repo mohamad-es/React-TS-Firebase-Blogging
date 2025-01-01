@@ -1,15 +1,15 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import { auth, db } from "src/config/firebaseConfig";
 import { Link, useParams, useNavigate } from "react-router";
 import { TBlog } from "src/types/blog";
 import { getSingleBlog } from "src/services/blogServices";
 import { deleteDoc, doc } from "firebase/firestore";
 import { toastInstance } from "src/utils/Toast";
-import { RenderHtml } from "src/components/RenderHtml";
 import Loading from "src/components/global/Loading";
 import ErrorAlert from "src/components/global/ErrorAlert";
 import { convertFirebaseTimestampToDate } from "src/utils/ConvertTime";
 import Preview from "src/components/Preview";
+import { Delete01Icon,PencilEdit01Icon } from "hugeicons-react";
 
 const ReadBlog = () => {
   const params = useParams();
@@ -97,10 +97,11 @@ const ReadBlog = () => {
               <div className="mb-4 font-semibold text-[13px]">Manage your blog</div>
               <div className="flex justify-end mb-5 max-w-min overflow-hidden rounded-xl border h-10">
                 <Link
-                  className="h-full flex w-24 justify-center items-center transition-all hover:bg-blue-700 hover:text-white"
+                  className="h-full text-sm gap-2 flex w-24 justify-center items-center transition-all hover:bg-blue-700 hover:text-white"
                   to={"edit"}
                 >
                   Edit
+                  <PencilEdit01Icon size={16} />
                 </Link>
                 <button
                   className="flex w-24 h-full items-center transition-all hover:bg-red-600 hover:text-white justify-center"
@@ -109,7 +110,10 @@ const ReadBlog = () => {
                   {btnLoading ? (
                     <div className="loading loading-infinity" />
                   ) : (
-                    <Fragment>Delete</Fragment>
+                    <div className="flex items-center text-sm gap-2">
+                      Delete
+                      <Delete01Icon size={16} />
+                    </div>
                   )}
                 </button>
               </div>

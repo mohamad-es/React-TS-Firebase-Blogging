@@ -1,4 +1,4 @@
-import React, { useMemo, useRef} from "react";
+import React, { RefObject, useMemo } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
 import hljs from "highlight.js";
@@ -7,11 +7,17 @@ import Preview from "./Preview";
 
 type Props = {
   content: string;
+  title: string;
   setContent: any;
+  modalsRef: RefObject<HTMLDialogElement>;
 };
 
-const RichTextEditor: React.FC<Props> = ({ content, setContent }) => {
-  const modalsRef = useRef<HTMLDialogElement | null>(null);
+const RichTextEditor: React.FC<Props> = ({
+  content,
+  title,
+  setContent,
+  modalsRef,
+}) => {
   // Configure Quill modules
   const modules = useMemo(
     () => ({
@@ -52,18 +58,18 @@ const RichTextEditor: React.FC<Props> = ({ content, setContent }) => {
         onChange={setContent}
         modules={modules}
         formats={formats}
+        placeholder="Write blog content here ..."
+        style={{
+          minHeight:'200px'
+        }}
       />
 
-      {/* Preview Section */}
-      {/* Open the modal using document.getElementById('ID').showModal() method */}
-      <button type="button" onClick={()=> modalsRef.current?.showModal()} className="btn">Preview</button>
       <dialog ref={modalsRef} className="modal w-screen">
         <div className="modal-box w-screen max-w-screen-xl">
-          <h3 className="font-bold text-lg">Hello!</h3>
-      <Preview content={content} />
+          <h3 className="font-bold text-3xl mb-10">{title}</h3>
+          <Preview content={content} />
           <div className="modal-action">
             <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
               <button className="btn">Close</button>
             </form>
           </div>

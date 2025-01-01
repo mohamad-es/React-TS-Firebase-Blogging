@@ -1,7 +1,7 @@
 import { doc, updateDoc } from "firebase/firestore";
-import { CheckmarkCircle02Icon } from "hugeicons-react";
-import { Fragment, useEffect, useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { CheckmarkCircle02Icon, EyeIcon } from "hugeicons-react";
+import { ChangeEvent, Fragment, useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import ErrorAlert from "src/components/global/ErrorAlert";
 import Loading from "src/components/global/Loading";
@@ -15,12 +15,15 @@ const EditBlog = () => {
   const params = useParams();
 
   const navigate = useNavigate();
-  const { register, handleSubmit,setValue } = useForm();
+  const { handleSubmit } = useForm();
 
+  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [blog, setBlog] = useState<TBlog | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
+
+  const modalsRef = useRef<HTMLDialogElement | null>(null);
 
   useEffect(() => {
     getSingleBlog({
@@ -32,15 +35,18 @@ const EditBlog = () => {
   }, []);
 
   useEffect(() => {
+    console.log(blog);
+
     setContent(blog?.content!);
+    setTitle(blog?.title!);
   }, [blog]);
 
-  const updateBlog = async (values: FieldValues) => {
+  const updateBlog = async () => {
     setLoading(true);
     try {
       const blogRef = doc(db, "blogs", params.blogid!);
       await updateDoc(blogRef, {
-        title: values.title,
+        title,
         content,
         user_id: auth.currentUser?.uid,
         user_email: auth.currentUser?.email,
@@ -51,7 +57,7 @@ const EditBlog = () => {
         text: "Blog successfully updated",
         type: "success",
       });
-      navigate(`/${auth.currentUser?.uid}`);
+      navigate(`/blog/${blog?.id}`);
     } catch (error) {
       setLoading(false);
       error instanceof Error
@@ -63,38 +69,50 @@ const EditBlog = () => {
     }
   };
 
-  
-
   if (loading) return <Loading />;
   if (error) return <ErrorAlert text={error} />;
-
-  setValue("title", blog?.title);
-  
 
   return (
     <div>
       <form onSubmit={handleSubmit(updateBlog)} className="w-full">
-        <div className="flex justify-end mb-5">
-          <button className="btn btn-primary font-medium px-3">
+        <div className="flex gap-2 justify-end mb-5">
+          <button
+            type="button"
+            onClick={() => modalsRef.current?.showModal()}
+            className="flex items-center gap-2 border rounded-xl px-3 py-2 text-sm transition-all hover:bg-blue-600 hover:text-white"
+          >
+            Preview
+            <EyeIcon size={18} />
+          </button>
+
+          <button className="flex items-center gap-2 border rounded-xl px-3 py-2 text-sm transition-all hover:bg-green-600 hover:text-white">
             {loading ? (
               <div className="loading loading-infinity" />
             ) : (
               <Fragment>
                 Publish
-                <CheckmarkCircle02Icon size={20} />
+                <CheckmarkCircle02Icon size={16} />
               </Fragment>
             )}
           </button>
         </div>
         <div className="flex flex-col">
           <input
-            {...register("title", { required: true })}
+            onInput={(e: ChangeEvent<HTMLInputElement>) =>
+              setTitle(e.currentTarget.value)
+            }
             type="text"
-            placeholder="New blog title here..."
-            className="h-16 text-4xl font-bold focus-visible:outline-none outline-none border-none"
+            placeholder="Write blog title here ..."
+            className="h-16 text-4xl font-bold focus-visible:outline-none outline-none border-none italic"
+            value={title}
           />
 
-          <RichTextEditor content={content} setContent={setContent}/>
+          <RichTextEditor
+            modalsRef={modalsRef}
+            title={title}
+            content={content}
+            setContent={setContent}
+          />
         </div>
       </form>
     </div>

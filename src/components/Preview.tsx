@@ -12,7 +12,7 @@ const Preview: React.FC<{ content: string }> = ({ content }) => {
     }
   }, [content]);
 
-  return <div ref={previewRef} dangerouslySetInnerHTML={{ __html: content }} />;
+  return <div className="whitespace-pre-wrap leading-7" ref={previewRef} dangerouslySetInnerHTML={{ __html: content }} />;
 };
 
 export default Preview;

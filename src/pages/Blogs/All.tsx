@@ -49,7 +49,7 @@ const AllBlogs = () => {
 
   return (
     <div className="min-h-96">
-      <div className="flex justify-between sticky top-0 py-3 items-center bg-white z-10">
+      <div className="flex justify-between sticky top-[73px] py-3 items-center bg-white z-10">
         <h2>{blogs_data.all.title}</h2>
 
         <div className="relative">
@@ -75,8 +75,8 @@ const AllBlogs = () => {
       </div>
 
       {!searchQuery && blogs.length % blogsPerPage === 0 && (
-        <div className="text-center mt-8">
-          <button onClick={loadMore} className="btn btn-primary">
+        <div className="text-center mt-10">
+          <button onClick={loadMore} className="border rounded-xl py-2 px-3 transition-all hover:bg-blue-700 hover:text-white text-sm">
             Load More
           </button>
         </div>
