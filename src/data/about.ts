@@ -3,7 +3,7 @@ import { TAboutData } from "src/types/about";
 export const about_data: TAboutData = {
   title: "About My Blogging Platform",
   description:
-    "Welcome to my modern and dynamic Blog Management Platform a feature rich application designed to simplify the process of creating, managing, and sharing blogs. Built with cutting-edge technologies, our platform ensures seamless performance, intuitive design, and robust security.",
+    "Welcome to my easy-to-use Blog Management Platform! This app makes it simple to create, manage, and share blogs. With modern technology, it offers great performance, a user-friendly design, and strong security.",
 
   list: [
     // {
@@ -18,13 +18,7 @@ export const about_data: TAboutData = {
     // },
     {
       title: "Technologies Used",
-      list: [
-        "React: A powerful JavaScript library for building responsive user interfaces.",
-        "TypeScript: Ensures type safety and scalable development.",
-        "Firebase: Provides featured database and authentication services.",
-        "Axios: Streamlined HTTP client for managing API requests.",
-        "Tailwind CSS: A utility-first CSS framework for responsive and customizable designs.",
-      ],
+      list: ["React", "TypeScript", "Firebase", "Axios", "Tailwind CSS"],
     },
   ],
   about: {

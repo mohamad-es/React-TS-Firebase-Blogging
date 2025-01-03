@@ -1,25 +1,29 @@
 import { about_data } from "src/data/about";
-import person from 'src/assets/Mohammad.png'
-import { Github01Icon, Link01Icon } from "hugeicons-react";
+import person from "src/assets/Mohammad.png";
+import { Github01Icon } from "hugeicons-react";
 
 const About = () => {
   return (
-    <div>
-      <h1 className="mb-3">{about_data.title}</h1>
+    <div className="text-center">
+      <h1 className="mb-8">{about_data.title}</h1>
       <p>{about_data.description}</p>
 
       <div>
         {about_data.list.map((item) => (
-          <div className="mt-12">
-            <h2 className="mb-5">{item.title}</h2>
-            <ul className="list-inside list-disc">
+          <div className="mt-16 text-center">
+            <h2 className="mb-8">{item.title}</h2>
+            <ul className="flex gap-6 justify-center">
               {item.list.map((value) => (
-                <li className="py-1">{value}</li>
+                <li className="flex flex-col items-center gap-3">
+                  {/* <div>{value.icon}</div> */}
+                  <p className="text-sm">{value}</p>
+                </li>
               ))}
             </ul>
           </div>
         ))}
       </div>
+
       <div className="flex rounded-full h-60 w-60 overflow-hidden mx-auto">
         <img
           src={person}

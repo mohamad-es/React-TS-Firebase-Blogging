@@ -85,7 +85,7 @@ const Profile = () => {
         <div className="c-gray text-2xl font-semibold">{user?.email}</div>
       </div>
 
-      <div className="flex justify-between sticky top-[73px] py-3 items-center bg-white z-10">
+      <div className="flex justify-between sticky top-[69px] py-3 items-center bg-white z-10">
         <h2>User BLogs</h2>
         <div className="relative">
           <input

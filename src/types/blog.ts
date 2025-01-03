@@ -14,6 +14,7 @@ export type TBlog = {
   title: string;
   content: string;
   user_id: string;
+  img:string;
   user_email: string;
   create_time: Timestamp;
   update_time: Timestamp;

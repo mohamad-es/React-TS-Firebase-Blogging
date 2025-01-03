@@ -12,6 +12,24 @@ body {
   font-family: "Inter";
 }
 
+.button:focus,
+.button:focus-visible,
+.button:focus-within,
+.textarea:focus,
+.textarea:focus-visible,
+.textarea:focus-within,
+.input:focus,
+.input:focus-visible,
+.input:focus-within {
+  box-shadow: none;
+  border-color: none;
+  outline-style: none;
+  outline-width: none;
+  outline-offset: none;
+  outline-color: none;
+  outline: none;
+}
+
 .c-gray {
   color: #4b5563;
 }

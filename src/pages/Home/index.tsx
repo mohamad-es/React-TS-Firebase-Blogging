@@ -6,9 +6,9 @@ import Loading from "src/components/global/Loading";
 import { home_data } from "src/data/home";
 import ErrorAlert from "src/components/global/ErrorAlert";
 import NotFound from "src/components/global/NotFound";
-import BlogCard from "src/components/blog/BlogCard";
 import { Image01Icon } from "hugeicons-react";
-import AllBlogs from "./Blogs/All";
+import AllBlogs from "../Blogs/All";
+import FeaturedBlog from "./_components/FeaturedBlog";
 
 const Home = () => {
   const [blogs, setBlogs] = useState<TBlog[]>([]);
@@ -33,21 +33,7 @@ const Home = () => {
     <div>
       <div className="flex gap-16 mb-20">
         <div className="flex-1">
-          <h3>Featured Post</h3>
-          <h1 className="mt-6 mb-14">The Future of Web Development in 2025</h1>
-          <p>
-            Explore the latest trends and technologies shaping the future of web
-            development. From AI-powered tools to new frameworks.
-          </p>
-          <div className="flex items-center gap-4 mt-12">
-            <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-xl">
-              A
-            </div>
-            <div>
-              <div>Mohammad Esmaeilpour</div>
-              <div>2 jun 2025</div>
-            </div>
-          </div>
+          <FeaturedBlog />
         </div>
         <div className="flex-1 ">
           <div className="rounded-2xl bg-gray-100 flex items-center justify-center h-full">

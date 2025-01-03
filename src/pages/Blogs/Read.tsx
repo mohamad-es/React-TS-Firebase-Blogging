@@ -9,7 +9,7 @@ import Loading from "src/components/global/Loading";
 import ErrorAlert from "src/components/global/ErrorAlert";
 import { convertFirebaseTimestampToDate } from "src/utils/ConvertTime";
 import Preview from "src/components/Preview";
-import { Delete01Icon,PencilEdit01Icon } from "hugeicons-react";
+import { Delete01Icon, PencilEdit01Icon } from "hugeicons-react";
 
 const ReadBlog = () => {
   const params = useParams();
@@ -58,12 +58,15 @@ const ReadBlog = () => {
 
   return (
     <div className="grid grid-cols-12 relative gap-10">
-      <div className="col-span-8 bg-gray-50 p-10 rounded-xl">
-        <h1 className="text-3xl font-extrabold mb-10">{blog?.title}</h1>
-        <Preview content={blog?.content} />
+      <div className="col-span-9 bg-gray-50 rounded-xl overflow-hidden">
+        <img src={blog.img} alt="" className="w-full" />
+        <div className="p-10">
+          <h1 className="text-3xl font-extrabold mb-10">{blog?.title}</h1>
+          <Preview content={blog?.content} />
+        </div>
       </div>
 
-      <div className="col-span-4 flex">
+      <div className="col-span-3 flex">
         <div className="fixed">
           <div>
             <div className="font-semibold text-[13px]">Writter</div>
@@ -94,7 +97,9 @@ const ReadBlog = () => {
 
           {blog?.user_id === auth.currentUser?.uid && (
             <div className="mt-10">
-              <div className="mb-4 font-semibold text-[13px]">Manage your blog</div>
+              <div className="mb-4 font-semibold text-[13px]">
+                Manage your blog
+              </div>
               <div className="flex justify-end mb-5 max-w-min overflow-hidden rounded-xl border h-10">
                 <Link
                   className="h-full text-sm gap-2 flex w-24 justify-center items-center transition-all hover:bg-blue-700 hover:text-white"

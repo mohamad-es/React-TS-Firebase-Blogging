@@ -49,7 +49,7 @@ const AllBlogs = () => {
 
   return (
     <div className="min-h-96">
-      <div className="flex justify-between sticky top-[73px] py-3 items-center bg-white z-10">
+      <div className="flex justify-between sticky top-[69px] py-3 items-center bg-white z-10">
         <h2>{blogs_data.all.title}</h2>
 
         <div className="relative">
