@@ -34,6 +34,7 @@ const AuthForm = ({ auth_data, submitFunction, loading }: Props) => {
                 })}
                 className="placeholder:text-sm h-10"
                 placeholder={form.placeholder}
+                autoComplete="off"
               />
               <div className="text-red-500 text-sm mt-2">
                 {errors[form.name]?.message as string}

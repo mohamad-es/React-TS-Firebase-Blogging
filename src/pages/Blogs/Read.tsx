@@ -59,7 +59,7 @@ const ReadBlog = () => {
   return (
     <div className="grid grid-cols-12 relative gap-10">
       <div className="col-span-9 bg-gray-50 rounded-xl overflow-hidden">
-        <img src={blog.img} alt="" className="w-full" />
+        <img src={blog.img} alt="" className="w-full h-64 object-contain" />
         <div className="p-10">
           <h1 className="text-3xl font-extrabold mb-10">{blog?.title}</h1>
           <Preview content={blog?.content} />
@@ -69,26 +69,26 @@ const ReadBlog = () => {
       <div className="col-span-3 flex">
         <div className="fixed">
           <div>
-            <div className="font-semibold text-[13px]">Writter</div>
+            <div className="font-semibold text-sm">Writter</div>
             <Link
               to={`/${blog?.user_id}`}
-              className="c-gray hover:text-blue-800 transition-all text-[13px]"
+              className="c-gray hover:text-blue-700 transition-all"
             >
               {blog?.user_email}
             </Link>
 
-            <div className="font-semibold text-[13px] mb-2 mt-7">
+            <div className="font-semibold text-sm mb-2 mt-7">
               Created Time
             </div>
-            <div className="text-xs">
+            <div className="text-gray-500 text-[15px]">
               {blog?.create_time &&
                 convertFirebaseTimestampToDate(blog?.create_time)}
             </div>
 
-            <div className="font-semibold text-[13px] mb-2 mt-7">
+            <div className="font-semibold text-sm mb-2 mt-7">
               Update Time
             </div>
-            <div className="text-xs">
+            <div className="text-gray-500 text-[15px]">
               {blog?.update_time
                 ? convertFirebaseTimestampToDate(blog?.update_time)
                 : "Still no update on this blog !"}
@@ -97,7 +97,7 @@ const ReadBlog = () => {
 
           {blog?.user_id === auth.currentUser?.uid && (
             <div className="mt-10">
-              <div className="mb-4 font-semibold text-[13px]">
+              <div className="mb-4 font-semibold text-sm">
                 Manage your blog
               </div>
               <div className="flex justify-end mb-5 max-w-min overflow-hidden rounded-xl border h-10">

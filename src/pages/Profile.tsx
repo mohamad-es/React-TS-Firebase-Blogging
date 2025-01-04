@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import { TBlog } from "src/types/blog";
-import {
-  getBlogListByQuery,
-  searchBlogs,
-} from "src/services/blogServices";
+import { getBlogListByQuery, searchBlogs } from "src/services/blogServices";
 import Loading from "src/components/global/Loading";
 import ErrorAlert from "src/components/global/ErrorAlert";
 import BlogCard from "src/components/blog/BlogCard";
 import { blogs_data } from "src/data/blog";
 import NotFound from "src/components/global/NotFound";
-import { where } from "firebase/firestore";
+import { limit, orderBy, where } from "firebase/firestore";
 import { useParams } from "react-router";
 import { getSingleUser } from "src/services/userServices";
 import { TUser } from "src/types/user";
@@ -23,6 +20,7 @@ const Profile = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredBlogs, setFilteredBlogs] = useState<TBlog[]>([]);
   const [searchLoading, setSearchLoading] = useState<boolean>(false); // Add loading state for search
+  const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(false); // Add loading state for load more button
 
   const [user, setUser] = useState<TUser | null>(null);
   const [userLoading, setUserLoading] = useState<boolean>(true);
@@ -32,13 +30,20 @@ const Profile = () => {
   const blogsPerPage = 6;
 
   useEffect(() => {
+    setLoadMoreLoading(true); // Start load more loading
     getBlogListByQuery({
-      filterQuery: [where("user_id", "==", params.uid)],
+      filterQuery: [orderBy("create_time", "desc"),limit(6),where("user_id", "==", params.uid)],
       setBlogs,
       setError,
       setLoading,
-    });
+      blogsPerPage,
+      page,
+    }).finally(() => setLoadMoreLoading(false));;
+  
+  }, [page])
+  
 
+  useEffect(() => {
     getSingleUser({
       setError: setUserError,
       setLoading: setUserLoading,
@@ -110,9 +115,15 @@ const Profile = () => {
       </div>
 
       {!searchQuery && blogs.length % blogsPerPage === 0 && (
-        <div className="text-center mt-8">
-          <button onClick={loadMore} className="btn btn-primary">
-            Load More
+        <div className="text-center mt-10">
+          <button
+            onClick={loadMore}
+            disabled={loadMoreLoading} // Disable button when loading
+            className={`border rounded-xl py-2 px-3 transition-all hover:bg-blue-700 hover:text-white text-sm ${
+              loadMoreLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            {loadMoreLoading ? "Loading..." : "Load More"}
           </button>
         </div>
       )}

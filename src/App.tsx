@@ -9,7 +9,6 @@ import WriteBlog from "./pages/Blogs/Write";
 import ReadBlog from "./pages/Blogs/Read";
 import Profile from "./pages/Profile";
 import Home from "./pages/Home";
-import AllBlogs from "./pages/Blogs/All";
 
 
 function App() {

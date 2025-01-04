@@ -86,70 +86,112 @@ const WriteBlog = () => {
   return (
     <div>
       <form onSubmit={handleSubmit(createBlog)} className="w-full">
-        <div className="flex gap-2 justify-end mb-5">
-          <button
-            type="button"
-            onClick={() => modalsRef.current?.showModal()}
-            className="flex items-center gap-2 border rounded-xl px-3 py-2 text-sm transition-all hover:bg-blue-600 hover:text-white"
-          >
-            Preview
-            <EyeIcon size={18} />
-          </button>
+        <div className="grid grid-cols-12 gap-10 items-start">
+          <div className="col-span-9 border bc-gray rounded-xl p-10">
+            {/* Image Upload Input */}
+            <div>
+              {image ? (
+                <div>
+                  <div className="flex gap-5">
+                    <div className="relative w-40 h-10">
+                      <label
+                        htmlFor="upload-banner"
+                        className="btn btn-outline absolute start-0 top-0 w-full h-full z-10"
+                      >
+                        Change banner
+                      </label>
 
-          <button
-            type="submit"
-            className="flex items-center gap-2 border rounded-xl px-3 py-2 text-sm transition-all hover:bg-green-600 hover:text-white"
-          >
-            {loading ? (
-              <div className="loading loading-infinity" />
-            ) : (
-              <Fragment>
-                Publish
-                <CheckmarkCircle02Icon size={16} />
-              </Fragment>
-            )}
-          </button>
-        </div>
-        <div className="flex flex-col gap-10">
-          <input
-            onInput={(e: ChangeEvent<HTMLInputElement>) =>
-              setTitle(e.currentTarget.value)
-            }
-            type="text"
-            placeholder="Write blog title here ..."
-            className="h-16 text-4xl font-bold focus-visible:outline-none outline-none border-none italic"
-            value={title}
-          />
+                      <input
+                        id="upload-banner"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="h-full w-full opacity-0 absolute start-0 top-0"
+                      />
+                    </div>
+                    <button
+                      className="text-red-500 font-medium"
+                      onClick={() => setImage(null)}
+                    >
+                      Remove banner
+                    </button>
+                  </div>
+                  <img
+                    src={image}
+                    alt="Preview"
+                    className="w-64 h-28 object-contain rounded-lg mt-5 border"
+                  />
+                </div>
+              ) : (
+                <div className="relative h-16 w-64">
+                  <label
+                    htmlFor="upload-banner"
+                    className="btn btn-outline absolute start-0 top-0 w-full h-full z-10"
+                  >
+                    Add banner for your blog
+                  </label>
 
-          {/* Image Upload Input */}
-          <div>
-            <label className="block mb-2 text-sm font-medium">
-              Upload Blog Image (optional, max 100KB):
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-            />
-            {image && (
-              <div className="mt-4">
-                <h3 className="text-sm font-medium mb-2">Image Preview:</h3>
-                <img
-                  src={image}
-                  alt="Preview"
-                  className="max-w-full h-auto rounded-lg"
-                />
-              </div>
-            )}
+                  <input
+                    id="upload-banner"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="h-full opacity-0 absolute start-0 top-0"
+                  />
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-10">
+              <input
+                onInput={(e: ChangeEvent<HTMLInputElement>) =>
+                  setTitle(e.currentTarget.value)
+                }
+                type="text"
+                placeholder="Write blog title here ..."
+                className="h-16 text-4xl bg-transparent font-bold focus-visible:outline-none outline-none border-none italic"
+                value={title}
+              />
+
+              <RichTextEditor
+                modalsRef={modalsRef}
+                setContent={setContent}
+                content={content}
+                title={title}
+              />
+            </div>
           </div>
+          <div className="col-span-3 sticky top-28 left-0">
+            <div className="flex gap-2 mb-5">
+              <button
+                type="button"
+                onClick={() => modalsRef.current?.showModal()}
+                className="flex items-center gap-2 border rounded-xl px-3 py-2 text-sm transition-all hover:bg-blue-600 hover:text-white"
+              >
+                Preview
+                <EyeIcon size={18} />
+              </button>
 
-          <RichTextEditor
-            modalsRef={modalsRef}
-            setContent={setContent}
-            content={content}
-            title={title}
-          />
+              <button
+                type="submit"
+                className="flex items-center gap-2 border rounded-xl px-3 py-2 text-sm transition-all hover:bg-green-600 hover:text-white"
+              >
+                {loading ? (
+                  <div className="loading loading-infinity" />
+                ) : (
+                  <Fragment>
+                    Publish
+                    <CheckmarkCircle02Icon size={16} />
+                  </Fragment>
+                )}
+              </button>
+            </div>
+            <ul className="list-disc mt-10">
+              <li className="text-sm">
+                Upload Blog Image (optional, max 100KB)
+              </li>
+            </ul>
+          </div>
         </div>
       </form>
     </div>

@@ -65,15 +65,12 @@ pre {
   padding: 10px;
   margin-bottom: 10px;
   position: sticky;
-  top: 73px;
+  top: 68.8px;
   z-index: 10;
-  padding: 20px !important;
-  background: white;
 }
 
-
 .ql-editor::before {
-  font-size: 32px !important
+  font-size: 22px !important
 }
 
 .ql-editor>* {

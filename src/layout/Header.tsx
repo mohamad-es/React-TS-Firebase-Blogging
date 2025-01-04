@@ -7,14 +7,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { logOut } from "src/hooks/useAuth";
 import { toastInstance } from "src/utils/Toast";
 import {
-  ArrowDown01Icon,
-  Logout01Icon,
   Logout02Icon,
-  Logout03Icon,
   PencilEdit02Icon,
-  UserCircle02Icon,
   UserCircleIcon,
-  UserIcon,
 } from "hugeicons-react";
 import Dropdown from "src/components/Dropdown";
 
@@ -27,9 +22,10 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleLogOut = () => {
+    console.log("Logging out..."); // Debugging statement
     logOut();
     toastInstance({
-      text: "User Successfully Loged out",
+      text: "User Successfully Logged out",
       type: "success",
     });
     navigate("/login");
@@ -64,12 +60,14 @@ const Header = () => {
                 summary={auth?.currentUser?.email!}
               >
                 {layout_data.header.profile_list.map((item) => (
-                  <li>
+                  <li key={item}>
                     <Link
                       to={item === "Profile" ? `${user.uid}` : "/login"}
                       onClick={() => {
                         dropdownRef.current?.removeAttribute("open");
-                        item === "Logout" && handleLogOut;
+                        if (item === "Logout") {
+                          handleLogOut(); // Correctly invoke the function
+                        }
                       }}
                       className="flex justify-between items-center gap-1 "
                     >

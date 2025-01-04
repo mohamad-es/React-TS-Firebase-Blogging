@@ -53,14 +53,13 @@ const RichTextEditor: React.FC<Props> = ({
     <div>
       {/* Rich Text Editor */}
       <ReactQuill
-        theme="snow"
         value={content}
         onChange={setContent}
         modules={modules}
         formats={formats}
         placeholder="Write blog content here ..."
         style={{
-          minHeight:'200px'
+          minHeight:'200px',
         }}
       />
 
