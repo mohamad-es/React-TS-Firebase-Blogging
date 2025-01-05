@@ -21,16 +21,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Debug environment variables
-        run: |
-          echo "VITE_FIREBASE_API_KEY: $VITE_FIREBASE_API_KEY"
-          echo "VITE_FIREBASE_AUTH_DOMAIN: $VITE_FIREBASE_AUTH_DOMAIN"
-          echo "VITE_FIREBASE_PROJECT_ID: $VITE_FIREBASE_PROJECT_ID"
-          echo "VITE_MESSAGING_SENDER_ID: $VITE_MESSAGING_SENDER_ID"
-          echo "VITE_APP_ID: $VITE_APP_ID"
-          echo "VITE_MEASUREMENT_ID: $VITE_MEASUREMENT_ID"
-          echo "VITE_STORAGE_BUCKET: $VITE_STORAGE_BUCKET"
-
       - name: Build the app
         env:
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
