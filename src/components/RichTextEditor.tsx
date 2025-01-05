@@ -1,9 +1,9 @@
 import React, { RefObject, useMemo } from "react";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
 import hljs from "highlight.js";
 import "highlight.js/styles/monokai-sublime.min.css"; // Import Highlight.js theme
 import Preview from "./Preview";
+import ReactQuill from "react-quill";
 
 type Props = {
   content: string;
