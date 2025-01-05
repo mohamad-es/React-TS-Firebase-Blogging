@@ -9,7 +9,6 @@ import WriteBlog from "./pages/Blogs/Write";
 import ReadBlog from "./pages/Blogs/Read";
 import Profile from "./pages/Profile";
 import Home from "./pages/Home";
-import AllBlogs from "./pages/Blogs/All";
 
 
 function App() {
@@ -18,7 +17,6 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="/blogs" element={<AllBlogs />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

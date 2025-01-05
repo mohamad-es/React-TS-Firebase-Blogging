@@ -1,14 +1,15 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import { auth, db } from "src/config/firebaseConfig";
 import { Link, useParams, useNavigate } from "react-router";
 import { TBlog } from "src/types/blog";
 import { getSingleBlog } from "src/services/blogServices";
 import { deleteDoc, doc } from "firebase/firestore";
 import { toastInstance } from "src/utils/Toast";
-import { RenderHtml } from "src/components/RenderHtml";
-import { Delete01Icon, PencilEdit01Icon, UserIcon } from "hugeicons-react";
 import Loading from "src/components/global/Loading";
 import ErrorAlert from "src/components/global/ErrorAlert";
+import { convertFirebaseTimestampToDate } from "src/utils/ConvertTime";
+import Preview from "src/components/Preview";
+import { Delete01Icon, PencilEdit01Icon } from "hugeicons-react";
 
 const ReadBlog = () => {
   const params = useParams();
@@ -53,41 +54,78 @@ const ReadBlog = () => {
 
   if (loading) return <Loading />;
   if (error) return <ErrorAlert text={error} />;
+  if (!blog) return <div>error not found</div>;
 
   return (
-    <div>
-      <Link to={`/${blog?.user_id}`} className="flex items-center gap-2 mb-10">
-        <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-semibold">
-          {blog?.user_email.substring(0, 1).toUpperCase()}
+    <div className="grid grid-cols-12 relative gap-10">
+      <div className="col-span-9 bg-gray-50 rounded-xl overflow-hidden">
+        <img src={blog.img} alt="" className="w-full h-64 object-contain" />
+        <div className="p-10">
+          <h1 className="text-3xl font-extrabold mb-10">{blog?.title}</h1>
+          <Preview content={blog?.content} />
         </div>
-        <div className="c-gray">{blog?.user_email}</div>
-      </Link>
-      {/* {blog?.user_id === auth.currentUser?.uid && (
-        <div className="flex justify-end gap-3 mb-5">
-          <Link to={"edit"} className="btn btn-primary">
-            Edit
-            <PencilEdit01Icon size={20} color="white" />
-          </Link>
-          <button className="btn btn-error w-28" onClick={deleteBlog}>
-            {btnLoading ? (
-              <div className="loading loading-infinity" />
-            ) : (
-              <Fragment>
-                Delete
-                <Delete01Icon size={20} />
-              </Fragment>
-            )}
-          </button>
+      </div>
+
+      <div className="col-span-3 flex">
+        <div className="fixed">
+          <div>
+            <div className="font-semibold text-sm">Writter</div>
+            <Link
+              to={`/${blog?.user_id}`}
+              className="c-gray hover:text-blue-700 transition-all"
+            >
+              {blog?.user_email}
+            </Link>
+
+            <div className="font-semibold text-sm mb-2 mt-7">
+              Created Time
+            </div>
+            <div className="text-gray-500 text-[15px]">
+              {blog?.create_time &&
+                convertFirebaseTimestampToDate(blog?.create_time)}
+            </div>
+
+            <div className="font-semibold text-sm mb-2 mt-7">
+              Update Time
+            </div>
+            <div className="text-gray-500 text-[15px]">
+              {blog?.update_time
+                ? convertFirebaseTimestampToDate(blog?.update_time)
+                : "Still no update on this blog !"}
+            </div>
+          </div>
+
+          {blog?.user_id === auth.currentUser?.uid && (
+            <div className="mt-10">
+              <div className="mb-4 font-semibold text-sm">
+                Manage your blog
+              </div>
+              <div className="flex justify-end mb-5 max-w-min overflow-hidden rounded-xl border h-10">
+                <Link
+                  className="h-full text-sm gap-2 flex w-24 justify-center items-center transition-all hover:bg-blue-700 hover:text-white"
+                  to={"edit"}
+                >
+                  Edit
+                  <PencilEdit01Icon size={16} />
+                </Link>
+                <button
+                  className="flex w-24 h-full items-center transition-all hover:bg-red-600 hover:text-white justify-center"
+                  onClick={deleteBlog}
+                >
+                  {btnLoading ? (
+                    <div className="loading loading-infinity" />
+                  ) : (
+                    <div className="flex items-center text-sm gap-2">
+                      Delete
+                      <Delete01Icon size={16} />
+                    </div>
+                  )}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-      )} */}
-      {blog ? (
-        <>
-          <h1 className="text-3xl font-extrabold mb-10">{blog.title}</h1>
-          <RenderHtml htmlString={blog.content} />
-        </>
-      ) : (
-        <p>Blog not found.</p>
-      )}
+      </div>
     </div>
   );
 };

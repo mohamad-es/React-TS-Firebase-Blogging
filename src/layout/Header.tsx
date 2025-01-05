@@ -1,5 +1,5 @@
 import { onAuthStateChanged, User } from "@firebase/auth";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { auth } from "src/config/firebaseConfig";
 import Navbar from "./_components/Navbar";
 import { layout_data } from "src/data/layout";
@@ -7,21 +7,25 @@ import { Link, useNavigate } from "react-router-dom";
 import { logOut } from "src/hooks/useAuth";
 import { toastInstance } from "src/utils/Toast";
 import {
-  Logout01Icon,
+  Logout02Icon,
   PencilEdit02Icon,
-  UserCircle02Icon,
+  UserCircleIcon,
 } from "hugeicons-react";
+import Dropdown from "src/components/Dropdown";
 
 const Header = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const dropdownRef = useRef<HTMLDetailsElement | null>(null);
+
   const navigate = useNavigate();
 
   const handleLogOut = () => {
+    console.log("Logging out..."); // Debugging statement
     logOut();
     toastInstance({
-      text: "User Successfully Loged out",
+      text: "User Successfully Logged out",
       type: "success",
     });
     navigate("/login");
@@ -43,46 +47,40 @@ const Header = () => {
         </div>
         <div className="flex gap-2">
           {loading ? (
-            <div className="loading loading-infinity" />
+            <div className="loading loading-bars" />
           ) : user ? (
             <div className="flex gap-4 items-center">
-              <Link
-                to="/write"
-                className="flex items-center gap-2 border btn btn-outline"
-              >
+              <Link to="/write" className="flex items-center gap-2 me-10 ">
                 {layout_data.header.write}
                 <PencilEdit02Icon size={20} />
               </Link>
 
-              <div className="dropdown dropdown-hover">
-                <div
-                  tabIndex={0}
-                  className="btn font-light tracking-wide bg-white hover:bg-gray-200 border-none shadow-none h-9 min-h-5 m-1"
-                >
-                  {auth.currentUser?.email}
-                </div>
-                <ul
-                  tabIndex={0}
-                  className="menu dropdown-content bg-base-100 rounded-box z-40 w-52 p-2 shadow"
-                >
-                  {layout_data.header.profile_list.map((item) => (
-                    <li>
-                      <Link
-                        to={item === "Profile" ? `${user.uid}` : "/login"}
-                        onClick={() => item === "Logout" && handleLogOut}
-                        className="flex justify-between items-center gap-1"
-                      >
-                        {item}
-                        {item === "Profile" ? (
-                          <UserCircle02Icon />
-                        ) : (
-                          <Logout01Icon />
-                        )}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <Dropdown
+                dropdownRef={dropdownRef}
+                summary={auth?.currentUser?.email!}
+              >
+                {layout_data.header.profile_list.map((item) => (
+                  <li key={item}>
+                    <Link
+                      to={item === "Profile" ? `${user.uid}` : "/login"}
+                      onClick={() => {
+                        dropdownRef.current?.removeAttribute("open");
+                        if (item === "Logout") {
+                          handleLogOut(); // Correctly invoke the function
+                        }
+                      }}
+                      className="flex justify-between items-center gap-1 "
+                    >
+                      {item}
+                      {item === "Profile" ? (
+                        <UserCircleIcon size={18} />
+                      ) : (
+                        <Logout02Icon size={18} />
+                      )}
+                    </Link>
+                  </li>
+                ))}
+              </Dropdown>
             </div>
           ) : (
             <Navbar list={layout_data.header.auth} />

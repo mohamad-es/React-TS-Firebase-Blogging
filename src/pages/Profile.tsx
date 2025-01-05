@@ -1,14 +1,15 @@
-import BlogColumnCard from "src/components/blog/BlogCard";
-import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { TBlog } from "src/types/blog";
-import { where } from "firebase/firestore";
-import { getBlogListByQuery } from "src/services/blogServices";
-import { getSingleUser } from "src/services/userServices";
-import { TUser } from "src/types/user";
-import { UserCircle02Icon } from "hugeicons-react";
+import { getBlogListByQuery, searchBlogs } from "src/services/blogServices";
 import Loading from "src/components/global/Loading";
 import ErrorAlert from "src/components/global/ErrorAlert";
+import BlogCard from "src/components/blog/BlogCard";
+import { blogs_data } from "src/data/blog";
+import NotFound from "src/components/global/NotFound";
+import { limit, orderBy, where } from "firebase/firestore";
+import { useParams } from "react-router";
+import { getSingleUser } from "src/services/userServices";
+import { TUser } from "src/types/user";
 
 const Profile = () => {
   const params = useParams();
@@ -16,19 +17,33 @@ const Profile = () => {
   const [blogs, setBlogs] = useState<TBlog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filteredBlogs, setFilteredBlogs] = useState<TBlog[]>([]);
+  const [searchLoading, setSearchLoading] = useState<boolean>(false); // Add loading state for search
+  const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(false); // Add loading state for load more button
 
   const [user, setUser] = useState<TUser | null>(null);
   const [userLoading, setUserLoading] = useState<boolean>(true);
   const [userError, setUserError] = useState<string | null>(null);
 
+  const [page, setPage] = useState(1);
+  const blogsPerPage = 6;
+
   useEffect(() => {
+    setLoadMoreLoading(true); // Start load more loading
     getBlogListByQuery({
-      filterQuery: [where("user_id", "==", params.uid)],
+      filterQuery: [orderBy("create_time", "desc"),limit(6),where("user_id", "==", params.uid)],
       setBlogs,
       setError,
       setLoading,
-    });
+      blogsPerPage,
+      page,
+    }).finally(() => setLoadMoreLoading(false));;
+  
+  }, [page])
+  
 
+  useEffect(() => {
     getSingleUser({
       setError: setUserError,
       setLoading: setUserLoading,
@@ -37,38 +52,81 @@ const Profile = () => {
     });
   }, [params.uid]);
 
-  const isLoading = loading || userLoading;
-  if (isLoading) return <Loading />;
-  if (error || userError)
-    return (
-      <ErrorAlert
-        text={error || userError || "Failed to load data!"}
-      ></ErrorAlert>
-    );
+  const loadMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+  const handleSearchChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+    setSearchLoading(true);
+
+    if (query) {
+      const blogs = await searchBlogs(query);
+      setFilteredBlogs(blogs);
+    } else {
+      setFilteredBlogs([]);
+    }
+
+    setSearchLoading(false);
+  };
+
+  if (userLoading) return <Loading />;
+  if (userError) return <ErrorAlert text={userError} />;
+
+  if (loading && page === 1) return <Loading />;
+  if (error) return <ErrorAlert text={error} />;
+  if (blogs.length === 0 && !loading)
+    return <NotFound text={blogs_data.all.not_found} />;
 
   return (
-    <div>
-      <div className="flex flex-col items-center justify-center w-full gap-2 mb-20">
-        <UserCircle02Icon size={60} />
-        <h3 className="mb-5 font-semibold text-xl">{user?.email}</h3>
+    <div className="min-h-96">
+      <div className="mb-20 flex items-center gap-6">
+        <div className="w-16 h-16 rounded-full bg-gray-200 flex justify-center items-center text-gray-600 text-3xl">
+          {user?.email.substring(0, 1).toUpperCase()}
+        </div>
+        <div className="c-gray text-2xl font-semibold">{user?.email}</div>
       </div>
 
-      <div className="mt-5">
-        <ul className="grid grid-cols-3 gap-6">
-          {blogs.length === 0 ? (
-            <div className="flex flex-col col-span-3">
-              <div className="block mx-auto">
-                You haven't written any blogs yet.
-              </div>
-              <Link className="btn btn-primary mx-auto mt-10" to="/write">
-                Write your first blog
-              </Link>
+      <div className="flex justify-between sticky top-[69px] py-3 items-center bg-white z-10">
+        <h2>User BLogs</h2>
+        <div className="relative">
+          <input
+            className="input h-10 outline-1 outline-slate-300 w-80 focus-visible:outline-none"
+            type="text"
+            placeholder="Search blog title"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+          {searchLoading && (
+            <div className="text-center absolute top-2.5 end-3">
+              <div className="loading loading-spinner loading-sm" />
             </div>
-          ) : (
-            blogs.map((blog) => <BlogColumnCard key={blog.id} blog={blog} />)
           )}
-        </ul>
+        </div>
       </div>
+
+      <div className="grid grid-cols-3 gap-8 mt-8">
+        {(searchQuery ? filteredBlogs : blogs).map((blog) => (
+          <BlogCard key={blog.id} blog={blog} />
+        ))}
+      </div>
+
+      {!searchQuery && blogs.length % blogsPerPage === 0 && (
+        <div className="text-center mt-10">
+          <button
+            onClick={loadMore}
+            disabled={loadMoreLoading} // Disable button when loading
+            className={`border rounded-xl py-2 px-3 transition-all hover:bg-blue-700 hover:text-white text-sm ${
+              loadMoreLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            {loadMoreLoading ? "Loading..." : "Load More"}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

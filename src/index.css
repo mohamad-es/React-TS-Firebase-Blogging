@@ -12,16 +12,70 @@ body {
   font-family: "Inter";
 }
 
+.button:focus,
+.button:focus-visible,
+.button:focus-within,
+.textarea:focus,
+.textarea:focus-visible,
+.textarea:focus-within,
+.input:focus,
+.input:focus-visible,
+.input:focus-within {
+  box-shadow: none;
+  border-color: none;
+  outline-style: none;
+  outline-width: none;
+  outline-offset: none;
+  outline-color: none;
+  outline: none;
+}
+
 .c-gray {
   color: #4b5563;
 }
 
 .bc-gray {
-  background: #F9FAFB;
+  background: #f9fafb;
 }
 
 .c-black {
-  color:#000000
+  color: #000000;
+}
+
+/* Add this to your global CSS file */
+pre {
+  background-color: #2d2d2d !important;
+  /* Dark background */
+  color: #f8f8f2 !important;
+  /* Light text color */
+  padding: 16px;
+  border-radius: 4px;
+  display: block;
+  overflow-x: auto;
+}
+
+/* RichTextEditor.css */
+.ql-container {
+  border: none !important;
+  /* Adjust the radius as needed */
+}
+
+.ql-toolbar {
+  border: none !important;
+  padding: 10px;
+  margin-bottom: 10px;
+  position: sticky;
+  top: 68.8px;
+  z-index: 10;
+}
+
+.ql-editor::before {
+  font-size: 22px !important
+}
+
+.ql-editor>* {
+  font-size: 18px !important;
+  line-height: 36px
 }
 
 @layer base {
@@ -33,8 +87,8 @@ body {
     @apply text-sm c-black;
   }
 
-  h1{
-    @apply text-2xl font-bold c-black
+  h1 {
+    @apply text-5xl font-bold c-black;
   }
 
   h2 {
@@ -42,7 +96,7 @@ body {
   }
 
   h3 {
-    @apply text-xl font-bold c-black
+    @apply text-xl font-bold c-black;
   }
 
   p {

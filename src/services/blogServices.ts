@@ -5,7 +5,6 @@ import {
   getDocs,
   limit,
   query,
-  QueryConstraint,
   where,
 } from "firebase/firestore";
 import { Dispatch, SetStateAction } from "react";
@@ -20,13 +19,6 @@ type TGetSingleBlog = {
 };
 
 type TGetAllBlogs = {
-  setBlogs: Dispatch<SetStateAction<TBlog[]>>;
-  setError: Dispatch<SetStateAction<string | null>>;
-  setLoading: Dispatch<SetStateAction<boolean>>;
-};
-
-type TGetListByQuery = {
-  filterQuery: QueryConstraint[];
   setBlogs: Dispatch<SetStateAction<TBlog[]>>;
   setError: Dispatch<SetStateAction<string | null>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -63,43 +55,33 @@ export const getSingleBlog = async ({
   }
 };
 
-export const getBlogListByQuery = async ({
-  filterQuery,
-  setBlogs,
-  setError,
-  setLoading,
-}: TGetListByQuery) => {
-  const blogRef = collection(db, "blogs");
-  const q = query(blogRef, ...filterQuery);
-  try {
-    const querySnapshot = await getDocs(q);
-    const fetchBlogs: TBlog[] = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as TBlog[];
-    setBlogs(fetchBlogs);
-  } catch (error) {
-    error instanceof Error ? setError(error.message) : console.log(error);
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-export const getAllBlogs = async ({
+export const getBlogListByQuery  = async ({
   setBlogs,
   setError,
   setLoading,
   page,
   blogsPerPage,
-}: TGetAllBlogs & { page: number; blogsPerPage: number }) => {
+  filterQuery = [], // Optional filter query
+}: TGetAllBlogs & { 
+  page: number; 
+  blogsPerPage: number; 
+  filterQuery?: any[]; // Accept filters as an optional parameter
+}) => {
   setLoading(true);
   setError(null);
 
   try {
-    // Reference the blogs collection with limit and pagination
+    // Reference the blogs collection
     const blogRef = collection(db, "blogs");
-    const queryRef = query(blogRef, limit(blogsPerPage * page));
+
+    // Apply filters and pagination
+    const queryRef = query(
+      blogRef,
+      ...filterQuery, // Apply filters if provided
+      limit(blogsPerPage * page) // Apply pagination
+    );
+
+    // Fetch documents
     const querySnapshot = await getDocs(queryRef);
 
     // Map the documents to TBlog array
@@ -116,6 +98,7 @@ export const getAllBlogs = async ({
     setLoading(false);
   }
 };
+
 
 
 export const searchBlogs = async (searchQuery: string) => {
