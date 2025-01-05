@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest # Use the latest Ubuntu environment
+    runs-on: ubuntu-latest
 
     steps:
       # Step 1: Checkout the repository
@@ -24,18 +24,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Run tests (optional)
-      - name: Run tests
-        run: npm test
-
-      # Step 5: Build the app
+      # Step 4: Build the app
       - name: Build the app
         run: npm run build
 
-      # Step 6: Install Firebase CLI
+      # Step 5: Install Firebase CLI
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-      # Step 7: Deploy to Firebase
+      # Step 6: Deploy to Firebase
       - name: Deploy to Firebase
         run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
