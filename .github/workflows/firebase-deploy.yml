@@ -3,37 +3,34 @@ name: Firebase Deploy
 on:
   push:
     branches:
-      - main # Trigger the workflow on push to the main branch
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # Use the Node.js version your app requires
+          node-version: 18
 
-      # Step 3: Cache node_modules
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            node-modules-
-
-      # Step 4: Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # Step 5: Build the app
+      - name: Debug environment variables
+        run: |
+          echo "VITE_FIREBASE_API_KEY: $VITE_FIREBASE_API_KEY"
+          echo "VITE_FIREBASE_AUTH_DOMAIN: $VITE_FIREBASE_AUTH_DOMAIN"
+          echo "VITE_FIREBASE_PROJECT_ID: $VITE_FIREBASE_PROJECT_ID"
+          echo "VITE_MESSAGING_SENDER_ID: $VITE_MESSAGING_SENDER_ID"
+          echo "VITE_APP_ID: $VITE_APP_ID"
+          echo "VITE_MEASUREMENT_ID: $VITE_MEASUREMENT_ID"
+          echo "VITE_STORAGE_BUCKET: $VITE_STORAGE_BUCKET"
+
       - name: Build the app
         env:
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
@@ -45,10 +42,8 @@ jobs:
           VITE_STORAGE_BUCKET: ${{ secrets.VITE_STORAGE_BUCKET }}
         run: npm run build
 
-      # Step 6: Install Firebase CLI
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-      # Step 7: Deploy to Firebase
       - name: Deploy to Firebase
         run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
