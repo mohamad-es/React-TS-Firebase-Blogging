@@ -34,8 +34,8 @@ export const getToken = async () => {
 export const logOut = async () => {
   try {
     await signOut(auth);
-    console.log("User signed out successfully"); // Debugging statement
+    console.log("User signed out successfully");
   } catch (error) {
-    console.error("Error signing out:", error); // Debugging statement
+    console.error("Error signing out:", error);
   }
 };

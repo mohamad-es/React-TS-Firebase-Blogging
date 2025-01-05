@@ -1,4 +1,5 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import SubmitButton from "src/components/global/SubmitButton";
 import { TAuthForms } from "src/types/auth";
 
 type Props = {
@@ -12,9 +13,7 @@ const AuthForm = ({ auth_data, submitFunction, loading }: Props) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    mode: "all",
-  });
+  } = useForm();
 
   return (
     <div className="flex flex-1 justify-center items-center">
@@ -42,13 +41,7 @@ const AuthForm = ({ auth_data, submitFunction, loading }: Props) => {
             </div>
           ))}
 
-          <button className="btn btn-primary mt-3 text-white" type="submit">
-            {loading ? (
-              <div className="loading loading-infinity" />
-            ) : (
-              auth_data.button
-            )}
-          </button>
+          <SubmitButton loading={loading}>{auth_data.button}</SubmitButton>
         </form>
       </div>
     </div>
