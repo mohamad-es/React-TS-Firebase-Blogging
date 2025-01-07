@@ -12,7 +12,7 @@ import { useFetchBlogs } from "src/hooks/useBlog";
 import { limit, orderBy, where } from "firebase/firestore";
 import { useParams } from "react-router";
 
-const Profile = () => {
+const PublicProfile = () => {
   const params = useParams();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredBlogs, setFilteredBlogs] = useState<TBlog[]>([]);
@@ -35,7 +35,7 @@ const Profile = () => {
   });
 
   return (
-    <div className="min-h-96">
+    <div className="min-h-96 relative flex items-center flex-col justify-center">
       <UserProfileCard
         error={userError}
         user_email={user?.email!}
@@ -46,10 +46,10 @@ const Profile = () => {
       <RenderState
         loading={loading && page === 1}
         error={error}
-        data={blogs}
+        data={blogs.length}
         emptyListText={profile_data.not_found}
       >
-        <div className="flex justify-between sticky top-[69px] py-3 items-center bg-white z-10">
+        <div className="flex justify-between sticky top-[69px] py-3 items-center z-10">
           <h2>{profile_data.title}</h2>
           <Search
             searchData={searchBlogs}
@@ -77,4 +77,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default PublicProfile;

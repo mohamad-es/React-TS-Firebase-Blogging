@@ -13,7 +13,7 @@ const useLogin = () => {
     try {
       const currentUser = await logIn(values.email, values.password);
       toastInstance({ text: "Login successful!", type: "success" });
-      navigate(`/${currentUser.uid}`);
+      navigate(`/${currentUser.uid}/profile`);
     } catch (err) {
       err instanceof Error
         ? toastInstance({ text: err.message, type: "error" })

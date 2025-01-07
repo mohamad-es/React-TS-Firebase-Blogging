@@ -39,8 +39,8 @@ const Header = () => {
   }, []);
 
   return (
-    <div className=" sticky top-0 z-10 bg-white py-3 border-b">
-      <div className="flex justify-between items-center max-w-7xl mx-auto">
+    <div className="sticky top-0 z-10 bg-white py-3 ">
+      <div className="flex justify-between items-center max-w-[1440px] mx-auto">
         <div className="flex items-center">
           <div className="font-bold text-xl">{layout_data.header.title}</div>
           <Navbar list={layout_data.header.navbar} />
@@ -62,7 +62,7 @@ const Header = () => {
                 {layout_data.header.profile_list.map((item) => (
                   <li key={item}>
                     <Link
-                      to={item === "Profile" ? `${user.uid}` : "/login"}
+                      to={item === "Profile" ? `${user.uid}/profile` : "/login"}
                       onClick={() => {
                         dropdownRef.current?.removeAttribute("open");
                         if (item === "Logout") {

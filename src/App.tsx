@@ -7,8 +7,10 @@ import About from "./pages/About";
 import EditBlog from "./pages/Blogs/Edit";
 import WriteBlog from "./pages/Blogs/Write";
 import ReadBlog from "./pages/Blogs/Read";
-import Profile from "./pages/Profile";
+import Profile from "./pages/Profile/Profile";
 import Home from "./pages/Home";
+import ProfileSetting from "./pages/Profile/ProfileSetting";
+import PublicProfile from "./pages/Profile/PublicProfile";
 
 
 function App() {
@@ -21,11 +23,12 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route element={<PrivateRoute />}>
-            <Route path="/:uid" element={<Profile />} />
+            <Route path="/:uid" element={<PublicProfile />} />
+            <Route path="/:uid/profile" element={<Profile />} />
+            <Route path="/:uid/setting" element={<ProfileSetting />} />
             <Route path="/write" element={<WriteBlog />} />
             <Route path="/blog/:blogid" element={<ReadBlog />} />
             <Route path="/blog/:blogid/edit" element={<EditBlog />} />
-
           </Route>
         </Route>
       </Routes>

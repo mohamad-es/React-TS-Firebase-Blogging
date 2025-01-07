@@ -33,7 +33,7 @@ export const useRegister = () => {
         text: auth_data.register.toast_message,
         type: "success",
       });
-      navigate(`/${userId}`);
+      navigate(`/${userId}/setting`);
     } catch (err) {
       setLoading(false);
       err instanceof Error

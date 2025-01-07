@@ -10,7 +10,7 @@ type Props = {
 const BlogCard = ({ blog }: Props) => {
   return (
     <div
-      className="border rounded-2xl overflow-hidden col-span-1 flex flex-col"
+      className="border rounded-2xl overflow-hidden col-span-1 flex flex-col bg-white"
       key={blog.id}
     >
       <div className="w-full h-52 flex items-center justify-center relative border-b">
