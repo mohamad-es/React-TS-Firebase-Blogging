@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { TBlog } from "src/types/blog";
-import { convertFirebaseTimestampToDate } from "src/utils/ConvertTime";
 import { Image01Icon } from "hugeicons-react";
+import UserProfileCard from "../User/UserProfileCard";
 
 type Props = {
   blog: TBlog;
@@ -30,22 +30,12 @@ const BlogCard = ({ blog }: Props) => {
           </Link>
         </div>
 
-        <div className="flex gap-3 justify-between items-center text-sm mt-10">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-gray-200 flex justify-center items-center text-gray-600 ">
-              {blog.user_email.substring(0, 1).toUpperCase()}
-            </div>
-            <Link
-              to={`/${blog.user_id}`}
-              className="c-gray hover:text-blue-600 transition-all"
-            >
-              {blog.user_email}
-            </Link>
-          </div>
-          <div className="c-gray">
-            {convertFirebaseTimestampToDate(blog.create_time)}
-          </div>
-        </div>
+        <UserProfileCard
+          error={null}
+          loading={false}
+          user_email={blog.user_email}
+          user_id={blog.user_id}
+        />
       </div>
     </div>
   );

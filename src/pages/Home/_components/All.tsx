@@ -1,23 +1,18 @@
+import { limit, orderBy } from "firebase/firestore";
 import { useState } from "react";
-import { TBlog } from "src/types/blog";
-import { searchBlogs } from "src/services/blogServices";
 import BlogCard from "src/components/Blog/BlogCard";
-import Search from "src/components/Form/Search";
 import LoadingButton from "src/components/Buttons/LoadingButton";
-import { profile_data } from "src/data/profile";
-import UserProfileCard from "src/components/User/UserProfileCard";
-import RenderState from "src/components/Custom/RenderState";
-import { useFetchUser } from "src/hooks/useUser";
+import Search from "src/components/Form/Search";
+import { blogs_data } from "src/data/blog";
+import { searchBlogs } from "src/services/blogServices";
+import { TBlog } from "src/types/blog";
 import { useFetchBlogs } from "src/hooks/useBlog";
-import { limit, orderBy, where } from "firebase/firestore";
-import { useParams } from "react-router";
+import RenderState from "src/components/Custom/RenderState";
 
-const Profile = () => {
-  const params = useParams();
+const AllBlogs = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredBlogs, setFilteredBlogs] = useState<TBlog[]>([]);
 
-  const { user, userError, userLoading } = useFetchUser();
   const {
     blogs,
     error,
@@ -27,30 +22,20 @@ const Profile = () => {
     setPage,
     page,
   } = useFetchBlogs({
-    filterQuery: [
-      orderBy("create_time", "desc"),
-      limit(6),
-      where("user_id", "==", params.uid),
-    ],
+    filterQuery: [orderBy("create_time", "desc"), limit(6)],
   });
 
   return (
     <div className="min-h-96">
-      <UserProfileCard
-        error={userError}
-        user_email={user?.email!}
-        user_id={user?.user_id!}
-        loading={userLoading}
-      />
-
       <RenderState
         loading={loading && page === 1}
         error={error}
-        data={blogs}
-        emptyListText={profile_data.not_found}
+        data={blogs.length}
+        emptyListText={blogs_data.all.not_found}
       >
         <div className="flex justify-between sticky top-[69px] py-3 items-center bg-white z-10">
-          <h2>{profile_data.title}</h2>
+          <h2>{blogs_data.all.title}</h2>
+
           <Search
             searchData={searchBlogs}
             searchQuery={searchQuery}
@@ -77,4 +62,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default AllBlogs;

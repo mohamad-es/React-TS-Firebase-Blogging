@@ -1,4 +1,4 @@
-import AllBlogs from "../Blogs/All";
+import AllBlogs from "./_components/All";
 import FeaturedBlog from "./_components/FeaturedBlog";
 
 const Home = () => {

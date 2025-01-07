@@ -1,6 +1,9 @@
 export type THomeData = {
-  latest_blogs: {
+  feature_blog: {
     title: string;
-    not_found: string;
+    create_time: string;
+  };
+  all_blogs: {
+    title: string;
   };
 };

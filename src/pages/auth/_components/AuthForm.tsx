@@ -1,5 +1,7 @@
+import { useMemo } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import SubmitButton from "src/components/global/SubmitButton";
+import SubmitButton from "src/components/Buttons/SubmitButton";
+import Input from "src/components/Form/Input";
 import { TAuthForms } from "src/types/auth";
 
 type Props = {
@@ -19,27 +21,23 @@ const AuthForm = ({ auth_data, submitFunction, loading }: Props) => {
     <div className="flex flex-1 justify-center items-center">
       <div className="w-96">
         <h1 className="text-3xl mb-7">{auth_data.title}</h1>
+
         <form
-          className="grid gap-5 grid-cols-1 "
+          className="grid gap-5 grid-cols-1"
           onSubmit={handleSubmit(submitFunction)}
         >
-          {auth_data.inputs.map((form) => (
-            <div className="flex flex-col">
-              <label className="mb-2">{form.label}</label>
-              <input
-                {...register(form.name, {
-                  required: form.required,
-                  pattern: form.pattern,
-                })}
-                className="placeholder:text-sm h-10"
-                placeholder={form.placeholder}
-                autoComplete="off"
-              />
-              <div className="text-red-500 text-sm mt-2">
-                {errors[form.name]?.message as string}
-              </div>
-            </div>
-          ))}
+          {useMemo(
+            () =>
+              auth_data.inputs.map((form) => (
+                <Input
+                  key={form.name}
+                  register={register}
+                  errors={errors}
+                  input={{ ...form }}
+                />
+              )),
+            [auth_data.inputs, register, errors]
+          )}
 
           <SubmitButton loading={loading}>{auth_data.button}</SubmitButton>
         </form>

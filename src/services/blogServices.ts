@@ -1,15 +1,19 @@
 import {
+  AddPrefixToKeys,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   limit,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { Dispatch, SetStateAction } from "react";
 import { db } from "src/config/firebaseConfig";
 import { TBlog } from "src/types/blog";
+import { toastInstance } from "src/utils/Toast";
 
 type TGetSingleBlog = {
   blogId: string;
@@ -24,7 +28,12 @@ type TGetAllBlogs = {
   setLoading: Dispatch<SetStateAction<boolean>>;
 };
 
-export const getSingleBlog = async ({
+type TUpdateBlog = {
+  blogId: string;
+  updateData: { [x: string]: any } & AddPrefixToKeys<string, any>;
+};
+
+const getSingleBlog = async ({
   blogId,
   setBlog,
   setError,
@@ -55,16 +64,16 @@ export const getSingleBlog = async ({
   }
 };
 
-export const getBlogListByQuery  = async ({
+const getBlogListByQuery = async ({
   setBlogs,
   setError,
   setLoading,
   page,
   blogsPerPage,
   filterQuery = [], // Optional filter query
-}: TGetAllBlogs & { 
-  page: number; 
-  blogsPerPage: number; 
+}: TGetAllBlogs & {
+  page: number;
+  blogsPerPage: number;
   filterQuery?: any[]; // Accept filters as an optional parameter
 }) => {
   setLoading(true);
@@ -99,9 +108,7 @@ export const getBlogListByQuery  = async ({
   }
 };
 
-
-
-export const searchBlogs = async (searchQuery: string) => {
+const searchBlogs = async (searchQuery: string) => {
   const blogsCollectionRef = collection(db, "blogs");
   const q = query(
     blogsCollectionRef,
@@ -116,4 +123,43 @@ export const searchBlogs = async (searchQuery: string) => {
   });
 
   return blogs;
+};
+
+const updateBlog = ({ blogId, updateData }: TUpdateBlog) => {
+  const updateBlogReturn = async () => {
+    try {
+      const blogRef = doc(db, "blogs", blogId);
+      await updateDoc(blogRef, updateData);
+      toastInstance({
+        text: "Blog successfully updated",
+        type: "success",
+      });
+    } catch (error) {
+      error instanceof Error
+        ? toastInstance({
+            text: error.message,
+            type: "error",
+          })
+        : console.log(error);
+    }
+  };
+
+  return updateBlogReturn();
+};
+
+const deleteBlogById = async (blogId: string) => {
+  if (blogId) {
+    alert("Invalid blog ID");
+    return;
+  }
+
+  await deleteDoc(doc(db, "blogs", blogId));
+};
+
+export {
+  getBlogListByQuery,
+  getSingleBlog,
+  updateBlog,
+  deleteBlogById,
+  searchBlogs,
 };
