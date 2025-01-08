@@ -25,7 +25,7 @@ const WriteBlog = () => {
     <div>
       <form onSubmit={handleSubmit(createBlog)} className="w-full">
         <div className="grid grid-cols-12 gap-10 items-start">
-          <div className="col-span-9 border bc-gray rounded-xl p-10">
+          <div className="col-span-9 border bg-white rounded-xl p-10">
             {/* Image Upload Input */}
             <ImageUploader image={image} setImage={setImage} />
 

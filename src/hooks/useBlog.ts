@@ -48,7 +48,7 @@ const useFetchBlogs = <T>({ filterQuery }: TFetchBlogs<T>) => {
 const useFetchSingleBlog = (blogId: string) => {
   const [blog, setBlog] = useState<TBlog>();
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getSingleBlog({

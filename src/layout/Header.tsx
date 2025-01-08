@@ -39,7 +39,7 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="sticky top-0 z-10 bg-white py-3 ">
+    <div className="sticky top-0 z-20 bg-white py-3 ">
       <div className="flex justify-between items-center max-w-[1440px] mx-auto">
         <div className="flex items-center">
           <div className="font-bold text-xl">{layout_data.header.title}</div>
@@ -50,14 +50,19 @@ const Header = () => {
             <div className="loading loading-bars" />
           ) : user ? (
             <div className="flex gap-4 items-center">
-              <Link to="/write" className="flex items-center gap-2 me-10 ">
+              <Link to="/write" className="flex items-center gap-2 me-5">
                 {layout_data.header.write}
                 <PencilEdit02Icon size={20} />
               </Link>
 
               <Dropdown
                 dropdownRef={dropdownRef}
-                summary={auth?.currentUser?.email!}
+                summary={
+                  <span className="text-white">
+                    {auth?.currentUser?.email?.substring(0, 1).toUpperCase()}
+                  </span>
+                }
+                className="dropdown-end"
               >
                 {layout_data.header.profile_list.map((item) => (
                   <li key={item}>

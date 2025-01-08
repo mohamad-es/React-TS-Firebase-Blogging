@@ -22,15 +22,16 @@ const LoadingButton = <T,>({
   return (
     !searchQuery &&
     data.length % blogsPerPage === 0 && (
-      <div className="text-center mt-10">
+      <div className="text-center bc-gray pt-10">
         <button
           onClick={loadMore}
           disabled={loadMoreLoading}
-          className={`border rounded-xl py-2 px-3 transition-all hover:bg-blue-700 hover:text-white text-sm ${
+          className={`border btn btn-primary w-28 rounded-xl transition-all${
             loadMoreLoading ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
-          {loadMoreLoading ? "Loading..." : "Load More"}
+          
+          {loadMoreLoading ? <div className="loading loading-spinner loading-sm"/> : "Load More"}
         </button>
       </div>
     )

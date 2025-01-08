@@ -20,7 +20,7 @@ const BlogCard = ({ blog }: Props) => {
           <Image01Icon size={100} className="text-gray-600" />
         )}
       </div>
-      <div className="p-6 flex flex-col justify-between flex-1">
+      <div className="p-6 gap-4 flex flex-col justify-between flex-1">
         <div>
           <Link
             to={`/blog/${blog.id}`}

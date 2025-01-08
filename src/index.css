@@ -122,4 +122,8 @@ pre {
   .btn-error {
     @apply !text-white !bg-red-500;
   }
+
+  .skeleton {
+    @apply !rounded-lg
+  }
 }
