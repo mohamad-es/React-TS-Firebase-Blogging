@@ -9,7 +9,7 @@ type Props = {
 
 const WriteFormSidebar = ({ loading, modalsRef }: Props) => {
   return (
-    <div className="col-span-3 sticky top-28 left-0">
+    <Fragment>
       <div className="flex gap-2 mb-5">
         <button
           type="button"
@@ -37,8 +37,8 @@ const WriteFormSidebar = ({ loading, modalsRef }: Props) => {
       <ul className="list-disc mt-10">
         <li className="text-sm">Upload Blog Image (optional, max 100KB)</li>
       </ul>
-    </div>
+    </Fragment>
   );
 };
 
-export default WriteFormSidebar
+export default WriteFormSidebar;

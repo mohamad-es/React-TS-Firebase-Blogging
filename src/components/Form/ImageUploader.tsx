@@ -35,15 +35,12 @@ const ImageUploader = ({ image, setImage }: Props) => {
     }
   };
   return (
-    <div>
+    <div className="flex justify-center">
       {image ? (
-        <div>
-          <div className="flex gap-5">
+        <div className="flex gap-10 items-center">
+          <div className="flex flex-col gap-5">
             <div className="relative w-40 h-10">
-              <label
-                htmlFor="upload-banner"
-                className="btn btn-outline absolute start-0 top-0 w-full h-full z-10"
-              >
+              <label htmlFor="upload-banner" className="btn btn-outline absolute start-0 top-0 w-full h-full z-10">
                 Change banner
               </label>
 
@@ -55,25 +52,16 @@ const ImageUploader = ({ image, setImage }: Props) => {
                 className="h-full w-full opacity-0 absolute start-0 top-0"
               />
             </div>
-            <button
-              className="text-red-500 font-medium"
-              onClick={() => setImage(null)}
-            >
+            <button className="text-red-500 font-medium" onClick={() => setImage(null)}>
               Remove banner
             </button>
           </div>
-          <img
-            src={image}
-            alt="Preview"
-            className="w-64 h-28 object-contain rounded-lg mt-5 border"
-          />
+
+          <img src={image} alt="Preview" className="w-64 h-28 object-contain rounded-lg border" />
         </div>
       ) : (
         <div className="relative h-16 w-64">
-          <label
-            htmlFor="upload-banner"
-            className="btn btn-outline absolute start-0 top-0 w-full h-full z-10"
-          >
+          <label htmlFor="upload-banner" className="btn btn-outline absolute start-0 top-0 w-full h-full z-10">
             Add banner for your blog
           </label>
 

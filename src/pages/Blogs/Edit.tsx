@@ -1,13 +1,15 @@
-import { ChangeEvent, useRef } from "react";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import RenderState from "src/components/Custom/RenderState";
-import RichTextEditor from "src/components/Editor/RichTextEditor";
 import ImageUploader from "src/components/Form/ImageUploader";
 import { auth } from "src/config/firebaseConfig";
 import { useFetchSingleBlog, useUpdateBlog } from "src/hooks/useBlog";
 import { updateBlog } from "src/services/blogServices";
 import EditFormSidebar from "./_components/EditFormSidebar";
+import { TBlog } from "src/types/blog";
+import EditBlogSkeleton from "./_components/EditBlogSkeleton";
+import BlogEditor from "src/components/Blog/BlogEditor";
 
 const EditBlog = () => {
   const params = useParams();
@@ -17,8 +19,7 @@ const EditBlog = () => {
 
   const { blog, error, loading } = useFetchSingleBlog(params.blogid!);
 
-  const { content, image, title, setImage, setContent, setTitle } =
-    useUpdateBlog(blog!);
+  const { content, image, title, setImage, setContent, setTitle } = useUpdateBlog(blog!);
 
   const submitUpdateBlog = () =>
     updateBlog({
@@ -34,33 +35,17 @@ const EditBlog = () => {
     });
 
   return (
-    <RenderState error={error} loading={loading}>
-      <form onSubmit={handleSubmit(submitUpdateBlog)} className="w-full">
-        <div className="grid grid-cols-12 gap-10 items-start">
-          <div className="col-span-9 border bc-gray rounded-xl p-10">
+    <RenderState<TBlog> error={error} loading={loading} data={blog} loadingRender={<EditBlogSkeleton />}>
+      <form onSubmit={handleSubmit(submitUpdateBlog)} className="w-screen max-w-[1440px] mx-auto">
+        <div className="grid grid-cols-12 relative pt-10 gap-10 items-start">
+          <div className="col-span-8 bg-white border rounded-xl overflow-hidden p-10">
             <ImageUploader image={image} setImage={setImage} />
-
-            <div className="flex flex-col gap-10">
-              <input
-                onInput={(e: ChangeEvent<HTMLInputElement>) =>
-                  setTitle(e.currentTarget.value)
-                }
-                type="text"
-                placeholder="Write blog title here ..."
-                className="h-16 text-4xl bg-transparent font-bold focus-visible:outline-none outline-none border-none italic"
-                value={title}
-              />
-
-              <RichTextEditor
-                modalsRef={modalsRef}
-                setContent={setContent}
-                content={content}
-                title={title}
-              />
-            </div>
+            <BlogEditor content={content} setContent={setContent} setTitle={setTitle} title={title} />
           </div>
 
-          <EditFormSidebar loading={loading} modalsRef={modalsRef} />
+          <div className="col-span-3 sticky top-28 left-0">
+            <EditFormSidebar loading={loading} modalsRef={modalsRef} />
+          </div>
         </div>
       </form>
     </RenderState>
