@@ -1,6 +1,7 @@
-import { EyeIcon, CheckmarkCircle02Icon } from "hugeicons-react";
+import { EyeIcon } from "hugeicons-react";
 import { RefObject } from "react";
 import { Fragment } from "react/jsx-runtime";
+import SubmitButton from "src/components/Buttons/SubmitButton";
 
 type Props = {
   modalsRef: RefObject<HTMLDialogElement | null>;
@@ -10,32 +11,20 @@ type Props = {
 const WriteFormSidebar = ({ loading, modalsRef }: Props) => {
   return (
     <Fragment>
-      <div className="flex gap-2 mb-5">
+      <div className="flex justify-end mb-5 max-w-min overflow-hidden rounded-xl border h-10">
         <button
+          className="h-full bg-blue-700 text-white text-sm gap-2 flex w-36 justify-center items-center transition-all hover:bg-blue-700 hover:text-white"
           type="button"
           onClick={() => modalsRef.current?.showModal()}
-          className="flex items-center gap-2 border rounded-xl px-3 py-2 text-sm transition-all hover:bg-blue-600 hover:text-white"
         >
           Preview
-          <EyeIcon size={18} />
+          <EyeIcon size={16} />
         </button>
-
-        <button
-          type="submit"
-          className="flex items-center gap-2 border rounded-xl px-3 py-2 text-sm transition-all hover:bg-green-600 hover:text-white"
-        >
-          {loading ? (
-            <div className="loading loading-infinity" />
-          ) : (
-            <Fragment>
-              Publish
-              <CheckmarkCircle02Icon size={16} />
-            </Fragment>
-          )}
-        </button>
+        <SubmitButton loading={loading} title="Preview" className="btn-success !rounded-none" />
       </div>
-      <ul className="list-disc mt-10">
-        <li className="text-sm">Upload Blog Image (optional, max 100KB)</li>
+      <ul className="list-disc space-y-3 mt-10">
+        <li className="text-sm">Upload blog image (optional, max 100KB)</li>
+        <li className="text-sm">Best image size for banner (width:944 - height:380)</li>
       </ul>
     </Fragment>
   );

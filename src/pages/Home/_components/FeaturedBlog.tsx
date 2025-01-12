@@ -15,7 +15,7 @@ const FeaturedBlog = () => {
   if (error) return <ErrorMessage text={error} />;
 
   return (
-    <div className="flex gap-16 mb-20 max-w-[1440px] mx-auto pt-10">
+    <div className="flex gap-16 w-screen mb-20 max-w-[1440px] mx-auto pt-10">
       <div className="flex-1 flex flex-col justify-between">
         <div>
           <div className="font-normal">{home_data.feature_blog.title}</div>

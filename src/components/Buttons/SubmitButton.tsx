@@ -1,18 +1,17 @@
+import { CheckmarkCircle02Icon } from "hugeicons-react";
 import { ReactNode } from "react";
 
 type Props = {
   loading: boolean;
-  children: ReactNode;
+  title: ReactNode;
   className?: string;
 };
 
-const SubmitButton = ({ loading, className, children }: Props) => {
+const SubmitButton = ({ loading, className, title }: Props) => {
   return (
-    <button
-      className={`btn btn-primary ${className}`}
-      type={loading ? "button" : "submit"}
-    >
-      {loading ? <div className="loading loading-bars loading-xs" /> : children}
+    <button className={`btn ${className}`} type={loading ? "button" : "submit"}>
+      {title}
+      {loading ? <div className="loading loading-xs loading-spinner" /> : <CheckmarkCircle02Icon size={20} />}
     </button>
   );
 };

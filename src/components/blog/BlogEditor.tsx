@@ -12,11 +12,11 @@ type Props = {
 const BlogEditor = ({ content, setTitle, title, setContent }: Props) => {
   return (
     <Fragment>
-      <div className="flex flex-col gap-y-10 mt-10">
+      <div className="flex flex-col gap-y-10 mt-16">
         <textarea
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setTitle(e.currentTarget.value)}
           placeholder="Write blog title here ..."
-          className="text-4xl bg-transparent font-bold focus-visible:outline-none outline-none border-none italic"
+          className="text-4xl mx-10 bg-transparent font-bold focus-visible:outline-none outline-none border-none italic"
           value={title}
           rows={3}
         />

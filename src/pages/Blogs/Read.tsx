@@ -23,8 +23,8 @@ const ReadBlog = () => {
                 <Image01Icon size={150} color="gray" />
               </div>
             )}
-            <div className="p-10 bg-white">
-              <h1 className="text-3xl font-extrabold mb-10">{blog?.title}</h1>
+            <div className="bg-white">
+              <h1 className="text-3xl p-10 font-extrabold">{blog?.title}</h1>
               <Preview content={blog?.content!} />
             </div>
           </div>

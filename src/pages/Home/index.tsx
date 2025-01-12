@@ -10,7 +10,7 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   return (
-    <div className="flex flex-col gap-10 bg-white">
+    <div className="flex flex-col bg-white">
       <FeaturedBlog />
 
       <div className="py-3 sticky top-[64px] border-b bg-white px-10 z-10">

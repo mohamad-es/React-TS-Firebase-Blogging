@@ -6,10 +6,12 @@ import ImageUploader from "src/components/Form/ImageUploader";
 import { auth } from "src/config/firebaseConfig";
 import { useFetchSingleBlog, useUpdateBlog } from "src/hooks/useBlog";
 import { updateBlog } from "src/services/blogServices";
-import EditFormSidebar from "./_components/EditFormSidebar";
 import { TBlog } from "src/types/blog";
 import EditBlogSkeleton from "./_components/EditBlogSkeleton";
 import BlogEditor from "src/components/Blog/BlogEditor";
+import WriteFormSidebar from "./_components/WriteFormSidebar";
+import Modal from "src/components/Custom/Modal";
+import Preview from "src/components/Editor/Preview";
 
 const EditBlog = () => {
   const params = useParams();
@@ -38,16 +40,22 @@ const EditBlog = () => {
     <RenderState<TBlog> error={error} loading={loading} data={blog} loadingRender={<EditBlogSkeleton />}>
       <form onSubmit={handleSubmit(submitUpdateBlog)} className="w-screen max-w-[1440px] mx-auto">
         <div className="grid grid-cols-12 relative pt-10 gap-10 items-start">
-          <div className="col-span-8 bg-white border rounded-xl overflow-hidden p-10">
+          <div className="col-span-8 bg-white border rounded-xl">
             <ImageUploader image={image} setImage={setImage} />
+
             <BlogEditor content={content} setContent={setContent} setTitle={setTitle} title={title} />
           </div>
 
-          <div className="col-span-3 sticky top-28 left-0">
-            <EditFormSidebar loading={loading} modalsRef={modalsRef} />
+          <div className="col-span-4 sticky top-28 left-0">
+            <WriteFormSidebar loading={loading} modalsRef={modalsRef} />
           </div>
         </div>
       </form>
+
+      <Modal className="max-w-screen-xl pt-0 px-0" modalsRef={modalsRef}>
+        <Preview title={title} content={content} img={image || ''} />
+      </Modal>
+
     </RenderState>
   );
 };
