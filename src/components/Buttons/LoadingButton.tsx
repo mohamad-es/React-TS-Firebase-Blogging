@@ -1,3 +1,4 @@
+import { Loading03Icon } from "hugeicons-react";
 import { Dispatch, SetStateAction } from "react";
 
 type Props<T> = {
@@ -8,13 +9,7 @@ type Props<T> = {
   loadMoreLoading: boolean;
 };
 
-const LoadingButton = <T,>({
-  searchQuery,
-  data,
-  blogsPerPage,
-  setPage,
-  loadMoreLoading,
-}: Props<T>) => {
+const LoadingButton = <T,>({ searchQuery, data, blogsPerPage, setPage, loadMoreLoading }: Props<T>) => {
   const loadMore = () => {
     setPage((prevPage) => prevPage + 1);
   };
@@ -26,12 +21,18 @@ const LoadingButton = <T,>({
         <button
           onClick={loadMore}
           disabled={loadMoreLoading}
-          className={`border btn btn-primary w-28 rounded-xl transition-all${
+          className={`border btn btn-primary w-36 rounded-xl transition-all${
             loadMoreLoading ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
-          
-          {loadMoreLoading ? <div className="loading loading-spinner loading-sm"/> : "Load More"}
+          {loadMoreLoading ? (
+            <div className="loading loading-spinner loading-sm" />
+          ) : (
+            <div className="flex w-full justify-between items-center">
+              Load More
+              <Loading03Icon />
+            </div>
+          )}
         </button>
       </div>
     )

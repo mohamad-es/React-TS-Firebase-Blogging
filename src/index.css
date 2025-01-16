@@ -8,8 +8,13 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: "Inter";
+@font-face {
+  font-family: Manrope;
+  src: url("/font/Manrope.ttf");
+}
+
+* {
+  font-family: "Manrope";
 }
 
 .button:focus,
@@ -81,8 +86,8 @@ pre {
 }
 
 @layer base {
-  input {
-    @apply input outline outline-1 outline-gray-400;
+  .input {
+    @apply !rounded-xl !text-sm;
   }
 
   label {

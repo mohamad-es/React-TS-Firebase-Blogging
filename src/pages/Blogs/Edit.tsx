@@ -52,7 +52,7 @@ const EditBlog = () => {
         </div>
       </form>
 
-      <Modal className="max-w-screen-xl pt-0 px-0" modalsRef={modalsRef}>
+      <Modal className="max-w-screen-lg pt-0 px-0" modalsRef={modalsRef}>
         <Preview title={title} content={content} img={image || ''} />
       </Modal>
 

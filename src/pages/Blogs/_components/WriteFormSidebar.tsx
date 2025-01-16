@@ -20,7 +20,7 @@ const WriteFormSidebar = ({ loading, modalsRef }: Props) => {
           Preview
           <EyeIcon size={16} />
         </button>
-        <SubmitButton loading={loading} title="Preview" className="btn-success !rounded-none" />
+        <SubmitButton loading={loading} title="Publish" className="btn-success !rounded-none" />
       </div>
       <ul className="list-disc space-y-3 mt-10">
         <li className="text-sm">Upload blog image (optional, max 100KB)</li>

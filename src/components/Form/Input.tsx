@@ -11,10 +11,10 @@ const Input = ({ errors, input, register }: Props) => {
   const { label, name, pattern, placeholder, required } = input;
   return (
     <div className="flex flex-col">
-      <label className="mb-2">{label}</label>
+      <label className="mb-3 text-[13px] font-semibold">{label}</label>
       <input
         {...register(name, { required, pattern })}
-        className="placeholder:text-sm h-10"
+        className="input bg-white border-gray-300"
         placeholder={placeholder}
         autoComplete="off"
       />

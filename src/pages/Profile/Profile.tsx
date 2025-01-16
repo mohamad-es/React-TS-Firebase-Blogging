@@ -36,11 +36,7 @@ const Profile = () => {
         <BlogFullList
           filteredBlogs={fitleredBlogs}
           searchQuery={searchQuery}
-          filterQuery={[
-            orderBy("create_time", "desc"),
-            limit(6),
-            where("user_id", "==", params.uid),
-          ]}
+          filterQuery={[orderBy("create_time", "desc"), limit(6), where("user_id", "==", params.uid)]}
         />
       </TabsLayout>
     </div>
