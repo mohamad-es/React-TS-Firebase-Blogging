@@ -1,4 +1,4 @@
-import {  CheckmarkCircle02Icon } from "hugeicons-react";
+import { CheckmarkCircle02Icon } from "hugeicons-react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import TabsLayout from "src/components/Custom/TabsLayout";
@@ -6,6 +6,7 @@ import Input from "src/components/Form/Input";
 import UpdateProfileImage from "src/components/Form/UpdateProfileImage";
 
 const ProfileSetting = () => {
+
   const params = useParams();
   const {
     formState: { errors },
@@ -25,8 +26,9 @@ const ProfileSetting = () => {
     >
       <div className="grid grid-cols-12 max-w-[1440px] mx-auto">
         <div className="p-10 col-span-3">
-          <UpdateProfileImage />
+          <UpdateProfileImage/>
         </div>
+
         <div className="col-span-8">
           <div className="flex justify-between items-center">
             <h2 className="mt-10 mb-16">Update Password</h2>

@@ -66,16 +66,23 @@ const useUpdateBlog = (blog: TBlog) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState<string | null>(null); // Base64 image
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     if (blog) {
-      setContent(blog.content);
-      setTitle(blog.title);
-      setImage(blog.img || null);
+      // Simulate loading delay (optional, for demonstration purposes)
+      const timer = setTimeout(() => {
+        setContent(blog.content);
+        setTitle(blog.title);
+        setImage(blog.img || null);
+        setLoading(false); // Set loading to false after data is loaded
+      }, 1000); // 1-second delay
+
+      return () => clearTimeout(timer); // Cleanup timer
     }
   }, [blog]);
 
-  return { title, image, content, setImage, setTitle, setContent };
+  return { title, image, content, setImage, setTitle, setContent, loading };
 };
 
 const useDeleteBlog = (blogId: string) => {

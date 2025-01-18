@@ -1,6 +1,12 @@
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, updateDoc, AddPrefixToKeys } from "firebase/firestore";
 import { db } from "src/config/firebaseConfig";
 import { TUser } from "src/types/user";
+import { toastInstance } from "src/utils/Toast";
+
+type TUpdateUser = {
+  userId: string;
+  updateData: { [x: string]: any } & AddPrefixToKeys<string, any>;
+};
 
 type TGetSingleBlog = {
   userId: string;
@@ -9,12 +15,7 @@ type TGetSingleBlog = {
   setUser: Function;
 };
 
-export const getSingleUser = async ({
-  userId,
-  setUser,
-  setError,
-  setLoading,
-}: TGetSingleBlog) => {
+const getSingleUser = async ({ userId, setUser, setError, setLoading }: TGetSingleBlog) => {
   setLoading(true);
   setError(null);
 
@@ -41,3 +42,27 @@ export const getSingleUser = async ({
     setLoading(false);
   }
 };
+
+const serviceUpdateUser = ({userId, updateData}:TUpdateUser) => {
+  const updateUser = async () => {
+    try {
+      const userRef = doc(db, "users", userId);
+      await updateDoc(userRef, updateData);
+      toastInstance({
+        text: "Profile succesfully added",
+        type: "success",
+      });
+    } catch (error) {
+      error instanceof Error
+        ? toastInstance({
+            text: error.message,
+            type: "error",
+          })
+        : console.log(error);
+    }
+  };
+
+  return updateUser();
+};
+
+export { getSingleUser, serviceUpdateUser };

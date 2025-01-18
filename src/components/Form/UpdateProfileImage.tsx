@@ -8,7 +8,6 @@ const UpdateProfileImage = () => {
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Check file size (100KB limit)
       if (file.size > 100 * 1024) {
         toastInstance({
           text: "File size must be less than 100KB",
@@ -35,10 +34,16 @@ const UpdateProfileImage = () => {
   return (
     <div className="">
       {image ? (
-        <div className="flex flex-col gap-10 items-center">
-          <img src={image} alt="Preview" className="w-full h-96 object-cover rounded-xl border" />
+        <div className="max-w-44 flex flex-col gap-10 items-center">
+          <div className="relative h-32 w-32 bg-white border rounded-full overflow-hidden">
+            <img
+              src={image}
+              alt="Preview"
+              className="w-full h-full object-cover absolute text-xl left-0 top-0 flex flex-col gap-5 items-center justify-center"
+            />
+          </div>
 
-          <div className="flex gap-5">
+          <div className="flex flex-col gap-5">
             <div className="relative w-40 h-10">
               <label htmlFor="upload-banner" className="btn btn-outline absolute start-0 top-0 w-full h-full z-10">
                 Change banner

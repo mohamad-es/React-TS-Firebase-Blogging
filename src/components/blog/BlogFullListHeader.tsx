@@ -24,7 +24,7 @@ const BlogFullListHeader = <T,>({
   });
 
   return (
-    <div className="max-w-[1440px] mx-auto flex items-center justify-between">
+    <div className="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between">
       <h2>{blogs_data.all.title}</h2>
 
       {loading && page === 1 ? (

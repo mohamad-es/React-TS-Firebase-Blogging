@@ -36,7 +36,7 @@ const Search = <T,>({
   return (
     <div className="relative">
       <input
-        className="input h-10 outline-1 outline-slate-300 w-80 focus-visible:outline-none"
+        className="input h-10 outline-1 outline-slate-300 md:w-80 focus-visible:outline-none"
         type="text"
         placeholder="Search blog title"
         value={searchQuery}

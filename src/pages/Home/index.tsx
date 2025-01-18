@@ -13,7 +13,7 @@ const Home = () => {
     <div className="flex flex-col bg-white">
       <FeaturedBlog />
 
-      <div className="py-3 sticky top-[64px] border-b bg-white px-10 z-10">
+      <div className="py-3 md:sticky top-[64px] border-b bg-white px-10 z-10">
         <BlogFullListHeader
           filterQuery={[orderBy("create_time", "desc"), limit(6)]}
           setFilteredBlogs={setFilteredBlogs}

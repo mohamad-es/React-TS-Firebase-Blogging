@@ -33,7 +33,7 @@ const BlogFullList = <T,>({
   return (
     <div>
       <div className="bc-gray min-h-96">
-        <div className="max-w-[1440px] grid grid-cols-3 gap-8 pt-8 mx-auto">
+        <div className="max-w-[1440px] px-4 lg:px-0 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 pt-8 mx-auto">
           {loading && page === 1 ? (
             skeleton.map((item) => <BlogCardSkeleton key={item} />)
           ) : error ? (
