@@ -1,13 +1,13 @@
 import { onAuthStateChanged, User } from "@firebase/auth";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { auth } from "src/config/firebaseConfig";
 import Navbar from "./_components/Navbar";
 import { layout_data } from "src/data/layout";
 import { Link, useNavigate } from "react-router-dom";
-import { logOut } from "src/hooks/useAuth";
 import { toastInstance } from "src/utils/Toast";
 import { Logout02Icon, PencilEdit02Icon, UserCircleIcon } from "hugeicons-react";
 import Dropdown from "src/components/Form/Dropdown";
+import { logOut } from "src/services/authService";
 
 const Header = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -18,7 +18,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleLogOut = () => {
-    console.log("Logging out..."); // Debugging statement
+    console.log("Logging out...");
     logOut();
     toastInstance({
       text: "User Successfully Logged out",
@@ -35,8 +35,8 @@ const Header = () => {
   }, []);
 
   return (
-    <div>
-      <div className="sticky hidden lg:block top-0 z-20 bg-white py-3 ">
+    <Fragment>
+      <div className="sticky hidden lg:block top-0 z-20 bg-white py-3">
         <div className="flex justify-between items-center max-w-[1440px] mx-auto">
           <div className="flex items-center">
             <div className="font-bold text-xl">{layout_data.header.title}</div>
@@ -85,7 +85,7 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="navbar-start">
+      <div className="navbar-start lg:hidden">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
@@ -119,7 +119,7 @@ const Header = () => {
           </ul>
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 };
 

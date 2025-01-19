@@ -53,13 +53,15 @@ const PublicProfile = () => {
           ))}
         </div>
 
-        <LoadingButton
-          blogsPerPage={blogsPerPage}
-          data={blogs}
-          loadMoreLoading={loadMoreLoading}
-          searchQuery={searchQuery}
-          setPage={setPage}
-        />
+        {blogs.length !== 0 && (
+          <LoadingButton
+            blogsPerPage={blogsPerPage}
+            data={blogs}
+            loadMoreLoading={loadMoreLoading}
+            searchQuery={searchQuery}
+            setPage={setPage}
+          />
+        )}
       </RenderState>
     </div>
   );

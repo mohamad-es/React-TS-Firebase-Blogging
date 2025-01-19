@@ -18,28 +18,24 @@ const AuthForm = ({ auth_data, submitFunction, loading }: Props) => {
   } = useForm();
 
   return (
-    <div className="flex flex-1 justify-center items-center">
+    <div className="flex flex-1 h-full justify-center items-center">
       <div className="w-96">
         <h1 className="text-3xl mb-7">{auth_data.title}</h1>
 
-        <form
-          className="grid gap-5 grid-cols-1"
-          onSubmit={handleSubmit(submitFunction)}
-        >
+        <form className="grid gap-5 grid-cols-1" onSubmit={handleSubmit(submitFunction)}>
           {useMemo(
             () =>
               auth_data.inputs.map((form) => (
-                <Input
-                  key={form.name}
-                  register={register}
-                  errors={errors}
-                  input={{ ...form }}
-                />
+                <Input key={form.name} register={register} errors={errors} input={{ ...form }} />
               )),
             [auth_data.inputs, register, errors]
           )}
 
-          <SubmitButton loading={loading}>{auth_data.button}</SubmitButton>
+          <SubmitButton
+            title={auth_data.button}
+            className="border-gray-300 block me-auto w-32 justify-between"
+            loading={loading}
+          />
         </form>
       </div>
     </div>

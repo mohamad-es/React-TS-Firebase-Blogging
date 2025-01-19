@@ -23,7 +23,7 @@ const useFetchBlogs = <T>({ filterQuery }: TFetchBlogs<T>) => {
   const blogsPerPage = 6;
 
   useEffect(() => {
-    setLoadMoreLoading(true); // Start load more loading
+    setLoadMoreLoading(true);
     getBlogListByQuery({
       filterQuery,
       setBlogs,

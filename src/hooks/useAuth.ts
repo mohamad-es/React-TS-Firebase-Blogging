@@ -1,41 +1,69 @@
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  getIdToken,
-  signOut,
-} from "firebase/auth";
-import { auth } from "../config/firebaseConfig";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { FieldValues } from "react-hook-form";
+import { toastInstance } from "src/utils/Toast";
+import { logIn } from "src/services/authService";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { collection, addDoc } from "firebase/firestore";
+import { auth, db } from "src/config/firebaseConfig";
+import { auth_data } from "src/data/auth";
 
-export const signUp = async (email: string, password: string) => {
-  const userCredential = await createUserWithEmailAndPassword(
-    auth,
-    email,
-    password
-  );
-  return userCredential.user;
+const useLogin = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (values: FieldValues) => {
+    setLoading(true);
+    try {
+      const currentUser = await logIn(values.email, values.password);
+      toastInstance({ text: "Login successful!", type: "success" });
+      navigate(`/${currentUser.uid}/profile`);
+    } catch (err) {
+      err instanceof Error ? toastInstance({ text: err.message, type: "error" }) : console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { handleLogin, loading };
 };
 
-export const logIn = async (email: string, password: string) => {
-  const userCredential = await signInWithEmailAndPassword(
-    auth,
-    email,
-    password
-  );
-  return userCredential.user;
+const useRegister = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const handleRegister = async (values: FieldValues) => {
+    setLoading(true);
+    try {
+      const currentUser = await createUserWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+
+      const userId = currentUser.user.uid;
+
+      const userRef = collection(db, "users");
+      await addDoc(userRef, {
+        email: values.email,
+        user_id: userId,
+      });
+
+      setLoading(false);
+      toastInstance({
+        text: auth_data.register.toast_message,
+        type: "success",
+      });
+      navigate(`/${userId}/setting`);
+    } catch (err) {
+      setLoading(false);
+      err instanceof Error
+        ? toastInstance({ text: err.message, type: "error" })
+        : console.log(err);
+    }
+  };
+
+  return { handleRegister, loading };
 };
 
-export const getToken = async () => {
-  if (auth.currentUser) {
-    return await getIdToken(auth.currentUser);
-  }
-  return null;
-};
-
-export const logOut = async () => {
-  try {
-    await signOut(auth);
-    console.log("User signed out successfully");
-  } catch (error) {
-    console.error("Error signing out:", error);
-  }
-};
+export { useLogin, useRegister };

@@ -29,7 +29,7 @@ const WriteBlog = () => {
         </div>
       </form>
 
-      <Modal className="max-w-screen-xl pt-0 px-0" modalsRef={modalsRef}>
+      <Modal className="max-w-screen-xl min-h-44 pt-0 px-0" modalsRef={modalsRef}>
         <Preview title={title} content={content} img={image || ""} />
       </Modal>
     </Fragment>

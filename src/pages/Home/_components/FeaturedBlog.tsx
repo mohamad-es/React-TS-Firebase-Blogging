@@ -21,7 +21,7 @@ const FeaturedBlog = () => {
           <div className="font-normal">{home_data.feature_blog.title}</div>
           <Link
             to={`/blog/${blogId}`}
-            className="mt-6 text-5xl font-extrabold block hover:text-blue-600 transition-all"
+            className="mt-6 text-5xl font-black block hover:text-blue-600 transition-all"
           >
             {blog?.title}
           </Link>

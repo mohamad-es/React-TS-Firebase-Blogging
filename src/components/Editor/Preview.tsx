@@ -22,12 +22,15 @@ const Preview: React.FC<Props> = ({ content, title, img }) => {
     <div>
       {img && <img src={img} className="w-full h-96 object-cover" />}
       {title && <h1 className="mb-12 mt-16 px-10">{title}</h1>}
-      <div
-        className="whitespace-pre-wrap px-10 leading-7"
-        ref={previewRef}
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
-      ;
+      {content ? (
+        <div
+          className="whitespace-pre-wrap px-10 leading-7"
+          ref={previewRef}
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+      ) : (
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">No content written yet</div>
+      )}
     </div>
   );
 };
