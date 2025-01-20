@@ -1,10 +1,9 @@
 import { useReducer, useEffect } from "react";
-import { getSingleBlog } from "src/services/blogServices";
 import { TBlog } from "src/types/blog";
 import { TFetchingInitialState, fetchingReducer } from "../reducers";
+import { readBlog } from "src/services/blog/updateBlog";
 
 export const useSingleBlog = (blogId: string) => {
-
   const initialData: TFetchingInitialState<TBlog> = {
     loading: true,
     error: null,
@@ -13,11 +12,16 @@ export const useSingleBlog = (blogId: string) => {
 
   const [state, dispatch] = useReducer(fetchingReducer<TBlog>, initialData);
 
+  // dispatch({ type: "SUCCESS", payload: { id: docSnap.id, ...docSnap.data() } as TBlog });
+
+  // dispatch({
+  //   type: "ERROR",
+  //   payload: err instanceof Error ? (err.message as string) : "An unknown error occurred",
+  // });
+
   useEffect(() => {
-    getSingleBlog({
-      blogId,
-      dispatch,
-    });
+    // dispatch({ type: "PENDING" });
+    readBlog(blogId);
   }, [blogId]);
 
   return { state };

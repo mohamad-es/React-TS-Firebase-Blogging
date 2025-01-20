@@ -1,12 +1,18 @@
-import { useState, useEffect } from "react";
+import { collection, query, where, getDocs, limit } from "firebase/firestore";
+import { useState, useEffect, SetStateAction, Dispatch } from "react";
 import { useNavigate } from "react-router";
-import { auth } from "src/config/firebaseConfig";
-import { deleteBlogById, getBlogListByQuery } from "src/services/blogServices";
+import { auth, db } from "src/config/firebaseConfig";
+import { deleteBlog } from "src/services/blog/updateBlog";
 import { TBlog } from "src/types/blog";
-import { toastInstance } from "src/utils/Toast";
 
 type TFetchBlogs<T> = {
   filterQuery: T[];
+};
+
+type TGetAllBlogs = {
+  setBlogs: Dispatch<SetStateAction<TBlog[]>>;
+  setError: Dispatch<SetStateAction<string | null>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 const useFetchBlogs = <T>({ filterQuery }: TFetchBlogs<T>) => {
@@ -67,15 +73,15 @@ const useDeleteBlog = (blogId: string) => {
   const navigate = useNavigate();
   const [btnLoading, setBtnLoading] = useState(false);
 
-  const deleteBlog = async () => {
+  const deleteBlogSubmit = async () => {
     const confirm = window.confirm("Are you sure you want to delete this blog?");
     if (!confirm) return;
     setBtnLoading(true);
 
     try {
-      await deleteBlogById(blogId);
+      await deleteBlog(blogId);
       setBtnLoading(false);
-      toastInstance({ text: "Blog deleted successfully!", type: "success" });
+      // toastInstance({ text: "Blog deleted successfully!", type: "success" });
       navigate(`/${auth.currentUser?.uid}`);
     } catch (err) {
       setBtnLoading(false);
@@ -83,7 +89,68 @@ const useDeleteBlog = (blogId: string) => {
     }
   };
 
-  return { deleteBlog, btnLoading };
+  return { deleteBlogSubmit, btnLoading };
 };
 
-export { useFetchBlogs, useUpdateBlog, useDeleteBlog };
+const searchBlogs = async (searchQuery: string) => {
+  const blogsCollectionRef = collection(db, "blogs");
+  const q = query(
+    blogsCollectionRef,
+    where("title", ">=", searchQuery),
+    where("title", "<=", searchQuery + "\uf8ff") // Allows partial matching
+  );
+
+  const querySnapshot = await getDocs(q);
+  const blogs: any[] = [];
+  querySnapshot.forEach((doc) => {
+    blogs.push({ ...doc.data(), id: doc.id });
+  });
+
+  return blogs;
+};
+
+const getBlogListByQuery = async ({
+  setBlogs,
+  setError,
+  setLoading,
+  page,
+  blogsPerPage,
+  filterQuery = [], // Optional filter query
+}: TGetAllBlogs & {
+  page: number;
+  blogsPerPage: number;
+  filterQuery?: any[]; // Accept filters as an optional parameter
+}) => {
+  setLoading(true);
+  setError(null);
+
+  try {
+    // Reference the blogs collection
+    const blogRef = collection(db, "blogs");
+
+    // Apply filters and pagination
+    const queryRef = query(
+      blogRef,
+      ...filterQuery, // Apply filters if provided
+      limit(blogsPerPage * page) // Apply pagination
+    );
+
+    // Fetch documents
+    const querySnapshot = await getDocs(queryRef);
+
+    // Map the documents to TBlog array
+    const blogs: TBlog[] = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as TBlog[];
+
+    // Update state with fetched blogs
+    setBlogs(blogs);
+  } catch (error) {
+    error instanceof Error ? setError(error.message) : console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+export { useFetchBlogs, useUpdateBlog, useDeleteBlog, searchBlogs };

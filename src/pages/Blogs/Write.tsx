@@ -11,11 +11,11 @@ const WriteBlog = () => {
   const { handleSubmit } = useForm();
   const modalsRef = useRef<HTMLDialogElement | null>(null);
 
-  const { createBlog, title, image, content, loading, setContent, setImage, setTitle } = useCreateBlog();
+  const { createBlogSubmit, title, image, content, loading, setContent, setImage, setTitle } = useCreateBlog();
 
   return (
     <Fragment>
-      <form onSubmit={handleSubmit(createBlog)} className="w-screen max-w-[1440px] mx-auto">
+      <form onSubmit={handleSubmit(createBlogSubmit)} className="w-screen max-w-[1440px] mx-auto">
         <div className="grid grid-cols-12 relative pt-10 gap-10 items-start">
           <div className="col-span-8 border bg-white rounded-xl ">
             <ImageUploader image={image} setImage={setImage} />

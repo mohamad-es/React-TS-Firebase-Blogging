@@ -1,38 +1,44 @@
 import { PlusSignIcon } from "hugeicons-react";
 import { ChangeEvent, useState } from "react";
-import { toastInstance } from "src/utils/Toast";
+import { useUpdateUserProfile } from "src/hooks/useUser";
+// import { toastInstance } from "src/utils/Toast";
 
 const UpdateProfileImage = () => {
   const [image, setImage] = useState<string | null>(null);
+  const { updateUserProfile } = useUpdateUserProfile();
 
-  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       if (file.size > 100 * 1024) {
-        toastInstance({
-          text: "File size must be less than 100KB",
-          type: "error",
-        });
+        // toastInstance({
+        //   text: "File size must be less than 100KB",
+        //   type: "error",
+        // });
         return;
       }
 
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = () => {
-        setImage(reader.result as string);
+      reader.onload = async () => {
+        const base64Image = reader.result as string;
+        setImage(base64Image); // If you still want to keep the image in state
+
+        // Update the user profile with the new image
+        await updateUserProfile(base64Image);
       };
       reader.onerror = (error) => {
         console.error("Error converting image to Base64:", error);
-        toastInstance({
-          text: "Failed to upload image",
-          type: "error",
-        });
+        // toastInstance({
+        //   text: "Failed to upload image",
+        //   type: "error",
+        // });
       };
     }
   };
 
   return (
-    <div className="">
+    <div>
       {image ? (
         <div className="max-w-44 flex flex-col gap-10 items-center">
           <div className="relative h-32 w-32 bg-white border rounded-full overflow-hidden">

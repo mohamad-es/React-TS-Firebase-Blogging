@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import RenderState from "src/components/Custom/RenderState";
 import ImageUploader from "src/components/Form/ImageUploader";
 import { auth } from "src/config/firebaseConfig";
-import { updateBlog } from "src/services/blogServices";
+import { updateBlog } from "src/services/blog/updateBlog";
 import { TBlog } from "src/types/blog";
 import EditBlogSkeleton from "./_components/EditBlogSkeleton";
 import BlogEditor from "src/components/Blog/BlogEditor";

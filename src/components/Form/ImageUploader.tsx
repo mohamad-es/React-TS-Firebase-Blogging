@@ -1,6 +1,5 @@
 import { PlusSignIcon } from "hugeicons-react";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
-import { toastInstance } from "src/utils/Toast";
 
 type Props = {
   image: string | null;
@@ -14,10 +13,10 @@ const ImageUploader = ({ image, setImage }: Props) => {
     if (file) {
       // Check file size (100KB limit)
       if (file.size > 100 * 1024) {
-        toastInstance({
-          text: "File size must be less than 100KB",
-          type: "error",
-        });
+        // toastInstance({
+        //   text: "File size must be less than 100KB",
+        //   type: "error",
+        // });
         return;
       }
 
@@ -28,13 +27,14 @@ const ImageUploader = ({ image, setImage }: Props) => {
       };
       reader.onerror = (error) => {
         console.error("Error converting image to Base64:", error);
-        toastInstance({
-          text: "Failed to upload image",
-          type: "error",
-        });
+        // toastInstance({
+        //   text: "Failed to upload image",
+        //   type: "error",
+        // });
       };
     }
   };
+
   return (
     <div className="">
       {image ? (

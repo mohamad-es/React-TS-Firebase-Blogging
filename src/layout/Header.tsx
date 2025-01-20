@@ -4,7 +4,6 @@ import { auth } from "src/config/firebaseConfig";
 import Navbar from "./_components/Navbar";
 import { layout_data } from "src/data/layout";
 import { Link, useNavigate } from "react-router-dom";
-import { toastInstance } from "src/utils/Toast";
 import { Logout02Icon, PencilEdit02Icon, UserCircleIcon } from "hugeicons-react";
 import Dropdown from "src/components/Form/Dropdown";
 import { logOut } from "src/services/authService";
@@ -20,10 +19,10 @@ const Header = () => {
   const handleLogOut = () => {
     console.log("Logging out...");
     logOut();
-    toastInstance({
-      text: "User Successfully Logged out",
-      type: "success",
-    });
+    // toastInstance({
+    //   text: "User Successfully Logged out",
+    //   type: "success",
+    // });
     navigate("/login");
   };
 

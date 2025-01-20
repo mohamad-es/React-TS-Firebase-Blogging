@@ -1,51 +1,41 @@
-import { collection, addDoc } from "firebase/firestore";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { db, auth } from "src/config/firebaseConfig";
-import { toastInstance } from "src/utils/Toast";
+import { auth } from "src/config/firebaseConfig";
+import { createBlog } from "src/services/blog/createBlog";
+import { errorToast, successToast } from "src/utils/Toast";
 
 export const useCreateBlog = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [image, setImage] = useState<string | null>(null); // Base64 image
+  const [image, setImage] = useState<string | null>(null); 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const createBlog = async () => {
+
+  const createBlogSubmit = async () => {
     if (!title || !content) {
-      toastInstance({
-        text: "Please fill out the title and content",
-        type: "error",
-      });
+      errorToast("Please fill out the title and content");
       return;
     }
-
     setLoading(true);
-    try {
-      const blogRef = collection(db, "blogs");
-      await addDoc(blogRef, {
-        title,
-        content,
-        img: image, // Save Base64 image
-        user_id: auth.currentUser?.uid,
-        user_email: auth.currentUser?.email,
-        create_time: new Date(),
-      });
+
+    const response = await createBlog({
+      title,
+      content,
+      img: image,
+      user_id: auth.currentUser?.uid,
+      user_email: auth.currentUser?.email,
+      create_time: new Date(),
+    });
+
+    if (response.type === "success") {
       setLoading(false);
-      toastInstance({
-        text: "Blog successfully created",
-        type: "success",
-      });
+      successToast(response.message);
       navigate(`/${auth.currentUser?.uid}`);
-    } catch (error) {
+    } else {
       setLoading(false);
-      error instanceof Error
-        ? toastInstance({
-            text: error.message,
-            type: "error",
-          })
-        : console.log(error);
+      errorToast(response.message);
     }
   };
 
-  return { createBlog, setTitle, title, setContent, loading, setImage, image, content };
+  return { createBlogSubmit, setTitle, title, setContent, loading, setImage, image, content };
 };

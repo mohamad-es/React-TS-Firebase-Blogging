@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
-import { toastInstance } from "src/utils/Toast";
 import { logIn } from "src/services/authService";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
@@ -16,10 +15,10 @@ const useLogin = () => {
     setLoading(true);
     try {
       const currentUser = await logIn(values.email, values.password);
-      toastInstance({ text: "Login successful!", type: "success" });
+      // toastInstance({ text: "Login successful!", type: "success" });
       navigate(`/${currentUser.uid}/profile`);
     } catch (err) {
-      err instanceof Error ? toastInstance({ text: err.message, type: "error" }) : console.log(err);
+      // err instanceof Error ? toastInstance({ text: err.message, type: "error" }) : console.log(err);
     } finally {
       setLoading(false);
     }
@@ -50,16 +49,16 @@ const useRegister = () => {
       });
 
       setLoading(false);
-      toastInstance({
-        text: auth_data.register.toast_message,
-        type: "success",
-      });
+      // toastInstance({
+      //   text: auth_data.register.toast_message,
+      //   type: "success",
+      // });
       navigate(`/${userId}/setting`);
     } catch (err) {
-      setLoading(false);
-      err instanceof Error
-        ? toastInstance({ text: err.message, type: "error" })
-        : console.log(err);
+      // setLoading(false);
+      // err instanceof Error
+      //   ? toastInstance({ text: err.message, type: "error" })
+      //   : console.log(err);
     }
   };
 

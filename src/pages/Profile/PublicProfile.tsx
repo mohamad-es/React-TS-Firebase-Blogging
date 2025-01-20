@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { TBlog } from "src/types/blog";
-import { searchBlogs } from "src/services/blogServices";
+import { searchBlogs } from "src/services/blog/updateBlog";
 import BlogCard from "src/components/Blog/BlogCard";
 import Search from "src/components/Form/Search";
 import LoadingButton from "src/components/Buttons/LoadingButton";

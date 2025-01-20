@@ -6,7 +6,6 @@ import Input from "src/components/Form/Input";
 import UpdateProfileImage from "src/components/Form/UpdateProfileImage";
 
 const ProfileSetting = () => {
-
   const params = useParams();
   const {
     formState: { errors },
