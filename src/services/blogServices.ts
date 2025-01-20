@@ -12,14 +12,13 @@ import {
 } from "firebase/firestore";
 import { Dispatch, SetStateAction } from "react";
 import { db } from "src/config/firebaseConfig";
+import { TAction } from "src/hooks/reducers";
 import { TBlog } from "src/types/blog";
 import { toastInstance } from "src/utils/Toast";
 
 type TGetSingleBlog = {
   blogId: string;
-  setLoading: Function;
-  setError: Function;
-  setBlog: Function;
+  dispatch: Dispatch<TAction<TBlog>>;
 };
 
 type TGetAllBlogs = {
@@ -33,34 +32,26 @@ type TUpdateBlog = {
   updateData: { [x: string]: any } & AddPrefixToKeys<string, any>;
 };
 
-const getSingleBlog = async ({
-  blogId,
-  setBlog,
-  setError,
-  setLoading,
-}: TGetSingleBlog) => {
-  const fetchBlog = async () => {
-    setLoading(true);
-    setError(null);
+const getSingleBlog = async ({ blogId, dispatch }: TGetSingleBlog) => {
+  dispatch({ type: "PENDING" });
 
-    try {
-      const docRef = doc(db, "blogs", blogId);
-      const docSnap = await getDoc(docRef);
+  try {
+    const docRef = doc(db, "blogs", blogId);
+    const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
-        setBlog({ id: docSnap.id, ...docSnap.data() } as TBlog);
-      } else {
-        setError("No such document!");
-      }
-    } catch (err) {
-      err instanceof Error ? setError(err.message) : console.log(err);
-    } finally {
-      setLoading(false);
+    if (docSnap.exists()) {
+      dispatch({ type: "SUCCESS", payload: { id: docSnap.id, ...docSnap.data() } as TBlog });
+    } else {
+      dispatch({
+        type: "ERROR",
+        payload: "Failed to fetch data",
+      });
     }
-  };
-
-  if (blogId) {
-    return fetchBlog();
+  } catch (err) {
+    dispatch({
+      type: "ERROR",
+      payload: err instanceof Error ? (err.message as string) : "An unknown error occurred",
+    });
   }
 };
 
@@ -156,10 +147,4 @@ const deleteBlogById = async (blogId: string) => {
   await deleteDoc(doc(db, "blogs", blogId));
 };
 
-export {
-  getBlogListByQuery,
-  getSingleBlog,
-  updateBlog,
-  deleteBlogById,
-  searchBlogs,
-};
+export { getBlogListByQuery, getSingleBlog, updateBlog, deleteBlogById, searchBlogs };

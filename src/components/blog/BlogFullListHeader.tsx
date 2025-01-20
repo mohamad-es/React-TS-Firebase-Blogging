@@ -4,7 +4,7 @@ import { TBlog } from "src/types/blog";
 import { blogs_data } from "src/data/blog";
 import SearchSkeleton from "../Form/SearchSkeleton";
 import { searchBlogs } from "src/services/blogServices";
-import { useFetchBlogs } from "src/hooks/useBlog";
+import { useFetchBlogs } from "src/hooks/Blog/useBlog";
 
 type Props<T> = {
   setFilteredBlogs: Dispatch<SetStateAction<TBlog[]>>;
@@ -13,12 +13,7 @@ type Props<T> = {
   setSearchQuery: Dispatch<SetStateAction<string>>;
 };
 
-const BlogFullListHeader = <T,>({
-  setFilteredBlogs,
-  filterQuery,
-  searchQuery,
-  setSearchQuery,
-}: Props<T>) => {
+const BlogFullListHeader = <T,>({ setFilteredBlogs, filterQuery, searchQuery, setSearchQuery }: Props<T>) => {
   const { loading, page } = useFetchBlogs({
     filterQuery,
   });

@@ -1,4 +1,4 @@
-import { useFetchBlogs } from "src/hooks/useBlog";
+import { useFetchBlogs } from "src/hooks/Blog/useBlog";
 import { TBlog } from "src/types/blog";
 import LoadingButton from "../Buttons/LoadingButton";
 import ErrorMessage from "../Custom/ErrorMessage";

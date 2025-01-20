@@ -4,7 +4,6 @@ import { useParams } from "react-router";
 import RenderState from "src/components/Custom/RenderState";
 import ImageUploader from "src/components/Form/ImageUploader";
 import { auth } from "src/config/firebaseConfig";
-import { useFetchSingleBlog, useUpdateBlog } from "src/hooks/useBlog";
 import { updateBlog } from "src/services/blogServices";
 import { TBlog } from "src/types/blog";
 import EditBlogSkeleton from "./_components/EditBlogSkeleton";
@@ -12,6 +11,9 @@ import BlogEditor from "src/components/Blog/BlogEditor";
 import WriteFormSidebar from "./_components/WriteFormSidebar";
 import Modal from "src/components/Custom/Modal";
 import Preview from "src/components/Editor/Preview";
+import { useUpdateBlog } from "src/hooks/Blog/useBlog";
+import ErrorMessage from "src/components/Custom/ErrorMessage";
+import { useSingleBlog } from "src/hooks/Blog/useSingleBlog";
 
 const EditBlog = () => {
   const params = useParams();
@@ -19,7 +21,8 @@ const EditBlog = () => {
 
   const modalsRef = useRef<HTMLDialogElement | null>(null);
 
-  const { blog, error, loading } = useFetchSingleBlog(params.blogid!);
+  const { state } = useSingleBlog(params.blogid!);
+  const { data: blog, error, loading } = state;
 
   const { content, image, title, setImage, setContent, setTitle } = useUpdateBlog(blog!);
 
@@ -35,6 +38,8 @@ const EditBlog = () => {
         update_time: new Date(),
       },
     });
+
+  if (!blog) return <ErrorMessage text={error || "Internal application error"} />;
 
   return (
     <RenderState<TBlog> error={error} loading={loading} data={blog} loadingRender={<EditBlogSkeleton />}>
@@ -53,9 +58,8 @@ const EditBlog = () => {
       </form>
 
       <Modal className="max-w-screen-lg pt-0 px-0" modalsRef={modalsRef}>
-        <Preview title={title} content={content} img={image || ''} />
+        <Preview title={title} content={content} img={image || ""} />
       </Modal>
-
     </RenderState>
   );
 };

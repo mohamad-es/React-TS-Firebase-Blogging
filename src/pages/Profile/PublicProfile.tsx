@@ -8,7 +8,7 @@ import { profile_data } from "src/data/profile";
 import UserProfileCard from "src/components/User/UserProfileCard";
 import RenderState from "src/components/Custom/RenderState";
 import { useFetchUser } from "src/hooks/useUser";
-import { useFetchBlogs } from "src/hooks/useBlog";
+import { useFetchBlogs } from "src/hooks/Blog/useBlog";
 import { limit, orderBy, where } from "firebase/firestore";
 import { useParams } from "react-router";
 

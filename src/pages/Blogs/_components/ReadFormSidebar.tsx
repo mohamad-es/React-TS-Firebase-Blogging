@@ -1,7 +1,7 @@
 import { PencilEdit01Icon, Delete01Icon } from "hugeicons-react";
 import { Link, useParams } from "react-router";
 import { auth } from "src/config/firebaseConfig";
-import { useDeleteBlog } from "src/hooks/useBlog";
+import { useDeleteBlog } from "src/hooks/Blog/useBlog";
 import { TBlog } from "src/types/blog";
 import { convertFirebaseTimestampToDate } from "src/utils/ConvertTime";
 
@@ -9,7 +9,7 @@ type Props = {
   blog: TBlog | undefined;
 };
 
-const ReadFormSidebar = ({blog}:Props) => {
+const ReadFormSidebar = ({ blog }: Props) => {
   const params = useParams();
   const { btnLoading, deleteBlog } = useDeleteBlog(params.blogid!);
   return (
@@ -17,24 +17,18 @@ const ReadFormSidebar = ({blog}:Props) => {
       <div className="fixed">
         <div>
           <div className="font-semibold text-sm">Writter</div>
-          <Link
-            to={`/${blog?.user_id}`}
-            className="c-gray hover:text-blue-700 transition-all"
-          >
+          <Link to={`/${blog?.user_id}`} className="c-gray hover:text-blue-700 transition-all">
             {blog?.user_email}
           </Link>
 
           <div className="font-semibold text-sm mb-2 mt-7">Created Time</div>
           <div className="text-gray-500 text-[15px]">
-            {blog?.create_time &&
-              convertFirebaseTimestampToDate(blog?.create_time)}
+            {blog?.create_time && convertFirebaseTimestampToDate(blog?.create_time)}
           </div>
 
           <div className="font-semibold text-sm mb-2 mt-7">Update Time</div>
           <div className="text-gray-500 text-[15px]">
-            {blog?.update_time
-              ? convertFirebaseTimestampToDate(blog?.update_time)
-              : "Still no update on this blog !"}
+            {blog?.update_time ? convertFirebaseTimestampToDate(blog?.update_time) : "Still no update on this blog !"}
           </div>
         </div>
 
