@@ -3,8 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import { TBlog } from "src/types/blog";
 import { blogs_data } from "src/data/blog";
 import SearchSkeleton from "../Form/SearchSkeleton";
-import { searchBlogs } from "src/services/blog/updateBlog";
-import { useFetchBlogs } from "src/hooks/Blog/useBlog";
+import { searchBlogs, useFetchBlogs } from "src/hooks/Blog/useBlog";
 
 type Props<T> = {
   setFilteredBlogs: Dispatch<SetStateAction<TBlog[]>>;

@@ -1,6 +1,6 @@
 import AuthForm from "./_components/AuthForm";
 import { auth_data } from "src/data/auth";
-import { useRegister } from "src/hooks/useAuth";
+import { useRegister } from "src/hooks/auth/useRegister";
 
 const Register = () => {
   const { handleRegister, loading } = useRegister();

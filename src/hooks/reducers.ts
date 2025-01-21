@@ -15,6 +15,8 @@ export type TAction<T> =
       payload: string;
     };
 
+
+
 export const fetchingReducer = <T>(state: TFetchingInitialState<T>, action: TAction<T>): TFetchingInitialState<T> => {
   switch (action.type) {
     case "PENDING":

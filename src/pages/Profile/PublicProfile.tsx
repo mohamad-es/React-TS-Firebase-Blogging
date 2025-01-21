@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { TBlog } from "src/types/blog";
-import { searchBlogs } from "src/services/blog/updateBlog";
 import BlogCard from "src/components/Blog/BlogCard";
 import Search from "src/components/Form/Search";
 import LoadingButton from "src/components/Buttons/LoadingButton";
 import { profile_data } from "src/data/profile";
 import UserProfileCard from "src/components/User/UserProfileCard";
 import RenderState from "src/components/Custom/RenderState";
-import { useFetchUser } from "src/hooks/useUser";
-import { useFetchBlogs } from "src/hooks/Blog/useBlog";
+import { useFetchUser } from "src/hooks/user/useUser";
+import { searchBlogs, useFetchBlogs } from "src/hooks/Blog/useBlog";
 import { limit, orderBy, where } from "firebase/firestore";
 import { useParams } from "react-router";
 

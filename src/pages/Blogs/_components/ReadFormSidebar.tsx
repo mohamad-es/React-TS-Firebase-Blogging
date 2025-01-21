@@ -11,7 +11,7 @@ type Props = {
 
 const ReadFormSidebar = ({ blog }: Props) => {
   const params = useParams();
-  const { btnLoading, deleteBlog } = useDeleteBlog(params.blogid!);
+  const { btnLoading, deleteBlogSubmit } = useDeleteBlog(params.blogid!);
   return (
     <div className="col-span-3 flex">
       <div className="fixed">
@@ -45,7 +45,7 @@ const ReadFormSidebar = ({ blog }: Props) => {
               </Link>
               <button
                 className="flex w-24 h-full bg-red-600 text-white items-center transition-all hover:bg-red-600 hover:text-white justify-center"
-                onClick={deleteBlog}
+                onClick={deleteBlogSubmit}
               >
                 {btnLoading ? (
                   <div className="loading loading-infinity" />

@@ -1,7 +1,7 @@
 import { useReducer, useEffect } from "react";
 import { TBlog } from "src/types/blog";
 import { TFetchingInitialState, fetchingReducer } from "../reducers";
-import { readBlog } from "src/services/blog/updateBlog";
+import { readBlog } from "src/services/blog/readBlog";
 
 export const useSingleBlog = (blogId: string) => {
   const initialData: TFetchingInitialState<TBlog> = {
@@ -20,7 +20,7 @@ export const useSingleBlog = (blogId: string) => {
   // });
 
   useEffect(() => {
-    // dispatch({ type: "PENDING" });
+    dispatch({ type: "PENDING" });
     readBlog(blogId);
   }, [blogId]);
 

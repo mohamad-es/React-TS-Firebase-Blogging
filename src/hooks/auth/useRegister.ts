@@ -1,31 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
-import { logIn } from "src/services/authService";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import { auth, db } from "src/config/firebaseConfig";
-import { auth_data } from "src/data/auth";
-
-const useLogin = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-
-  const handleLogin = async (values: FieldValues) => {
-    setLoading(true);
-    try {
-      const currentUser = await logIn(values.email, values.password);
-      // toastInstance({ text: "Login successful!", type: "success" });
-      navigate(`/${currentUser.uid}/profile`);
-    } catch (err) {
-      // err instanceof Error ? toastInstance({ text: err.message, type: "error" }) : console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return { handleLogin, loading };
-};
 
 const useRegister = () => {
   const navigate = useNavigate();
@@ -34,11 +12,7 @@ const useRegister = () => {
   const handleRegister = async (values: FieldValues) => {
     setLoading(true);
     try {
-      const currentUser = await createUserWithEmailAndPassword(
-        auth,
-        values.email,
-        values.password
-      );
+      const currentUser = await createUserWithEmailAndPassword(auth, values.email, values.password);
 
       const userId = currentUser.user.uid;
 
@@ -65,4 +39,4 @@ const useRegister = () => {
   return { handleRegister, loading };
 };
 
-export { useLogin, useRegister };
+export { useRegister };

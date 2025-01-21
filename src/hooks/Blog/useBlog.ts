@@ -2,7 +2,7 @@ import { collection, query, where, getDocs, limit } from "firebase/firestore";
 import { useState, useEffect, SetStateAction, Dispatch } from "react";
 import { useNavigate } from "react-router";
 import { auth, db } from "src/config/firebaseConfig";
-import { deleteBlog } from "src/services/blog/updateBlog";
+import { deleteBlog } from "src/services/blog/deleteBlog";
 import { TBlog } from "src/types/blog";
 
 type TFetchBlogs<T> = {

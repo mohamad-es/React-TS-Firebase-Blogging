@@ -1,11 +1,10 @@
 import { PlusSignIcon } from "hugeicons-react";
 import { ChangeEvent, useState } from "react";
-import { useUpdateUserProfile } from "src/hooks/useUser";
 // import { toastInstance } from "src/utils/Toast";
 
 const UpdateProfileImage = () => {
   const [image, setImage] = useState<string | null>(null);
-  const { updateUserProfile } = useUpdateUserProfile();
+  // const { updateUserProfile } = useUpdateUserProfile();
 
   const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -25,7 +24,7 @@ const UpdateProfileImage = () => {
         setImage(base64Image); // If you still want to keep the image in state
 
         // Update the user profile with the new image
-        await updateUserProfile(base64Image);
+        // await updateUserProfile(base64Image);
       };
       reader.onerror = (error) => {
         console.error("Error converting image to Base64:", error);

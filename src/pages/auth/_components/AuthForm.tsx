@@ -2,15 +2,16 @@ import { useMemo } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import SubmitButton from "src/components/Buttons/SubmitButton";
 import Input from "src/components/Form/Input";
+import { TFetchingInitialState } from "src/hooks/reducers";
 import { TAuthForms } from "src/types/auth";
 
 type Props = {
   auth_data: TAuthForms;
   submitFunction: SubmitHandler<FieldValues>;
-  loading: boolean;
+  state: TFetchingInitialState<unknown>;
 };
 
-const AuthForm = ({ auth_data, submitFunction, loading }: Props) => {
+const AuthForm = ({ auth_data, submitFunction, state }: Props) => {
   const {
     register,
     handleSubmit,
@@ -34,7 +35,7 @@ const AuthForm = ({ auth_data, submitFunction, loading }: Props) => {
           <SubmitButton
             title={auth_data.button}
             className="border-gray-300 block me-auto w-32 justify-between"
-            loading={loading}
+            loading={state.loading}
           />
         </form>
       </div>
