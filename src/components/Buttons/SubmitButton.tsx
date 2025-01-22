@@ -2,7 +2,7 @@ import { CheckmarkCircle02Icon } from "hugeicons-react";
 import { ReactNode } from "react";
 
 type Props = {
-  loading: boolean;
+  loading: boolean | null;
   title: ReactNode;
   className?: string;
 };

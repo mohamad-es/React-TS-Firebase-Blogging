@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import SubmitButton from "src/components/Buttons/SubmitButton";
 import Input from "src/components/Form/Input";
@@ -24,13 +23,9 @@ const AuthForm = ({ auth_data, submitFunction, state }: Props) => {
         <h1 className="text-3xl mb-7">{auth_data.title}</h1>
 
         <form className="grid gap-5 grid-cols-1" onSubmit={handleSubmit(submitFunction)}>
-          {useMemo(
-            () =>
-              auth_data.inputs.map((form) => (
-                <Input key={form.name} register={register} errors={errors} input={{ ...form }} />
-              )),
-            [auth_data.inputs, register, errors]
-          )}
+          {auth_data.inputs.map((form) => (
+            <Input key={form.name} register={register} errors={errors} input={{ ...form }} />
+          ))}
 
           <SubmitButton
             title={auth_data.button}

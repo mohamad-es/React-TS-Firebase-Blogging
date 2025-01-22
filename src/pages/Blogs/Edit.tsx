@@ -13,7 +13,7 @@ import Modal from "src/components/Custom/Modal";
 import Preview from "src/components/Editor/Preview";
 import { useUpdateBlog } from "src/hooks/Blog/useBlog";
 import ErrorMessage from "src/components/Custom/ErrorMessage";
-import { useSingleBlog } from "src/hooks/Blog/useSingleBlog";
+import { useSingleBlog } from "src/hooks/Blog/useReadBlog";
 
 const EditBlog = () => {
   const params = useParams();

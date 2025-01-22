@@ -1,0 +1,27 @@
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import { auth } from "src/config/firebaseConfig";
+import { deleteBlog } from "src/services/blog/deleteBlog";
+
+export const useDeleteBlog = (blogId: string) => {
+  const navigate = useNavigate();
+  const [btnLoading, setBtnLoading] = useState(false);
+
+  const deleteBlogSubmit = async () => {
+    const confirm = window.confirm("Are you sure you want to delete this blog?");
+    if (!confirm) return;
+    setBtnLoading(true);
+
+    try {
+      await deleteBlog(blogId);
+      setBtnLoading(false);
+      // toastInstance({ text: "Blog deleted successfully!", type: "success" });
+      navigate(`/${auth.currentUser?.uid}`);
+    } catch (err) {
+      setBtnLoading(false);
+      console.error("Error deleting blog:", err);
+    }
+  };
+
+  return { deleteBlogSubmit, btnLoading };
+};

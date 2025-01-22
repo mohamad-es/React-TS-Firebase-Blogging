@@ -6,16 +6,19 @@ import LoadingButton from "src/components/Buttons/LoadingButton";
 import { profile_data } from "src/data/profile";
 import UserProfileCard from "src/components/User/UserProfileCard";
 import RenderState from "src/components/Custom/RenderState";
-import { useFetchUser } from "src/hooks/user/useUser";
 import { searchBlogs, useFetchBlogs } from "src/hooks/Blog/useBlog";
 import { limit, orderBy, where } from "firebase/firestore";
 import { useParams } from "react-router";
+import { useReadUser } from "src/hooks/user/useReadUser";
 
 const PublicProfile = () => {
   const params = useParams();
+
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredBlogs, setFilteredBlogs] = useState<TBlog[]>([]);
-  const { user, userError, userLoading } = useFetchUser();
+
+  const { state } = useReadUser();
+
   const { blogs, error, loadMoreLoading, loading, blogsPerPage, setPage, page } = useFetchBlogs({
     filterQuery: [orderBy("create_time", "desc"), limit(6), where("user_id", "==", params.uid)],
   });
@@ -24,7 +27,12 @@ const PublicProfile = () => {
     <div className="min-h-96 relative flex items-center flex-col justify-center">
       <div className="bg-white w-full py-10">
         <div className="max-w-[1440px] mx-auto">
-          <UserProfileCard error={userError} user_email={user?.email!} user_id={user?.user_id!} loading={userLoading} />
+          <UserProfileCard
+            error={state.error}
+            user_email={state.data?.email}
+            user_id={state.data?.user_id}
+            loading={state.loading}
+          />
         </div>
       </div>
 

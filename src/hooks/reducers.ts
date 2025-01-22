@@ -12,19 +12,17 @@ export type TAction<T> =
     }
   | {
       type: "ERROR";
-      payload: string;
+      payload?: string;
     };
-
-
 
 export const fetchingReducer = <T>(state: TFetchingInitialState<T>, action: TAction<T>): TFetchingInitialState<T> => {
   switch (action.type) {
     case "PENDING":
-      return state;
+      return { ...state, loading: true };
     case "SUCCESS":
       return { ...state, loading: false, data: action.payload };
     case "ERROR":
-      return { ...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload ? action.payload : null };
     default:
       return state;
   }

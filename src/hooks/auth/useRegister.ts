@@ -1,42 +1,35 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useReducer } from "react";
 import { FieldValues } from "react-hook-form";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, addDoc } from "firebase/firestore";
-import { auth, db } from "src/config/firebaseConfig";
+import { fetchingReducer, TFetchingInitialState } from "../reducers";
+import { TUser } from "src/types/user";
+import { register } from "src/services/auth/register";
+import { errorToast, successToast } from "src/utils/Toast";
 
 const useRegister = () => {
+  const initialState: TFetchingInitialState<TUser> = {
+    loading: false,
+    error: null,
+    data: null,
+  };
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+
+  const [state, dispatch] = useReducer(fetchingReducer, initialState);
 
   const handleRegister = async (values: FieldValues) => {
-    setLoading(true);
+    dispatch({ type: "PENDING" });
     try {
-      const currentUser = await createUserWithEmailAndPassword(auth, values.email, values.password);
-
-      const userId = currentUser.user.uid;
-
-      const userRef = collection(db, "users");
-      await addDoc(userRef, {
-        email: values.email,
-        user_id: userId,
-      });
-
-      setLoading(false);
-      // toastInstance({
-      //   text: auth_data.register.toast_message,
-      //   type: "success",
-      // });
-      navigate(`/${userId}/setting`);
-    } catch (err) {
-      // setLoading(false);
-      // err instanceof Error
-      //   ? toastInstance({ text: err.message, type: "error" })
-      //   : console.log(err);
+      const user = await register(values.email, values.password);
+      successToast("User successfully register");
+      dispatch({ type: "SUCCESS", payload: user });
+      navigate(`/${user.id}/setting`);
+    } catch (error) {
+      dispatch({ type: "ERROR" });
+      errorToast(error instanceof Error ? error.message : "Failed to create user");
     }
   };
 
-  return { handleRegister, loading };
+  return { handleRegister, state };
 };
 
 export { useRegister };
