@@ -4,11 +4,11 @@ import ReadFormSidebar from "./_components/ReadFormSidebar";
 import { Image01Icon } from "hugeicons-react";
 import ReadBlogSkeleton from "./_components/ReadBlogSkeleton";
 import ErrorMessage from "src/components/Custom/ErrorMessage";
-import { useSingleBlog } from "src/hooks/Blog/useReadBlog";
+import { useReadBlog } from "src/hooks/blog/useReadBlog";
 
 const ReadBlog = () => {
   const params = useParams();
-  const { state } = useSingleBlog(params.blogid!);
+  const { state } = useReadBlog(params.blogid!);
   const { data: blog, error, loading } = state;
 
   if (loading) return <ReadBlogSkeleton />;

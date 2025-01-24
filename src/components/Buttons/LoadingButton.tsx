@@ -1,15 +1,12 @@
 import { More01Icon } from "hugeicons-react";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch } from "react";
 
 type Props<T> = {
   searchQuery: string;
-  data: T[];
-  blogsPerPage: number;
-  setPage: Dispatch<SetStateAction<number>>;
-  loadMoreLoading: boolean;
+  dispatch: Dispatch<T>;
 };
 
-const LoadingButton = <T,>({ searchQuery, data, blogsPerPage, setPage, loadMoreLoading }: Props<T>) => {
+const LoadingButton = <T,>({ searchQuery, dispatch }: Props<T>) => {
   const loadMore = () => {
     setPage((prevPage) => prevPage + 1);
   };

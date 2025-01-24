@@ -11,9 +11,9 @@ import BlogEditor from "src/components/Blog/BlogEditor";
 import WriteFormSidebar from "./_components/WriteFormSidebar";
 import Modal from "src/components/Custom/Modal";
 import Preview from "src/components/Editor/Preview";
-import { useUpdateBlog } from "src/hooks/Blog/useBlog";
 import ErrorMessage from "src/components/Custom/ErrorMessage";
-import { useSingleBlog } from "src/hooks/Blog/useReadBlog";
+import { useReadBlog } from "src/hooks/blog/useReadBlog";
+import { useUpdateBlog } from "src/hooks/blog/useUpdateBlog";
 
 const EditBlog = () => {
   const params = useParams();
@@ -21,7 +21,7 @@ const EditBlog = () => {
 
   const modalsRef = useRef<HTMLDialogElement | null>(null);
 
-  const { state } = useSingleBlog(params.blogid!);
+  const { state } = useReadBlog(params.blogid!);
   const { data: blog, error, loading } = state;
 
   const { content, image, title, setImage, setContent, setTitle } = useUpdateBlog(blog!);

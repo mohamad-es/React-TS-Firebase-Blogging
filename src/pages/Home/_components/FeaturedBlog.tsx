@@ -5,11 +5,11 @@ import { home_data } from "src/data/home";
 import { convertFirebaseTimestampToDate } from "src/utils/ConvertTime";
 import FeaturedBlogSkeleton from "./FeaturedBlogSkeleton";
 import ErrorMessage from "src/components/Custom/ErrorMessage";
-import { useSingleBlog } from "src/hooks/Blog/useReadBlog";
+import { useReadBlog } from "src/hooks/blog/useReadBlog";
 
 const FeaturedBlog = () => {
   const blogId = "T1Fxk8JmRkLB8tEVa4xw";
-  const { state } = useSingleBlog(blogId);
+  const { state } = useReadBlog(blogId);
   const { data: blog, error, loading } = state;
 
   if (loading) return <FeaturedBlogSkeleton />;

@@ -5,7 +5,7 @@ import WriteFormSidebar from "./_components/WriteFormSidebar";
 import BlogEditor from "src/components/Blog/BlogEditor";
 import Modal from "src/components/Custom/Modal";
 import Preview from "src/components/Editor/Preview";
-import { useCreateBlog } from "src/hooks/Blog/useCreateBlog";
+import { useCreateBlog } from "src/hooks/blog/useCreateBlog";
 
 const WriteBlog = () => {
   const { handleSubmit } = useForm();

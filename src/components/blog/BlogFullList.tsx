@@ -1,22 +1,22 @@
-import { useFetchBlogs } from "src/hooks/Blog/useBlog";
+import { useFetchBlogs } from "src/hooks/blog/useAllBlogs";
 import { TBlog } from "src/types/blog";
 import LoadingButton from "../Buttons/LoadingButton";
 import ErrorMessage from "../Custom/ErrorMessage";
 import BlogCard from "./BlogCard";
 import BlogCardSkeleton from "./BlogCardSkeleton";
+import { TFetchingWithLoadMore } from "src/types/states";
 
 type Props<T> = {
   filterQuery: T[];
   searchQuery: string;
   filteredBlogs: TBlog[];
+  state: TFetchingWithLoadMore<TBlog[]>;
 };
 
-const BlogFullList = <T,>({ filterQuery, filteredBlogs, searchQuery }: Props<T>) => {
-  const skeleton = [1, 2, 3];
+const BlogFullList = <T,>({ state, filteredBlogs, searchQuery }: Props<T>) => {
+  const { blogPerPage, data:blogs, error, loadMore, loading, page } = state;
 
-  const { blogs, error, loadMoreLoading, loading, blogsPerPage, setPage, page } = useFetchBlogs({
-    filterQuery,
-  });
+  const skeleton = [1, 2, 3];
 
   return (
     <div>
@@ -36,7 +36,7 @@ const BlogFullList = <T,>({ filterQuery, filteredBlogs, searchQuery }: Props<T>)
 
       {blogs.length !== 0 && (
         <LoadingButton
-          blogsPerPage={blogsPerPage}
+          blogsPerPage={blogPerPage}
           data={blogs}
           loadMoreLoading={loadMoreLoading}
           searchQuery={searchQuery}

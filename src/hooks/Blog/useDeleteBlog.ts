@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { auth } from "src/config/firebaseConfig";
 import { deleteBlog } from "src/services/blog/deleteBlog";
+import { successToast } from "src/utils/Toast";
 
 export const useDeleteBlog = (blogId: string) => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export const useDeleteBlog = (blogId: string) => {
     try {
       await deleteBlog(blogId);
       setBtnLoading(false);
-      // toastInstance({ text: "Blog deleted successfully!", type: "success" });
+      successToast("Blog deleted successfully!");
       navigate(`/${auth.currentUser?.uid}`);
     } catch (err) {
       setBtnLoading(false);

@@ -1,7 +1,7 @@
 import { PencilEdit01Icon, Delete01Icon } from "hugeicons-react";
 import { Link, useParams } from "react-router";
 import { auth } from "src/config/firebaseConfig";
-import { useDeleteBlog } from "src/hooks/Blog/useBlog";
+import { useDeleteBlog } from "src/hooks/blog/useDeleteBlog";
 import { TBlog } from "src/types/blog";
 import { convertFirebaseTimestampToDate } from "src/utils/ConvertTime";
 
