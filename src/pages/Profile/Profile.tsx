@@ -5,12 +5,19 @@ import BlogFullList from "src/components/Blog/BlogFullList";
 import BlogFullListHeader from "src/components/Blog/BlogFullListHeader";
 import { useState } from "react";
 import { TBlog } from "src/types/blog";
+import { useAllBlogs } from "src/hooks/blog/useAllBlogs";
 
 const Profile = () => {
   const params = useParams();
 
   const [fitleredBlogs, setFilteredBlogs] = useState<TBlog[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const { dispatch, state } = useAllBlogs([
+    orderBy("create_time", "desc"),
+    limit(6),
+    where("user_id", "==", params.uid),
+  ]);
 
   return (
     <div>
@@ -26,18 +33,14 @@ const Profile = () => {
       >
         <div className="py-3 sticky top-[102px] border-b bg-white px-10 z-10">
           <BlogFullListHeader
-            filterQuery={[orderBy("create_time", "desc"), limit(6)]}
+            state={state}
             setFilteredBlogs={setFilteredBlogs}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
           />
         </div>
 
-        <BlogFullList
-          filteredBlogs={fitleredBlogs}
-          searchQuery={searchQuery}
-          filterQuery={[orderBy("create_time", "desc"), limit(6), where("user_id", "==", params.uid)]}
-        />
+        <BlogFullList filteredBlogs={fitleredBlogs} searchQuery={searchQuery} dispatch={dispatch} state={state} />
       </TabsLayout>
     </div>
   );

@@ -6,13 +6,13 @@ import { blogListByQueryReducer } from "../reducers";
 import { orderBy, limit, where } from "firebase/firestore";
 import { useParams } from "react-router";
 
-const blogsInitialState: TFetchingWithLoadMore<TBlog> = {
+const blogsInitialState: TFetchingWithLoadMore<TBlog[]> = {
   loading: false,
   error: null,
   data: null,
   page: 1,
-  loadMore: false,
-  blogPerPage: 6,
+  loadMoreLoading: false,
+  blogsPerPage: 6,
 };
 
 export const useUserBlogs = () => {
@@ -27,5 +27,5 @@ export const useUserBlogs = () => {
     });
   }, [state.page]);
 
-  return { state };
+  return { state, dispatch };
 };

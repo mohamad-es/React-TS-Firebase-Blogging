@@ -1,13 +1,13 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import SubmitButton from "src/components/Buttons/SubmitButton";
 import Input from "src/components/Form/Input";
-import { TFetchingInitialState } from "src/hooks/reducers";
 import { TAuthForms } from "src/types/auth";
+import { TFetchingStates } from "src/types/states";
 
 type Props = {
   auth_data: TAuthForms;
   submitFunction: SubmitHandler<FieldValues>;
-  state: TFetchingInitialState<unknown>;
+  state: TFetchingStates<unknown>;
 };
 
 const AuthForm = ({ auth_data, submitFunction, state }: Props) => {

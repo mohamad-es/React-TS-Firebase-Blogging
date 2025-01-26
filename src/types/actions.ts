@@ -1,4 +1,4 @@
-export type TReadBlogAction<T> =
+export type TFetchingAction<T> =
   | { type: "PENDING" }
   | {
       type: "SUCCESS";
@@ -9,7 +9,7 @@ export type TReadBlogAction<T> =
       payload?: string;
     };
 
-export type TAllBlogsAction<T> =
+export type TFetchingWithLoadMoreAction<T> =
   | { type: "PENDING" }
   | {
       type: "SUCCESS";
@@ -18,4 +18,7 @@ export type TAllBlogsAction<T> =
   | {
       type: "ERROR";
       payload?: string;
+    }
+  | {
+      type: "LOAD_MORE";
     };

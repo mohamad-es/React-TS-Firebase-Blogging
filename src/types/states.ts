@@ -7,5 +7,5 @@ export type TFetchingStates<T> = {
 export interface TFetchingWithLoadMore<T> extends TFetchingStates<T> {
   page: number;
   loadMoreLoading: boolean;
-  blogPerPage: number;
+  blogsPerPage: number;
 }

@@ -1,10 +1,11 @@
 import { useReducer, useEffect } from "react";
 import { TBlog } from "src/types/blog";
-import { TFetchingInitialState, fetchingReducer } from "../reducers";
+import { fetchingReducer } from "../reducers";
 import { readBlog } from "src/services/blog/readBlog";
+import { TFetchingStates } from "src/types/states";
 
 export const useReadBlog = (blogId: string) => {
-  const initialData: TFetchingInitialState<TBlog> = {
+  const initialData: TFetchingStates<TBlog> = {
     loading: true,
     error: null,
     data: null,

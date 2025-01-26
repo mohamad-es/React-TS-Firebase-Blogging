@@ -3,23 +3,23 @@ import { blogListByQuery } from "src/utils/blogListByQuery";
 import { TBlog } from "src/types/blog";
 import { TFetchingWithLoadMore } from "src/types/states";
 import { blogListByQueryReducer } from "../reducers";
-import { orderBy, limit } from "firebase/firestore";
+import { QueryConstraint } from "firebase/firestore";
 
-const blogsInitialState: TFetchingWithLoadMore<TBlog> = {
+const blogsInitialState: TFetchingWithLoadMore<TBlog[]> = {
   loading: false,
   error: null,
   data: null,
   page: 1,
-  loadMore: false,
-  blogPerPage: 6,
+  loadMoreLoading: false,
+  blogsPerPage: 6,
 };
 
-export const useAllBlogs = () => {
-  const [state, dispatch] = useReducer(blogListByQueryReducer<TBlog>, blogsInitialState);
+export const useAllBlogs = (filterQuery: QueryConstraint[]) => {
+  const [state, dispatch] = useReducer(blogListByQueryReducer<TBlog[]>, blogsInitialState);
 
   useEffect(() => {
-    blogListByQuery({ filterQuery: [orderBy("create_time", "desc"), limit(6)], dispatch, state });
+    blogListByQuery({ filterQuery, dispatch, state });
   }, [state.page]);
 
-  return { state };
+  return { state, dispatch };
 };

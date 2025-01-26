@@ -3,20 +3,18 @@ import { Dispatch, SetStateAction } from "react";
 import { TBlog } from "src/types/blog";
 import { blogs_data } from "src/data/blog";
 import SearchSkeleton from "../Form/SearchSkeleton";
-import { searchBlogs, useFetchBlogs } from "src/hooks/blog/useAllBlogs";
+import { TFetchingWithLoadMore } from "src/types/states";
+import { searchBlogs } from "src/utils/searchBlogs";
 
-type Props<T> = {
+type Props = {
   setFilteredBlogs: Dispatch<SetStateAction<TBlog[]>>;
-  filterQuery: T[];
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
+  state: TFetchingWithLoadMore<TBlog[]>;
 };
 
-const BlogFullListHeader = <T,>({ setFilteredBlogs, filterQuery, searchQuery, setSearchQuery }: Props<T>) => {
-  const { loading, page } = useFetchBlogs({
-    filterQuery,
-  });
-
+const BlogFullListHeader = ({ state, setFilteredBlogs, searchQuery, setSearchQuery }: Props) => {
+  const { loading, page } = state;
   return (
     <div className="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between">
       <h2>{blogs_data.all.title}</h2>

@@ -1,7 +1,7 @@
-import { TAllBlogsAction, TReadBlogAction } from "src/types/actions";
+import { TFetchingAction, TFetchingWithLoadMoreAction } from "src/types/actions";
 import { TFetchingStates, TFetchingWithLoadMore } from "src/types/states";
 
-export const fetchingReducer = <T>(state: TFetchingStates<T>, action: TReadBlogAction<T>): TFetchingStates<T> => {
+export const fetchingReducer = <T>(state: TFetchingStates<T>, action: TFetchingAction<T>): TFetchingStates<T> => {
   switch (action.type) {
     case "PENDING":
       return { ...state, loading: true };
@@ -16,7 +16,7 @@ export const fetchingReducer = <T>(state: TFetchingStates<T>, action: TReadBlogA
 
 export const blogListByQueryReducer = <T>(
   state: TFetchingWithLoadMore<T>,
-  action: TAllBlogsAction<T>
+  action: TFetchingWithLoadMoreAction<T>
 ): TFetchingWithLoadMore<T> => {
   switch (action.type) {
     case "PENDING":
@@ -25,6 +25,8 @@ export const blogListByQueryReducer = <T>(
       return { ...state, loading: false, data: action.payload };
     case "ERROR":
       return { ...state, loading: false, error: action.payload ? action.payload : null };
+    case "LOAD_MORE":
+      return { ...state, page: state.page + 1 };
     default:
       return state;
   }

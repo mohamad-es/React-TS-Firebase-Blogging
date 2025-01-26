@@ -2,12 +2,13 @@ import { useEffect, useReducer } from "react";
 import { useParams } from "react-router";
 import { readUser } from "src/services/user/readUser";
 import { TUser } from "src/types/user";
-import { fetchingReducer, TFetchingInitialState } from "../reducers";
+import { fetchingReducer } from "../reducers";
+import { TFetchingStates } from "src/types/states";
 
 export const useReadUser = () => {
   const params = useParams();
 
-  const initialState: TFetchingInitialState<TUser> = {
+  const initialState: TFetchingStates<TUser> = {
     loading: false,
     error: null,
     data: null,

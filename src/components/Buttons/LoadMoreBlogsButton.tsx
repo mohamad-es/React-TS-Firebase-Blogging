@@ -1,17 +1,24 @@
 import { More01Icon } from "hugeicons-react";
 import { Dispatch } from "react";
+import { TFetchingWithLoadMoreAction } from "src/types/actions";
+import { TBlog } from "src/types/blog";
+import { TFetchingWithLoadMore } from "src/types/states";
 
 type Props<T> = {
   searchQuery: string;
-  dispatch: Dispatch<T>;
+  state: TFetchingWithLoadMore<TBlog[]>;
+  dispatch: Dispatch<TFetchingWithLoadMoreAction<T>> | Dispatch<TFetchingWithLoadMoreAction<T>>;
 };
 
-const LoadingButton = <T,>({ searchQuery, dispatch }: Props<T>) => {
+const LoadMoreBlogsButton = <T,>({ searchQuery, dispatch, state }: Props<T>) => {
+  const { data, blogsPerPage, loadMoreLoading } = state;
+
   const loadMore = () => {
-    setPage((prevPage) => prevPage + 1);
+    dispatch({ type: "LOAD_MORE" });
   };
 
   return (
+    data &&
     !searchQuery &&
     data.length % blogsPerPage === 0 && (
       <div className="text-center bc-gray pt-10">
@@ -34,4 +41,4 @@ const LoadingButton = <T,>({ searchQuery, dispatch }: Props<T>) => {
   );
 };
 
-export default LoadingButton;
+export default LoadMoreBlogsButton;
