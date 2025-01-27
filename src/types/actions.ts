@@ -1,3 +1,5 @@
+import { TCreateBlogState } from "./states";
+
 export type TFetchingAction<T> =
   | { type: "PENDING" }
   | {
@@ -21,4 +23,18 @@ export type TFetchingWithLoadMoreAction<T> =
     }
   | {
       type: "LOAD_MORE";
+    }
+  | {
+      type: "LOAD_MORE_STOP";
+    };
+
+export type TCreateBlogAction =
+  | { type: "PENDING" }
+  | {
+      type: "SUCCESS";
+      payload: TCreateBlogState;
+    }
+  | {
+      type: "ERROR";
+      payload?: string;
     };

@@ -1,7 +1,7 @@
 import { orderBy, limit } from "firebase/firestore";
-import BlogFullList from "src/components/Blog/BlogFullList";
+import BlogFullList from "src/components/shared/Blog/BlogFullList";
 import FeaturedBlog from "./_components/FeaturedBlog";
-import BlogFullListHeader from "src/components/Blog/BlogFullListHeader";
+import BlogFullListHeader from "src/components/shared/Blog/BlogFullListHeader";
 import { useState } from "react";
 import { TBlog } from "src/types/blog";
 import { useAllBlogs } from "src/hooks/blog/useAllBlogs";

@@ -1,8 +1,8 @@
 import { limit, orderBy, where } from "firebase/firestore";
 import { useParams } from "react-router";
-import TabsLayout from "src/components/Custom/TabsLayout";
-import BlogFullList from "src/components/Blog/BlogFullList";
-import BlogFullListHeader from "src/components/Blog/BlogFullListHeader";
+import TabsLayout from "src/components/shared/TabsLayout";
+import BlogFullList from "src/components/shared/Blog/BlogFullList";
+import BlogFullListHeader from "src/components/shared/Blog/BlogFullListHeader";
 import { useState } from "react";
 import { TBlog } from "src/types/blog";
 import { useAllBlogs } from "src/hooks/blog/useAllBlogs";

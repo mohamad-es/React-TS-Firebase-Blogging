@@ -1,12 +1,12 @@
 import { Fragment, useState } from "react";
-import BlogCard from "src/components/Blog/BlogCard";
-import LoadingButton from "src/components/Buttons/LoadMoreBlogsButton";
-import RenderState from "src/components/Custom/RenderState";
+import BlogCard from "src/components/shared/Blog/BlogCard";
+import LoadingButton from "src/components/Buttons/LoadMoreButton";
 import Search from "src/components/Form/Search";
 import { profile_data } from "src/data/profile";
 import { useUserBlogs } from "src/hooks/user/useUserBlogs";
 import { TBlog } from "src/types/blog";
 import { searchBlogs } from "src/utils/searchBlogs";
+import RenderState from "src/components/shared/RenderState";
 
 const UserBlogs = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");

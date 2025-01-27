@@ -1,4 +1,4 @@
-import UserProfileCard from "src/components/User/UserProfileCard";
+import UserProfileCard from "src/components/shared/User/UserProfileCard";
 import { useReadUser } from "src/hooks/user/useReadUser";
 import UserBlogs from "./UserBlogs";
 

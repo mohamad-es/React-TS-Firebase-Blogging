@@ -1,45 +1,40 @@
 import { PlusSignIcon } from "hugeicons-react";
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent, Dispatch } from "react";
+import { TCreateBlogAction } from "src/types/actions";
+import { TCreateBlogState } from "src/types/states";
+import { errorToast } from "src/utils/Toast";
 
 type Props = {
-  image: string | null;
-  setImage: Dispatch<SetStateAction<string | null>>;
+  state: TCreateBlogState;
+  dispatch: Dispatch<TCreateBlogAction>;
 };
 
-const ImageUploader = ({ image, setImage }: Props) => {
-  // Handle image upload and convert to Base64
+const ImageUploader = ({ dispatch, state }: Props) => {
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+
     if (file) {
-      // Check file size (100KB limit)
       if (file.size > 100 * 1024) {
-        // toastInstance({
-        //   text: "File size must be less than 100KB",
-        //   type: "error",
-        // });
+        errorToast("File size must be less than 100KB");
         return;
       }
 
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        setImage(reader.result as string);
+        dispatch({ type: "SUCCESS", payload: { ...state, img: reader.result as string } });
       };
       reader.onerror = (error) => {
-        console.error("Error converting image to Base64:", error);
-        // toastInstance({
-        //   text: "Failed to upload image",
-        //   type: "error",
-        // });
+        errorToast(error instanceof Error ? error.message : "Failed to upload image");
       };
     }
   };
 
   return (
     <div className="">
-      {image ? (
+      {state.img ? (
         <div className="flex flex-col gap-10 items-center">
-          <img src={image} alt="Preview" className="w-full h-96 object-cover rounded-xl rounded-b-none border" />
+          <img src={state.img} alt="Preview" className="w-full h-96 object-cover rounded-xl rounded-b-none border" />
 
           <div className="flex gap-5">
             <div className="relative w-40 h-10">
@@ -55,7 +50,10 @@ const ImageUploader = ({ image, setImage }: Props) => {
                 className="h-full w-full opacity-0 absolute start-0 top-0"
               />
             </div>
-            <button className="text-red-500 font-medium" onClick={() => setImage(null)}>
+            <button
+              className="text-red-500 font-medium"
+              onClick={() => dispatch({ type: "SUCCESS", payload: { img: null } })}
+            >
               Remove banner
             </button>
           </div>

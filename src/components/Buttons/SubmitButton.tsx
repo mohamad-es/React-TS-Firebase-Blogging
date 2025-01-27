@@ -9,13 +9,9 @@ type Props = {
 
 const SubmitButton = ({ loading, className, title }: Props) => {
   return (
-    <button className={`btn flex items-center ${className}`} type={loading ? "button" : "submit"}>
+    <button className={`btn btn-primary items-center ${className}`} type={loading ? "button" : "submit"}>
       {title}
-      {loading ? (
-        <div className="loading loading-xs loading-spinner" />
-      ) : (
-        <CheckmarkCircle02Icon fill="black" color="white" size={22} />
-      )}
+      {loading ? <div className="loading loading-xs loading-spinner" /> : <CheckmarkCircle02Icon size={22} />}
     </button>
   );
 };

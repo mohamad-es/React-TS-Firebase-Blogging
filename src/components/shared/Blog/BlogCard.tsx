@@ -9,10 +9,7 @@ type Props = {
 
 const BlogCard = ({ blog }: Props) => {
   return (
-    <div
-      className="border rounded-2xl overflow-hidden col-span-1 flex flex-col bg-white"
-      key={blog.id}
-    >
+    <div className="border rounded-2xl overflow-hidden col-span-1 flex flex-col bg-white" key={blog.id}>
       <div className="w-full h-52 flex items-center justify-center relative border-b">
         {blog.img ? (
           <img src={blog.img} className="w-full h-full object-cover" />
@@ -30,12 +27,7 @@ const BlogCard = ({ blog }: Props) => {
           </Link>
         </div>
 
-        <UserProfileCard
-          error={null}
-          loading={false}
-          user_email={blog.user_email}
-          user_id={blog.user_id}
-        />
+        <UserProfileCard error={null} loading={false} user_email={blog.user_email} user_id={blog.user_id} />
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
 import { TBlog } from "src/types/blog";
-import LoadingButton from "../Buttons/LoadMoreBlogsButton";
 import BlogCard from "./BlogCard";
 import BlogCardSkeleton from "./BlogCardSkeleton";
 import { TFetchingWithLoadMore } from "src/types/states";
-import RenderState from "../Custom/RenderState";
 import { TFetchingWithLoadMoreAction } from "src/types/actions";
 import { Dispatch } from "react";
+import RenderState from "../RenderState";
+import LoadMoreButton from "src/components/Buttons/LoadMoreButton";
 
 type Props = {
   searchQuery: string;
@@ -38,7 +38,7 @@ const BlogFullList = ({ state, filteredBlogs, searchQuery, dispatch }: Props) =>
         </div>
       </div>
 
-      {blogs?.length !== 0 && <LoadingButton<TBlog[]> dispatch={dispatch} state={state} searchQuery={searchQuery} />}
+      {blogs?.length !== 0 && <LoadMoreButton dispatch={dispatch} state={state} searchQuery={searchQuery} />}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import RenderState from "../Custom/RenderState";
+import RenderState from "../RenderState";
 
 type Props = {
   user_email: string | undefined;

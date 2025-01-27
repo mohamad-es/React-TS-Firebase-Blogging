@@ -1,9 +1,9 @@
 import { CheckmarkCircle02Icon } from "hugeicons-react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
-import TabsLayout from "src/components/Custom/TabsLayout";
+import TabsLayout from "src/components/shared/TabsLayout";
 import Input from "src/components/Form/Input";
-import UpdateProfileImage from "src/components/Form/UpdateProfileImage";
+import UpdateProfileImage from "src/components/shared/UpdateProfileImage";
 
 const ProfileSetting = () => {
   const params = useParams();
@@ -25,7 +25,7 @@ const ProfileSetting = () => {
     >
       <div className="grid grid-cols-12 max-w-[1440px] mx-auto">
         <div className="p-10 col-span-3">
-          <UpdateProfileImage/>
+          <UpdateProfileImage />
         </div>
 
         <div className="col-span-8">

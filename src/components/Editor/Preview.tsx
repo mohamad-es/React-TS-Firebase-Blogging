@@ -1,14 +1,14 @@
 import hljs from "highlight.js";
 import { useEffect, useRef } from "react";
+import { TCreateBlogState } from "src/types/states";
 
 type Props = {
-  title?: string;
-  content: string;
-  img?: string;
+  state: TCreateBlogState;
 };
 
-const Preview: React.FC<Props> = ({ content, title, img }) => {
+const Preview = ({ state }: Props) => {
   const previewRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     if (previewRef.current) {
@@ -16,21 +16,17 @@ const Preview: React.FC<Props> = ({ content, title, img }) => {
         hljs.highlightBlock(block as HTMLElement);
       });
     }
-  }, [content]);
+  }, [state.content]);
 
   return (
-    <div>
-      {img && <img src={img} className="w-full h-96 object-cover" />}
-      {title && <h1 className="mb-12 mt-16 px-10">{title}</h1>}
-      {content ? (
-        <div
-          className="whitespace-pre-wrap px-10 leading-7"
-          ref={previewRef}
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
-      ) : (
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">No content written yet</div>
-      )}
+    <div className="relative">
+      {state.img && <img src={state.img} className="w-full h-96 object-cover" />}
+      <h1 className="mb-12 mt-16 px-10">{state.title}</h1>
+      <div
+        className="whitespace-pre-wrap px-10 leading-7"
+        ref={previewRef}
+        dangerouslySetInnerHTML={{ __html: state.content! }}
+      />
     </div>
   );
 };

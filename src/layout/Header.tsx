@@ -5,7 +5,7 @@ import Navbar from "./_components/Navbar";
 import { layout_data } from "src/data/layout";
 import { Link, useNavigate } from "react-router-dom";
 import { Logout02Icon, PencilEdit02Icon, UserCircleIcon } from "hugeicons-react";
-import Dropdown from "src/components/Form/Dropdown";
+import Dropdown from "src/components/Custom/Dropdown";
 import { logOut } from "src/services/auth/logout";
 
 const Header = () => {

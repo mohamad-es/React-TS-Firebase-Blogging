@@ -1,8 +1,8 @@
-import Search from "../Form/Search";
+import Search from "../../Form/Search";
 import { Dispatch, SetStateAction } from "react";
 import { TBlog } from "src/types/blog";
 import { blogs_data } from "src/data/blog";
-import SearchSkeleton from "../Form/SearchSkeleton";
+import SearchSkeleton from "../../Skeleton/SearchSkeleton";
 import { TFetchingWithLoadMore } from "src/types/states";
 import { searchBlogs } from "src/utils/searchBlogs";
 

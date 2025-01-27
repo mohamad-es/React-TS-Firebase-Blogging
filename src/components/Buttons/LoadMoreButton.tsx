@@ -10,12 +10,8 @@ type Props<T> = {
   dispatch: Dispatch<TFetchingWithLoadMoreAction<T>> | Dispatch<TFetchingWithLoadMoreAction<T>>;
 };
 
-const LoadMoreBlogsButton = <T,>({ searchQuery, dispatch, state }: Props<T>) => {
+const LoadMoreButton = <T,>({ searchQuery, dispatch, state }: Props<T>) => {
   const { data, blogsPerPage, loadMoreLoading } = state;
-
-  const loadMore = () => {
-    dispatch({ type: "LOAD_MORE" });
-  };
 
   return (
     data &&
@@ -23,7 +19,7 @@ const LoadMoreBlogsButton = <T,>({ searchQuery, dispatch, state }: Props<T>) => 
     data.length % blogsPerPage === 0 && (
       <div className="text-center bc-gray pt-10">
         <button
-          onClick={loadMore}
+          onClick={() => dispatch({ type: "LOAD_MORE" })}
           disabled={loadMoreLoading}
           className={`btn border-gray-300 ${loadMoreLoading ? "opacity-50 cursor-not-allowed" : ""}`}
         >
@@ -41,4 +37,4 @@ const LoadMoreBlogsButton = <T,>({ searchQuery, dispatch, state }: Props<T>) => 
   );
 };
 
-export default LoadMoreBlogsButton;
+export default LoadMoreButton;

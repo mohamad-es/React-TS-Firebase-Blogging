@@ -1,17 +1,24 @@
-import React, { useMemo } from "react";
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import { Dispatch, useEffect, useMemo, useState } from "react";
 import hljs from "highlight.js";
-import "highlight.js/styles/monokai-sublime.min.css"; // Import Highlight.js theme
 import ReactQuill from "react-quill";
+import { TCreateBlogAction } from "src/types/actions";
+
+import "react-quill/dist/quill.snow.css";
+import "highlight.js/styles/monokai-sublime.min.css";
+import { TCreateBlogState } from "src/types/states";
 
 type Props = {
-  content: string;
-  title: string;
-  setContent: any;
+  state: TCreateBlogState;
+  dispatch: Dispatch<TCreateBlogAction>;
 };
 
-const RichTextEditor: React.FC<Props> = ({ content, setContent }) => {
-  // Configure Quill modules
+const RichTextEditor = ({ dispatch, state }: Props) => {
+  const [value, setValue] = useState<string>("");
+
+  useEffect(() => {
+    dispatch({ type: "SUCCESS", payload: { ...state, content: value } });
+  }, [value]);
+
   const modules = useMemo(
     () => ({
       syntax: {
@@ -33,8 +40,8 @@ const RichTextEditor: React.FC<Props> = ({ content, setContent }) => {
 
   return (
     <ReactQuill
-      value={content}
-      onChange={setContent}
+      value={value}
+      onChange={setValue}
       modules={modules}
       formats={formats}
       placeholder="Write blog content here ..."

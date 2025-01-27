@@ -20,7 +20,6 @@ export const useDeleteBlog = (blogId: string) => {
       navigate(`/${auth.currentUser?.uid}`);
     } catch (err) {
       setBtnLoading(false);
-      console.error("Error deleting blog:", err);
     }
   };
 
