@@ -4,12 +4,12 @@ import { FieldValues } from "react-hook-form";
 import { fetchingReducer } from "../reducers";
 import { register } from "src/services/auth/register";
 import { errorToast, successToast } from "src/utils/Toast";
-import { fetchingStates } from "../states";
+import { fetchingStates } from "../../states/states";
 
 const useRegister = () => {
   const navigate = useNavigate();
 
-  const [state, dispatch] = useReducer(fetchingReducer, fetchingStates);
+  const [state, dispatch] = useReducer(fetchingReducer, fetchingStates());
 
   const handleRegister = async (values: FieldValues) => {
     dispatch({ type: "PENDING" });

@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch } from "react";
 import { Fragment } from "react/jsx-runtime";
-import RichTextEditor from "../../Editor/RichTextEditor";
+import RichTextEditor from "../../editor/RichTextEditor";
 import { TCreateBlogState } from "src/types/states";
 import { TCreateBlogAction } from "src/types/actions";
 

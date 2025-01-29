@@ -4,7 +4,7 @@ import { auth } from "src/config/firebaseConfig";
 import { createBlog } from "src/services/blog/createBlog";
 import { errorToast, successToast } from "src/utils/Toast";
 import { createBlogReducer } from "../reducers";
-import { createBlogStates } from "../states";
+import { createBlogStates } from "../../states/states";
 
 export const useCreateBlog = () => {
   const [state, dispatch] = useReducer(createBlogReducer, createBlogStates());

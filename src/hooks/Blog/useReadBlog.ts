@@ -2,7 +2,7 @@ import { useReducer, useEffect } from "react";
 import { TBlog } from "src/types/blog";
 import { fetchingReducer } from "../reducers";
 import { readBlog } from "src/services/blog/readBlog";
-import { fetchingStates } from "../states";
+import { fetchingStates } from "../../states/states";
 
 export const useReadBlog = (blogId: string) => {
   const [state, dispatch] = useReducer(fetchingReducer<TBlog>, fetchingStates<TBlog>());

@@ -3,15 +3,21 @@ import { ReactNode } from "react";
 
 type Props = {
   loading: boolean | null;
-  title: ReactNode;
+  title: string;
   className?: string;
+  icon?: ReactNode;
+  submitFn?: () => void;
 };
 
-const SubmitButton = ({ loading, className, title }: Props) => {
+const SubmitButton = ({ loading, className, title, submitFn, icon = <CheckmarkCircle02Icon size={22} /> }: Props) => {
   return (
-    <button className={`btn btn-primary items-center ${className}`} type={loading ? "button" : "submit"}>
+    <button
+      onClick={() => submitFn && submitFn()}
+      className={`btn btn-primary items-center ${className}`}
+      type={loading ? "button" : "submit"}
+    >
       {title}
-      {loading ? <div className="loading loading-xs loading-spinner" /> : <CheckmarkCircle02Icon size={22} />}
+      {loading ? <div className="loading loading-xs loading-spinner" /> : icon}
     </button>
   );
 };

@@ -5,7 +5,7 @@ import { TFetchingWithLoadMore } from "src/types/states";
 import { TFetchingWithLoadMoreAction } from "src/types/actions";
 import { Dispatch } from "react";
 import RenderState from "../RenderState";
-import LoadMoreButton from "src/components/Buttons/LoadMoreButton";
+import LoadMoreButton from "src/components/buttons/LoadMoreButton";
 
 type Props = {
   searchQuery: string;

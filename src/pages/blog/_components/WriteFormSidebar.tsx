@@ -1,7 +1,7 @@
 import { EyeIcon } from "hugeicons-react";
 import { RefObject } from "react";
 import { Fragment } from "react/jsx-runtime";
-import SubmitButton from "src/components/Buttons/SubmitButton";
+import SubmitButton from "src/components/buttons/SubmitButton";
 
 type Props = {
   modalsRef: RefObject<HTMLDialogElement | null>;

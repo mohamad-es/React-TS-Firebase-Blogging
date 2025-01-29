@@ -3,8 +3,8 @@ import { Fragment, useRef } from "react";
 import ImageUploader from "src/components/shared/ImageUploader";
 import WriteFormSidebar from "./_components/WriteFormSidebar";
 import BlogEditor from "src/components/shared/Blog/BlogEditor";
-import Modal from "src/components/Custom/Modal";
-import Preview from "src/components/Editor/Preview";
+import Modal from "src/components/custom/Modal";
+import Preview from "src/components/editor/Preview";
 import { useCreateBlog } from "src/hooks/blog/useCreateBlog";
 
 const WriteBlog = () => {

@@ -5,7 +5,7 @@ import { updateBlog } from "src/services/blog/updateBlog";
 import { TBlog } from "src/types/blog";
 import { errorToast, successToast } from "src/utils/Toast";
 import { createBlogReducer } from "../reducers";
-import { createBlogStates } from "../states";
+import { createBlogStates } from "../../states/states";
 
 export const useUpdateBlog = (blog: TBlog) => {
   const params = useParams();

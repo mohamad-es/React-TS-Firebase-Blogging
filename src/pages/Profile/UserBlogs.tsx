@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import BlogCard from "src/components/shared/Blog/BlogCard";
-import LoadingButton from "src/components/Buttons/LoadMoreButton";
-import Search from "src/components/Form/Search";
+import LoadingButton from "src/components/buttons/LoadMoreButton";
+import Search from "src/components/form/Search";
 import { profile_data } from "src/data/profile";
 import { useUserBlogs } from "src/hooks/user/useUserBlogs";
 import { TBlog } from "src/types/blog";

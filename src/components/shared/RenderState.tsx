@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import ErrorMessage from "../Custom/ErrorMessage";
-import Loading from "../Custom/Loading";
+import ErrorMessage from "../custom/ErrorMessage";
+import Loading from "../custom/Loading";
 
 type Props<T> = {
   children: ReactNode;
@@ -11,9 +11,10 @@ type Props<T> = {
   emptyListText?: string;
 };
 
-const RenderState = <T,>({ loading, error, children, loadingRender }: Props<T>) => {
+const RenderState = <T,>({ loading, error, children, loadingRender, data }: Props<T>) => {
   if (loading) return loadingRender ? loadingRender : <Loading />;
   if (error) return <ErrorMessage text={error} />;
+  if (!data) return <ErrorMessage text="No content availabe" />;
 
   return children;
 };

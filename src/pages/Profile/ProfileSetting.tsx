@@ -2,7 +2,7 @@ import { CheckmarkCircle02Icon } from "hugeicons-react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import TabsLayout from "src/components/shared/TabsLayout";
-import Input from "src/components/Form/Input";
+import Input from "src/components/form/Input";
 import UpdateProfileImage from "src/components/shared/UpdateProfileImage";
 
 const ProfileSetting = () => {

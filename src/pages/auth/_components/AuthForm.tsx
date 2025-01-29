@@ -1,6 +1,6 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import SubmitButton from "src/components/Buttons/SubmitButton";
-import Input from "src/components/Form/Input";
+import SubmitButton from "src/components/buttons/SubmitButton";
+import Input from "src/components/form/Input";
 import { TAuthForms } from "src/types/auth";
 import { TFetchingStates } from "src/types/states";
 
@@ -29,8 +29,8 @@ const AuthForm = ({ auth_data, submitFunction, state }: Props) => {
 
           <SubmitButton
             title={auth_data.button}
-            className="border-gray-300 block me-auto w-32 justify-between"
             loading={state.loading}
+            className="w-32"
           />
         </form>
       </div>

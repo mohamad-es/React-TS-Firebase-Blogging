@@ -3,7 +3,7 @@ import { blogListByQuery } from "src/utils/blogListByQuery";
 import { TBlog } from "src/types/blog";
 import { blogListByQueryReducer } from "../reducers";
 import { QueryConstraint } from "firebase/firestore";
-import { fetchingStatesWithLoadMore } from "../states";
+import { fetchingStatesWithLoadMore } from "../../states/states";
 
 export const useAllBlogs = (filterQuery: QueryConstraint[]) => {
   const [state, dispatch] = useReducer(blogListByQueryReducer<TBlog[]>, fetchingStatesWithLoadMore<TBlog[]>());
