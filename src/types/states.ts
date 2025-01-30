@@ -14,6 +14,4 @@ export type TCreateBlogState = {
   title?: string | null;
   content?: string | null;
   img?: string | null;
-  loading?: boolean;
-  error?: string | null;
 };

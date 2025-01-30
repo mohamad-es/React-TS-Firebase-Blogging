@@ -1,11 +1,11 @@
 import { ChangeEvent, Dispatch } from "react";
 import { Fragment } from "react/jsx-runtime";
 import RichTextEditor from "../../editor/RichTextEditor";
-import { TCreateBlogState } from "src/types/states";
+import { TCreateBlogState, TFetchingStates } from "src/types/states";
 import { TCreateBlogAction } from "src/types/actions";
 
 type Props = {
-  state: TCreateBlogState;
+  state: TFetchingStates<TCreateBlogState>;
   dispatch: Dispatch<TCreateBlogAction>;
 };
 
@@ -19,7 +19,7 @@ const BlogEditor = ({ dispatch, state }: Props) => {
           }
           placeholder="Write blog title here ..."
           className="text-4xl mx-10 bg-transparent font-bold focus-visible:outline-none outline-none border-none italic"
-          value={state.title as string}
+          value={state.data?.title as string}
           rows={3}
         />
 

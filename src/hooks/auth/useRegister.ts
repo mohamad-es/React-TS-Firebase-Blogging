@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useReducer } from "react";
 import { FieldValues } from "react-hook-form";
-import { fetchingReducer } from "../reducers";
 import { register } from "src/services/auth/register";
 import { errorToast, successToast } from "src/utils/Toast";
 import { fetchingStates } from "../../states/states";
+import { fetchingReducer } from "src/reducers/fetchingReducer";
 
 const useRegister = () => {
   const navigate = useNavigate();

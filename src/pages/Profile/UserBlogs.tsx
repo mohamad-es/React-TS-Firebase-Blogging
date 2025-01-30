@@ -37,7 +37,7 @@ const UserBlogs = () => {
           </div>
 
           <div className="grid grid-cols-3 gap-8 mt-8 w-full max-w-[1440px]">
-            {(searchQuery ? filteredBlogs : blogs).map((blog) => (
+            {(searchQuery ? filteredBlogs : blogs)?.map((blog) => (
               <BlogCard key={blog.id} blog={blog} />
             ))}
           </div>

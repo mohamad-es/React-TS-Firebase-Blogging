@@ -1,12 +1,12 @@
 import { PlusSignIcon } from "hugeicons-react";
 import { ChangeEvent, Dispatch } from "react";
-import { TCreateBlogAction } from "src/types/actions";
-import { TCreateBlogState } from "src/types/states";
+import { TFetchingAction } from "src/types/actions";
+import { TCreateBlogState, TFetchingStates } from "src/types/states";
 import { errorToast } from "src/utils/Toast";
 
 type Props = {
-  state: TCreateBlogState;
-  dispatch: Dispatch<TCreateBlogAction>;
+  state: TFetchingStates<TCreateBlogState>;
+  dispatch: Dispatch<TFetchingAction<TCreateBlogState>>;
 };
 
 const ImageUploader = ({ dispatch, state }: Props) => {
@@ -32,9 +32,9 @@ const ImageUploader = ({ dispatch, state }: Props) => {
 
   return (
     <div className="">
-      {state.img ? (
+      {state.data?.img ? (
         <div className="flex flex-col gap-10 items-center">
-          <img src={state.img} alt="Preview" className="w-full h-96 object-cover rounded-xl rounded-b-none border" />
+          <img src={state.data?.img} alt="Preview" className="w-full h-96 object-cover rounded-xl rounded-b-none border" />
 
           <div className="flex gap-5">
             <div className="relative w-40 h-10">

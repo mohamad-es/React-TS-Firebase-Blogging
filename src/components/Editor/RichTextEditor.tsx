@@ -5,10 +5,10 @@ import { TCreateBlogAction } from "src/types/actions";
 
 import "react-quill/dist/quill.snow.css";
 import "highlight.js/styles/monokai-sublime.min.css";
-import { TCreateBlogState } from "src/types/states";
+import { TCreateBlogState, TFetchingStates } from "src/types/states";
 
 type Props = {
-  state: TCreateBlogState;
+  state: TFetchingStates<TCreateBlogState>;
   dispatch: Dispatch<TCreateBlogAction>;
 };
 

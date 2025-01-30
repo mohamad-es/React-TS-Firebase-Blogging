@@ -2,8 +2,7 @@ import { useParams } from "react-router";
 import Preview from "src/components/editor/Preview";
 import { useReadBlog } from "src/hooks/blog/useReadBlog";
 import RenderState from "src/components/shared/RenderState";
-import { TCreateBlogState } from "src/types/states";
-import ReadBlogSkeleton from "./_components/ReadBlogSkeleton";
+import ReadBlogSkeleton from "../../components/skeleton/ReadBlogSkeleton";
 import ReadFormSidebar from "./_components/ReadFormSidebar";
 
 const ReadBlog = () => {
@@ -17,7 +16,7 @@ const ReadBlog = () => {
         <div className="grid grid-cols-12 relative gap-10 pt-10">
           <div className="col-span-8 border rounded-xl overflow-hidden">
             <div className="bg-white pb-10">
-              <Preview state={state.data as TCreateBlogState} />
+              <Preview state={state} />
             </div>
           </div>
           <ReadFormSidebar blog={blog!} />

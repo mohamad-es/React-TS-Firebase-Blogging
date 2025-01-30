@@ -23,9 +23,6 @@ export type TFetchingWithLoadMoreAction<T> =
     }
   | {
       type: "LOAD_MORE";
-    }
-  | {
-      type: "LOAD_MORE_STOP";
     };
 
 export type TCreateBlogAction =

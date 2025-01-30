@@ -17,7 +17,5 @@ export const createBlogStates = (): TCreateBlogState => {
     title: null,
     content: null,
     img: null,
-    loading: false,
-    error: null,
   };
 };

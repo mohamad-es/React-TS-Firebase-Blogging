@@ -4,14 +4,15 @@ import { auth } from "src/config/firebaseConfig";
 import { updateBlog } from "src/services/blog/updateBlog";
 import { TBlog } from "src/types/blog";
 import { errorToast, successToast } from "src/utils/Toast";
-import { createBlogReducer } from "../reducers";
-import { createBlogStates } from "../../states/states";
+import { fetchingStates } from "../../states/states";
+import { fetchingReducer } from "src/reducers/fetchingReducer";
+import { TCreateBlogState } from "src/types/states";
 
 export const useUpdateBlog = (blog: TBlog) => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const [state, dispatch] = useReducer(createBlogReducer, createBlogStates());
+  const [state, dispatch] = useReducer(fetchingReducer<TCreateBlogState>, fetchingStates<TCreateBlogState>());
 
   useEffect(() => {
     if (blog) {
@@ -31,9 +32,9 @@ export const useUpdateBlog = (blog: TBlog) => {
       await updateBlog({
         blogId: params.blogid!,
         updateData: {
-          title: state.title,
-          content: state.content,
-          img: state.img,
+          title: state.data?.title,
+          content: state.data?.content,
+          img: state.data?.img,
           user_id: auth.currentUser?.uid,
           user_email: auth.currentUser?.email,
           update_time: new Date(),

@@ -2,8 +2,8 @@ import { useEffect, useReducer } from "react";
 import { useParams } from "react-router";
 import { readUser } from "src/services/user/readUser";
 import { TUser } from "src/types/user";
-import { fetchingReducer } from "../reducers";
 import { TFetchingStates } from "src/types/states";
+import { fetchingReducer } from "src/reducers/fetchingReducer";
 
 export const useReadUser = () => {
   const params = useParams();

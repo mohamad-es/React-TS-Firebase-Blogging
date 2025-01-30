@@ -3,16 +3,17 @@ import { useNavigate } from "react-router";
 import { auth } from "src/config/firebaseConfig";
 import { createBlog } from "src/services/blog/createBlog";
 import { errorToast, successToast } from "src/utils/Toast";
-import { createBlogReducer } from "../reducers";
-import { createBlogStates } from "../../states/states";
+import { fetchingReducer } from "src/reducers/fetchingReducer";
+import { fetchingStates } from "src/states/states";
+import { TCreateBlogState } from "src/types/states";
 
 export const useCreateBlog = () => {
-  const [state, dispatch] = useReducer(createBlogReducer, createBlogStates());
+  const [state, dispatch] = useReducer(fetchingReducer<TCreateBlogState>, fetchingStates<TCreateBlogState>());
 
   const navigate = useNavigate();
 
   const createBlogSubmit = async () => {
-    if (!state.title || !state.content) {
+    if (!state.data?.title || !state.data?.content) {
       errorToast("Please fill out the title and content");
       return;
     }
@@ -21,9 +22,9 @@ export const useCreateBlog = () => {
 
     try {
       await createBlog({
-        title: state.title,
-        content: state.content,
-        img: state.img,
+        title: state.data?.title,
+        content: state.data?.content,
+        img: state.data?.img,
         user_id: auth.currentUser?.uid,
         user_email: auth.currentUser?.email,
         create_time: new Date(),
