@@ -1,15 +1,15 @@
 import { PlusSignIcon } from "hugeicons-react";
-import { ChangeEvent, Dispatch } from "react";
+import { ChangeEvent, Dispatch, useEffect } from "react";
 import { TFetchingAction } from "src/types/actions";
-import { TCreateBlogState, TFetchingStates } from "src/types/states";
+import { TFetchingStates } from "src/types/states";
 import { errorToast } from "src/utils/Toast";
 
-type Props = {
-  state: TFetchingStates<TCreateBlogState>;
-  dispatch: Dispatch<TFetchingAction<TCreateBlogState>>;
+type Props<T extends { img: string | null }> = {
+  state: TFetchingStates<T>;
+  dispatch: Dispatch<TFetchingAction<T>>;
 };
 
-const ImageUploader = ({ dispatch, state }: Props) => {
+const ImageUploader = <T extends { img: string | null }>({ dispatch, state }: Props<T>) => {
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
@@ -22,7 +22,7 @@ const ImageUploader = ({ dispatch, state }: Props) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        dispatch({ type: "SUCCESS", payload: { ...state, img: reader.result as string } });
+        dispatch({ type: "SUCCESS", payload: { ...state.data, img: reader.result } as T });
       };
       reader.onerror = (error) => {
         errorToast(error instanceof Error ? error.message : "Failed to upload image");
@@ -30,11 +30,19 @@ const ImageUploader = ({ dispatch, state }: Props) => {
     }
   };
 
+  useEffect(() => {
+    console.log(state);
+  }, [state.data]);
+
   return (
-    <div className="">
+    <div>
       {state.data?.img ? (
         <div className="flex flex-col gap-10 items-center">
-          <img src={state.data?.img} alt="Preview" className="w-full h-96 object-cover rounded-xl rounded-b-none border" />
+          <img
+            src={state.data.img}
+            alt="Preview"
+            className="w-full h-96 object-cover rounded-xl rounded-b-none border"
+          />
 
           <div className="flex gap-5">
             <div className="relative w-40 h-10">
@@ -52,7 +60,7 @@ const ImageUploader = ({ dispatch, state }: Props) => {
             </div>
             <button
               className="text-red-500 font-medium"
-              onClick={() => dispatch({ type: "SUCCESS", payload: { img: null } })}
+              onClick={() => dispatch({ type: "SUCCESS", payload: { ...state.data, img: null } as T })}
             >
               Remove banner
             </button>

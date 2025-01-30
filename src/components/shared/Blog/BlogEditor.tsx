@@ -15,7 +15,10 @@ const BlogEditor = ({ dispatch, state }: Props) => {
       <div className="flex flex-col gap-y-10 mt-16">
         <textarea
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-            dispatch({ type: "SUCCESS", payload: { ...state, title: e.currentTarget.value } })
+          {
+            dispatch({ type: "SUCCESS", payload: { ...state.data, title: e.currentTarget.value } })
+          }
+            
           }
           placeholder="Write blog title here ..."
           className="text-4xl mx-10 bg-transparent font-bold focus-visible:outline-none outline-none border-none italic"

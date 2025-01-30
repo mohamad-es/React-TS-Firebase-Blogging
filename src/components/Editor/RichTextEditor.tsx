@@ -13,11 +13,11 @@ type Props = {
 };
 
 const RichTextEditor = ({ dispatch, state }: Props) => {
-  const [value, setValue] = useState<string>("");
+  const [content, setContent] = useState(state.data?.content);
 
   useEffect(() => {
-    dispatch({ type: "SUCCESS", payload: { ...state, content: value } });
-  }, [value]);
+    setContent(state.data?.content);
+  }, [state.data?.content]);
 
   const modules = useMemo(
     () => ({
@@ -35,13 +35,17 @@ const RichTextEditor = ({ dispatch, state }: Props) => {
     []
   );
 
-  // Configure Quill formats
   const formats = ["header", "bold", "italic", "underline", "strike", "list", "bullet", "link", "image", "code-block"];
+
+  const handleChange = (value: string) => {
+    setContent(value);
+    dispatch({ type: "SUCCESS", payload: { ...state.data, content: value } });
+  };
 
   return (
     <ReactQuill
-      value={value}
-      onChange={setValue}
+      value={content!}
+      onChange={handleChange}
       modules={modules}
       formats={formats}
       placeholder="Write blog content here ..."

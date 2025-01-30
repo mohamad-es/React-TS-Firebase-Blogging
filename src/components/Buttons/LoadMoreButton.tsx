@@ -1,4 +1,3 @@
-import { More01Icon } from "hugeicons-react";
 import { Dispatch } from "react";
 import { TFetchingWithLoadMoreAction } from "src/types/actions";
 import { TBlog } from "src/types/blog";
@@ -26,10 +25,7 @@ const LoadMoreButton = <T,>({ searchQuery, dispatch, state }: Props<T>) => {
           {loadMoreLoading ? (
             <div className="loading loading-spinner loading-sm" />
           ) : (
-            <div className="flex gap-2 w-full justify-between items-center">
-              Load More
-              <More01Icon size={20} />
-            </div>
+            <div className="flex gap-2 w-full justify-between items-center">Load More</div>
           )}
         </button>
       </div>

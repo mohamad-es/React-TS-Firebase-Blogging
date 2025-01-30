@@ -28,6 +28,7 @@ export const useUpdateBlog = (blog: TBlog) => {
   }, [blog]);
 
   const submitUpdateBlog = async () => {
+    dispatch({ type: "PENDING" });
     try {
       await updateBlog({
         blogId: params.blogid!,
@@ -42,8 +43,10 @@ export const useUpdateBlog = (blog: TBlog) => {
       });
 
       successToast("Blog updated successfully");
+      dispatch({ type: "SUCCESS", payload: { ...updateBlog } });
       navigate(`/blog/${params.blogid}`);
     } catch (error) {
+      dispatch({ type: "ERROR", payload: "Failed to update blog" });
       errorToast("Failed to update blog");
     }
   };

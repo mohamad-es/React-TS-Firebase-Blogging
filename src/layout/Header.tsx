@@ -1,81 +1,46 @@
-import { onAuthStateChanged, User } from "@firebase/auth";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { onAuthStateChanged } from "@firebase/auth";
+import { useEffect, useReducer } from "react";
 import { auth } from "src/config/firebaseConfig";
 import Navbar from "./_components/Navbar";
 import { layout_data } from "src/data/layout";
-import { Link, useNavigate } from "react-router-dom";
-import { Logout02Icon, PencilEdit02Icon, UserCircleIcon } from "hugeicons-react";
-import Dropdown from "src/components/custom/Dropdown";
-import { logOut } from "src/services/auth/logout";
+import { Link } from "react-router-dom";
+import { PencilEdit02Icon } from "hugeicons-react";
+import RenderState from "src/components/shared/RenderState";
+import UserProfileDropdown from "./_components/UserProfileDropdown";
+import { fetchingReducer } from "src/reducers/fetchingReducer";
+import { fetchingStates } from "src/states/states";
 
 const Header = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  const dropdownRef = useRef<HTMLDetailsElement | null>(null);
-
-  const navigate = useNavigate();
-
-  const handleLogOut = () => {
-    console.log("Logging out...");
-    logOut();
-    // toastInstance({
-    //   text: "User Successfully Logged out",
-    //   type: "success",
-    // });
-    navigate("/login");
-  };
+  const [state, dispatch] = useReducer(fetchingReducer, fetchingStates());
 
   useEffect(() => {
-    onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
+    try {
+      dispatch({ type: "PENDING" });
+      onAuthStateChanged(auth, (currentUser) => {
+        dispatch({ type: "SUCCESS", payload: currentUser });
+      });
+    } catch (error) {
+      dispatch({ type: "ERROR", payload: "Failed to load user" });
+    }
   }, []);
 
   return (
-    <Fragment>
-      <div className="sticky hidden lg:block top-0 z-20 bg-white py-3">
+    <RenderState error={state.error} loading={state.loading}>
+      <div className="sticky hidden lg:block top-0 z-50 bg-white py-3">
         <div className="flex justify-between items-center max-w-[1440px] mx-auto">
           <div className="flex items-center">
             <div className="font-bold text-xl">{layout_data.header.title}</div>
             <Navbar list={layout_data.header.navbar} />
           </div>
           <div className="flex gap-2">
-            {loading ? (
-              <div className="loading loading-bars" />
-            ) : user ? (
+            {state.data ? (
               <div className="flex gap-4 items-center">
                 <Link to="/write" className="flex items-center gap-2 me-5">
                   {layout_data.header.write}
                   <PencilEdit02Icon size={20} />
                 </Link>
 
-                <Dropdown
-                  dropdownRef={dropdownRef}
-                  summary={
-                    <span className="text-white">{auth?.currentUser?.email?.substring(0, 1).toUpperCase()}</span>
-                  }
-                  className="dropdown-end"
-                >
-                  {layout_data.header.profile_list.map((item) => (
-                    <li key={item}>
-                      <Link
-                        to={item === "Profile" ? `${user.uid}/profile` : "/login"}
-                        onClick={() => {
-                          dropdownRef.current?.removeAttribute("open");
-                          if (item === "Logout") {
-                            handleLogOut(); // Correctly invoke the function
-                          }
-                        }}
-                        className="flex justify-between items-center gap-1 "
-                      >
-                        {item}
-                        {item === "Profile" ? <UserCircleIcon size={18} /> : <Logout02Icon size={18} />}
-                      </Link>
-                    </li>
-                  ))}
-                </Dropdown>
+                <UserProfileDropdown user={state.data} />
               </div>
             ) : (
               <Navbar list={layout_data.header.auth} />
@@ -118,7 +83,7 @@ const Header = () => {
           </ul>
         </div>
       </div>
-    </Fragment>
+    </RenderState>
   );
 };
 

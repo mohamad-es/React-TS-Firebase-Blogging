@@ -32,7 +32,7 @@ const Dropdown = ({ children, summary, dropdownRef, className }: Props) => {
 
   return (
     <details className={`dropdown ${className}`} ref={dropdownRef}>
-      <summary className="btn !rounded-full !w-10 !h-10 bg-white bg-gradient-to-br from-green-500 to-blue-700">
+      <summary className="btn px-0 overflow-hidden !rounded-full !w-10 !h-10 bg-white bg-gradient-to-br from-green-500 to-blue-700">
         {summary}
       </summary>
       <ul className="menu dropdown-content bg-base-100 rounded-box min-w-40 p-2 shadow">

@@ -3,7 +3,7 @@ import BlogCard from "./BlogCard";
 import BlogCardSkeleton from "./BlogCardSkeleton";
 import { TFetchingWithLoadMore } from "src/types/states";
 import { TFetchingWithLoadMoreAction } from "src/types/actions";
-import { Dispatch } from "react";
+import { Dispatch, useRef, useEffect } from "react";
 import RenderState from "../RenderState";
 import LoadMoreButton from "src/components/buttons/LoadMoreButton";
 
@@ -16,16 +16,23 @@ type Props = {
 
 const BlogFullList = ({ state, filteredBlogs, searchQuery, dispatch }: Props) => {
   const { data: blogs, error, loading } = state;
+  const isInitialFetch = useRef(true);
+
+  useEffect(() => {
+    if (blogs && blogs.length > 0) {
+      isInitialFetch.current = false;
+    }
+  }, [blogs]);
 
   const skeleton = [1, 2, 3];
 
   return (
     <div>
       <div className="bc-gray">
-        <div className="max-w-[1440px] px-4 lg:px-0 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 pt-8 mx-auto">
+        <div className="max-w-[1440px] px-4 lg:px-0 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 pt-8 mx-auto">
           <RenderState
             error={error}
-            loading={loading}
+            loading={loading && isInitialFetch.current}
             data={blogs}
             loadingRender={skeleton.map((value) => (
               <BlogCardSkeleton key={value} />

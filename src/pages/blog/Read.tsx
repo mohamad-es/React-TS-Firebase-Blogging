@@ -11,17 +11,19 @@ const ReadBlog = () => {
   const { data: blog, error, loading } = state;
 
   return (
-    <RenderState error={error} loading={loading} data={blog} loadingRender={<ReadBlogSkeleton />}>
-      <div className="w-screen max-w-[1440px] mx-auto">
-        <div className="grid grid-cols-12 relative gap-10 pt-10">
-          <div className="col-span-8 border rounded-xl overflow-hidden">
-            <div className="bg-white pb-10">
-              <Preview state={state} />
+    <RenderState error={error} loading={loading} loadingRender={<ReadBlogSkeleton />}>
+      {blog && (
+        <div className="w-screen max-w-[1440px] mx-auto">
+          <div className="grid grid-cols-12 relative gap-10 pt-10">
+            <div className="col-span-8 border rounded-xl overflow-hidden">
+              <div className="bg-white pb-10">
+                <Preview state={state} />
+              </div>
             </div>
+            <ReadFormSidebar blog={blog!} />
           </div>
-          <ReadFormSidebar blog={blog!} />
         </div>
-      </div>
+      )}
     </RenderState>
   );
 };

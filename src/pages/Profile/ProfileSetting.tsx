@@ -3,7 +3,10 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import TabsLayout from "src/components/shared/TabsLayout";
 import Input from "src/components/form/Input";
-import UpdateProfileImage from "src/components/shared/UpdateProfileImage";
+import ImageUploader from "src/components/shared/ImageUploader";
+import { useUpdateUser } from "src/hooks/user/useUpdateUser";
+import { useReadUser } from "src/hooks/user/useReadUser";
+import SubmitButton from "src/components/buttons/SubmitButton";
 
 const ProfileSetting = () => {
   const params = useParams();
@@ -11,6 +14,10 @@ const ProfileSetting = () => {
     formState: { errors },
     register,
   } = useForm();
+
+  const { state: userState } = useReadUser(params.uid!);
+
+  const { dispatch, state, submitUpdateUser } = useUpdateUser(userState?.data!);
 
   return (
     <TabsLayout
@@ -23,9 +30,10 @@ const ProfileSetting = () => {
       ]}
       url={`/${params.uid}`}
     >
-      <div className="grid grid-cols-12 max-w-[1440px] mx-auto">
+      <div className="max-w-[1440px] mx-auto">
         <div className="p-10 col-span-3">
-          <UpdateProfileImage />
+          <ImageUploader dispatch={dispatch} state={state} />
+          <SubmitButton loading={state.loading} title="Save profile" submitFn={submitUpdateUser} />
         </div>
 
         <div className="col-span-8">

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { Fragment, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import ImageUploader from "src/components/shared/ImageUploader";
@@ -23,25 +23,27 @@ const EditBlog = () => {
   const { dispatch: updateDispatch, state: updateStates, submitUpdateBlog } = useUpdateBlog(blog!);
 
   return (
-    <RenderState error={error} loading={loading} data={blog} loadingRender={<EditBlogSkeleton />}>
-      <form onSubmit={handleSubmit(submitUpdateBlog)} className="w-screen max-w-[1440px] mx-auto">
-        <div className="grid grid-cols-12 relative pt-10 gap-10 items-start">
-          <div className="col-span-8 bg-white border rounded-xl">
-            <ImageUploader dispatch={updateDispatch} state={state} />
+    <Fragment>
+      <RenderState error={error} loading={loading} loadingRender={<EditBlogSkeleton />}>
+        <form onSubmit={handleSubmit(submitUpdateBlog)} className="w-screen max-w-[1440px] mx-auto">
+          <div className="grid grid-cols-12 relative pt-10 gap-10 items-start">
+            <div className="col-span-8 bg-white border rounded-xl">
+              <ImageUploader dispatch={updateDispatch} state={updateStates} />
 
-            <BlogEditor dispatch={updateDispatch} state={updateStates} />
-          </div>
+              <BlogEditor dispatch={updateDispatch} state={updateStates} />
+            </div>
 
-          <div className="col-span-4 sticky top-28 left-0">
-            <WriteFormSidebar loading={updateStates.loading as boolean} modalsRef={modalsRef} />
+            <div className="col-span-4 sticky top-28 left-0">
+              <WriteFormSidebar loading={updateStates.loading} modalsRef={modalsRef} />
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </RenderState>
 
       <Modal className="max-w-screen-lg pt-0 px-0" modalsRef={modalsRef}>
-        <Preview state={state} />
+        <Preview state={updateStates} />
       </Modal>
-    </RenderState>
+    </Fragment>
   );
 };
 
