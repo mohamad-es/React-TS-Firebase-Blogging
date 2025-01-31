@@ -1,5 +1,4 @@
-import { PlusSignIcon } from "hugeicons-react";
-import { ChangeEvent, Dispatch, useEffect } from "react";
+import { ChangeEvent, Dispatch, ReactNode, useEffect } from "react";
 import { TFetchingAction } from "src/types/actions";
 import { TFetchingStates } from "src/types/states";
 import { errorToast } from "src/utils/Toast";
@@ -7,9 +6,11 @@ import { errorToast } from "src/utils/Toast";
 type Props<T extends { img: string | null }> = {
   state: TFetchingStates<T>;
   dispatch: Dispatch<TFetchingAction<T>>;
+  img: ReactNode;
+  label: ReactNode;
 };
 
-const ImageUploader = <T extends { img: string | null }>({ dispatch, state }: Props<T>) => {
+const ImageUploader = <T extends { img: string | null }>({ dispatch, state, img, label }: Props<T>) => {
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
@@ -38,12 +39,7 @@ const ImageUploader = <T extends { img: string | null }>({ dispatch, state }: Pr
     <div>
       {state.data?.img ? (
         <div className="flex flex-col gap-10 items-center">
-          <img
-            src={state.data.img}
-            alt="Preview"
-            className="w-full h-96 object-cover rounded-xl rounded-b-none border"
-          />
-
+          {img}
           <div className="flex gap-5">
             <div className="relative w-40 h-10">
               <label htmlFor="upload-banner" className="btn btn-outline absolute start-0 top-0 w-full h-full z-10">
@@ -67,15 +63,9 @@ const ImageUploader = <T extends { img: string | null }>({ dispatch, state }: Pr
           </div>
         </div>
       ) : (
-        <div className="relative h-96 w-full border-b-2 rounded-xl rounded-b-none">
-          <label
-            htmlFor="upload-banner"
-            className="w-full h-full cursor-pointer z-20 absolute text-xl left-0 top-0 flex flex-col gap-5 items-center justify-center"
-          >
-            <PlusSignIcon size={50} color="gray" />
-            Add banner for your blog
-          </label>
-
+        <div className="relative w-full rounded-xl rounded-b-none">
+          {label}
+          
           <input
             id="upload-banner"
             type="file"
