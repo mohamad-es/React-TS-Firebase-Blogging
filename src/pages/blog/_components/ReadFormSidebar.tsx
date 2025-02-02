@@ -1,5 +1,7 @@
-import { PencilEdit01Icon, Delete01Icon } from "hugeicons-react";
+import { Delete01Icon } from "hugeicons-react";
 import { Link, useParams } from "react-router";
+import LinkButton from "src/components/buttons/LinkButton";
+import SubmitButton from "src/components/buttons/SubmitButton";
 import { auth } from "src/config/firebaseConfig";
 import { useDeleteBlog } from "src/hooks/blog/useDeleteBlog";
 import { TBlog } from "src/types/blog";
@@ -35,28 +37,14 @@ const ReadFormSidebar = ({ blog }: Props) => {
         {blog?.user_id === auth.currentUser?.uid && (
           <div className="mt-10">
             <div className="mb-4 font-semibold text-sm">Manage your blog</div>
-            <div className="flex justify-end mb-5 max-w-min overflow-hidden rounded-xl border h-10">
-              <Link
-                className="h-full bg-blue-700 text-white text-sm gap-2 flex w-24 justify-center items-center transition-all hover:bg-blue-700 hover:text-white"
-                to={"edit"}
-              >
-                Edit
-                <PencilEdit01Icon size={16} />
-              </Link>
-              <button
-                className="flex w-24 h-full bg-red-600 text-white items-center transition-all hover:bg-red-600 hover:text-white justify-center"
-                onClick={deleteBlogSubmit}
-              >
-                {btnLoading ? (
-                  <div className="loading loading-infinity" />
-                ) : (
-                  <div className="flex items-center text-sm gap-2">
-                    Delete
-                    <Delete01Icon size={16} />
-                  </div>
-                )}
-              </button>
-            </div>
+            <LinkButton title="Edit" link="edit" />
+            <SubmitButton
+              icon={<Delete01Icon size={18} />}
+              submitFn={deleteBlogSubmit}
+              loading={btnLoading}
+              title="Delete"
+              className="btn-error ms-3"
+            />
           </div>
         )}
       </div>

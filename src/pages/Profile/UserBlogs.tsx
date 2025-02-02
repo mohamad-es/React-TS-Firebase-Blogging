@@ -1,12 +1,12 @@
 import { Fragment, useState } from "react";
-import BlogCard from "src/components/Blog/BlogCard";
-import LoadingButton from "src/components/Buttons/LoadMoreBlogsButton";
-import RenderState from "src/components/Custom/RenderState";
-import Search from "src/components/Form/Search";
+import BlogCard from "src/components/shared/Blog/BlogCard";
+import LoadingButton from "src/components/buttons/LoadMoreButton";
+import Search from "src/components/form/Search";
 import { profile_data } from "src/data/profile";
 import { useUserBlogs } from "src/hooks/user/useUserBlogs";
 import { TBlog } from "src/types/blog";
 import { searchBlogs } from "src/utils/searchBlogs";
+import RenderState from "src/components/shared/RenderState";
 
 const UserBlogs = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -37,7 +37,7 @@ const UserBlogs = () => {
           </div>
 
           <div className="grid grid-cols-3 gap-8 mt-8 w-full max-w-[1440px]">
-            {(searchQuery ? filteredBlogs : blogs).map((blog) => (
+            {(searchQuery ? filteredBlogs : blogs)?.map((blog) => (
               <BlogCard key={blog.id} blog={blog} />
             ))}
           </div>

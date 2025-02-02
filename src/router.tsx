@@ -3,14 +3,14 @@ import Layout from "./layout";
 import About from "./pages/About";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import EditBlog from "./pages/Blogs/Edit";
-import ReadBlog from "./pages/Blogs/Read";
-import WriteBlog from "./pages/Blogs/Write";
-import Home from "./pages/Home";
-import Profile from "./pages/Profile/Profile";
-import ProfileSetting from "./pages/Profile/ProfileSetting";
-import PublicProfile from "./pages/Profile/PublicProfile";
 import PrivateRoute from "./utils/PrivateRoutes";
+import Home from "./pages/home";
+import Profile from "./pages/profile/Profile";
+import ProfileSetting from "./pages/profile/ProfileSetting";
+import PublicProfile from "./pages/profile/PublicProfile";
+import WriteBlog from "./pages/blog/Write";
+import ReadBlog from "./pages/blog/Read";
+import EditBlog from "./pages/blog/Edit";
 
 const Router = () => {
   return (

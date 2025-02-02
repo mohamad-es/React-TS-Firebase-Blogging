@@ -1,17 +1,24 @@
-import React, { useMemo } from "react";
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import { Dispatch, useEffect, useMemo, useState } from "react";
 import hljs from "highlight.js";
-import "highlight.js/styles/monokai-sublime.min.css"; // Import Highlight.js theme
 import ReactQuill from "react-quill";
+import { TCreateBlogAction } from "src/types/actions";
+
+import "react-quill/dist/quill.snow.css";
+import "highlight.js/styles/monokai-sublime.min.css";
+import { TCreateBlogState, TFetchingStates } from "src/types/states";
 
 type Props = {
-  content: string;
-  title: string;
-  setContent: any;
+  state: TFetchingStates<TCreateBlogState>;
+  dispatch: Dispatch<TCreateBlogAction>;
 };
 
-const RichTextEditor: React.FC<Props> = ({ content, setContent }) => {
-  // Configure Quill modules
+const RichTextEditor = ({ dispatch, state }: Props) => {
+  const [content, setContent] = useState(state.data?.content);
+
+  useEffect(() => {
+    setContent(state.data?.content);
+  }, [state.data?.content]);
+
   const modules = useMemo(
     () => ({
       syntax: {
@@ -28,13 +35,17 @@ const RichTextEditor: React.FC<Props> = ({ content, setContent }) => {
     []
   );
 
-  // Configure Quill formats
   const formats = ["header", "bold", "italic", "underline", "strike", "list", "bullet", "link", "image", "code-block"];
+
+  const handleChange = (value: string) => {
+    setContent(value);
+    dispatch({ type: "SUCCESS", payload: { ...state.data, content: value } });
+  };
 
   return (
     <ReactQuill
-      value={content}
-      onChange={setContent}
+      value={content!}
+      onChange={handleChange}
       modules={modules}
       formats={formats}
       placeholder="Write blog content here ..."

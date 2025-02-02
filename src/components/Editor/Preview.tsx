@@ -1,13 +1,13 @@
 import hljs from "highlight.js";
+import { Image01Icon } from "hugeicons-react";
 import { useEffect, useRef } from "react";
+import { TCreateBlogState, TFetchingStates } from "src/types/states";
 
 type Props = {
-  title?: string;
-  content: string;
-  img?: string;
+  state: TFetchingStates<TCreateBlogState>;
 };
 
-const Preview: React.FC<Props> = ({ content, title, img }) => {
+const Preview = ({ state }: Props) => {
   const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -16,21 +16,24 @@ const Preview: React.FC<Props> = ({ content, title, img }) => {
         hljs.highlightBlock(block as HTMLElement);
       });
     }
-  }, [content]);
+  }, [state.data?.content]); 
 
   return (
-    <div>
-      {img && <img src={img} className="w-full h-96 object-cover" />}
-      {title && <h1 className="mb-12 mt-16 px-10">{title}</h1>}
-      {content ? (
-        <div
-          className="whitespace-pre-wrap px-10 leading-7"
-          ref={previewRef}
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
+    <div className="relative">
+      {state.data?.img ? (
+        <img src={state.data.img} alt="" className="w-full h-96 object-cover border-b bg-white object-top" />
       ) : (
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">No content written yet</div>
+        <div className="w-full bg-gray-200 border-b h-96 flex items-center justify-center">
+          <Image01Icon size={150} color="gray" />
+        </div>
       )}
+
+      <h1 className="mb-12 mt-16 px-10 first-letter:uppercase">{state.data?.title}</h1>
+      <div
+        className="whitespace-pre-wrap px-10 leading-7"
+        ref={previewRef}
+        dangerouslySetInnerHTML={{ __html: state.data?.content || "" }} // Fallback for empty content
+      />
     </div>
   );
 };

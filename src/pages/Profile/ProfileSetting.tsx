@@ -1,9 +1,12 @@
-import { CheckmarkCircle02Icon } from "hugeicons-react";
+import { CheckmarkCircle02Icon, PlusSignIcon } from "hugeicons-react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
-import TabsLayout from "src/components/Custom/TabsLayout";
-import Input from "src/components/Form/Input";
-import UpdateProfileImage from "src/components/Form/UpdateProfileImage";
+import TabsLayout from "src/components/shared/TabsLayout";
+import Input from "src/components/form/Input";
+import ImageUploader from "src/components/shared/ImageUploader";
+import { useUpdateUser } from "src/hooks/user/useUpdateUser";
+import { useReadUser } from "src/hooks/user/useReadUser";
+import SubmitButton from "src/components/buttons/SubmitButton";
 
 const ProfileSetting = () => {
   const params = useParams();
@@ -11,6 +14,10 @@ const ProfileSetting = () => {
     formState: { errors },
     register,
   } = useForm();
+
+  const { state: userState } = useReadUser(params.uid!);
+
+  const { dispatch, state, submitUpdateUser } = useUpdateUser(userState?.data!);
 
   return (
     <TabsLayout
@@ -23,9 +30,24 @@ const ProfileSetting = () => {
       ]}
       url={`/${params.uid}`}
     >
-      <div className="grid grid-cols-12 max-w-[1440px] mx-auto">
-        <div className="p-10 col-span-3">
-          <UpdateProfileImage/>
+      <div className="max-w-[1440px] mx-auto">
+        <div className="p-10 flex items-center flex-col justify-center gap-3">
+          <ImageUploader
+            dispatch={dispatch}
+            state={state}
+            img={<img src={state.data?.img} alt="Preview" className=" object-cover rounded-full w-44 h-44" />}
+            label={
+              <label
+                htmlFor="upload-banner"
+                className="w-44 h-44 mx-auto cursor-pointer bg-white rounded-full z-20 text-xl flex flex-col gap-5 items-center justify-center"
+              >
+                <PlusSignIcon size={40} color="gray" />
+                <span className="text-sm">Add profile photo</span>
+              </label>
+            }
+          />
+
+          <SubmitButton loading={state.loading} title="Save profile" submitFn={submitUpdateUser} />
         </div>
 
         <div className="col-span-8">

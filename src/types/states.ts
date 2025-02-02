@@ -9,3 +9,11 @@ export interface TFetchingWithLoadMore<T> extends TFetchingStates<T> {
   loadMoreLoading: boolean;
   blogsPerPage: number;
 }
+
+export type TCreateBlogState = {
+  title?: string | null;
+  content?: string | null;
+  img?: string | null;
+};
+
+

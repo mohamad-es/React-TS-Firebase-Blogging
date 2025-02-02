@@ -1,17 +1,11 @@
 import { useReducer, useEffect } from "react";
 import { TBlog } from "src/types/blog";
-import { fetchingReducer } from "../reducers";
 import { readBlog } from "src/services/blog/readBlog";
-import { TFetchingStates } from "src/types/states";
+import { fetchingStates } from "../../states/states";
+import { fetchingReducer } from "src/reducers/fetchingReducer";
 
 export const useReadBlog = (blogId: string) => {
-  const initialData: TFetchingStates<TBlog> = {
-    loading: true,
-    error: null,
-    data: null,
-  };
-
-  const [state, dispatch] = useReducer(fetchingReducer<TBlog>, initialData);
+  const [state, dispatch] = useReducer(fetchingReducer<TBlog>, fetchingStates<TBlog>());
 
   const findBlog = async () => {
     dispatch({ type: "PENDING" });
