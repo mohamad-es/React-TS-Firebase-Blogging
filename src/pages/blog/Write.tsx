@@ -1,12 +1,11 @@
 import { useForm } from "react-hook-form";
 import { Fragment, useRef } from "react";
-import ImageUploader from "src/components/shared/ImageUploader";
+// import ImageUploader from "src/components/shared/ImageUploader";
 import WriteFormSidebar from "./_components/WriteFormSidebar";
 import BlogEditor from "src/components/shared/Blog/BlogEditor";
 import Modal from "src/components/custom/Modal";
 import Preview from "src/components/editor/Preview";
 import { useCreateBlog } from "src/hooks/blog/useCreateBlog";
-import { PlusSignIcon } from "hugeicons-react";
 
 const WriteBlog = () => {
   const { handleSubmit } = useForm();
@@ -19,11 +18,11 @@ const WriteBlog = () => {
       <form onSubmit={handleSubmit(createBlogSubmit)} className="w-screen max-w-[1440px] mx-auto">
         <div className="grid grid-cols-12 relative pt-10 gap-10 items-start">
           <div className="col-span-8 border bg-white rounded-xl ">
-            <ImageUploader
+            {/* <ImageUploader<TCreateBlogState>
               state={state}
               dispatch={dispatch}
               img={
-                <img src={state.data?.img} alt="Preview" className="object-cover w-full rounded-xl rounded-b-none" />
+                <img src={state.data?.img!} alt="Preview" className="object-cover w-full rounded-xl rounded-b-none" />
               }
               label={
                 <label
@@ -34,7 +33,7 @@ const WriteBlog = () => {
                   Add banner for your blog
                 </label>
               }
-            />
+            /> */}
 
             <BlogEditor state={state} dispatch={dispatch} />
           </div>

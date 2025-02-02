@@ -2,7 +2,7 @@ import { TCreateBlogState, TFetchingStates, TFetchingWithLoadMore } from "src/ty
 
 export const fetchingStates = <T>(): TFetchingStates<T> => {
   return {
-    loading: false,
+    loading: true,
     error: null,
     data: null,
   };

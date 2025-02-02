@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import RenderState from "../RenderState";
+import UserProfileCardSkeleton from "src/components/Skeleton/UserProfileCardSkeleton";
 
 type Props = {
   user_email: string | undefined;
@@ -11,7 +12,12 @@ type Props = {
 
 const UserProfileCard = ({ user_email, user_id, error, loading, img }: Props) => {
   return (
-    <RenderState loading={loading} error={error} emptyListText={"user not found"}>
+    <RenderState
+      loading={loading}
+      error={error}
+      loadingRender={<UserProfileCardSkeleton />}
+      emptyListText={"user not found"}
+    >
       <div className="flex gap-3 justify-between items-center text-sm">
         <div className="flex items-center gap-2">
           {img ? (

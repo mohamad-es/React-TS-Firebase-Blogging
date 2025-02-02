@@ -9,10 +9,10 @@ import { logOut } from "src/services/auth/logout";
 import { successToast } from "src/utils/Toast";
 
 type Props = {
-  user: { uid: string };
+  uid: string;
 };
 
-const UserProfileDropdown = ({ user }: Props) => {
+const UserProfileDropdown = ({ uid }: Props) => {
   const navigate = useNavigate();
   const handleLogOut = () => {
     logOut();
@@ -20,14 +20,16 @@ const UserProfileDropdown = ({ user }: Props) => {
     navigate("/login");
   };
 
-  const { state } = useReadUser(user.uid);
+  const { state } = useReadUser(uid);
 
   const dropdownRef = useRef<HTMLDetailsElement | null>(null);
   return (
     <Dropdown
       dropdownRef={dropdownRef}
       summary={
-        state.data?.img ? (
+        state.loading ? (
+          <div className="skeleton w-full h-full" />
+        ) : state.data?.img ? (
           <img src={state.data.img} className="w-full h-full object-cover" />
         ) : (
           <span className="text-white">{auth?.currentUser?.email?.substring(0, 1).toUpperCase()}</span>
@@ -38,7 +40,7 @@ const UserProfileDropdown = ({ user }: Props) => {
       {layout_data.header.profile_list.map((item) => (
         <li key={item}>
           <Link
-            to={item === "Profile" ? `${user.uid}/profile` : "/login"}
+            to={item === "Profile" ? `${uid}/profile` : "/login"}
             onClick={() => {
               dropdownRef.current?.removeAttribute("open");
               if (item === "Logout") {

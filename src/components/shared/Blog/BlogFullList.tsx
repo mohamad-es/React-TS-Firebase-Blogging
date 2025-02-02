@@ -1,20 +1,24 @@
 import { TBlog } from "src/types/blog";
 import BlogCard from "./BlogCard";
 import BlogCardSkeleton from "./BlogCardSkeleton";
-import { TFetchingWithLoadMore } from "src/types/states";
-import { TFetchingWithLoadMoreAction } from "src/types/actions";
-import { Dispatch, useRef, useEffect, memo } from "react";
+import { useRef, useEffect, forwardRef, useImperativeHandle, useState } from "react";
 import RenderState from "../RenderState";
 import LoadMoreButton from "src/components/buttons/LoadMoreButton";
+import { QueryConstraint } from "firebase/firestore";
+import { useAllBlogs } from "src/hooks/blog/useAllBlogs";
 
 type Props = {
-  searchQuery: string;
-  filteredBlogs: TBlog[];
-  state: TFetchingWithLoadMore<TBlog[]>;
-  dispatch: Dispatch<TFetchingWithLoadMoreAction<TBlog[]>>;
+  filterQuery: QueryConstraint[];
 };
 
-const BlogFullListCore = ({ state, filteredBlogs, searchQuery, dispatch }: Props) => {
+export type BlogFullListRef = {
+  searchQuery: string;
+  setFilteredBlogs: React.Dispatch<React.SetStateAction<TBlog[]>>;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export const BlogFullList = forwardRef<BlogFullListRef, Props>(({ filterQuery }, ref) => {
+  const { state, dispatch } = useAllBlogs(filterQuery);
   const { data: blogs, error, loading } = state;
   const isInitialFetch = useRef(true);
 
@@ -25,6 +29,19 @@ const BlogFullListCore = ({ state, filteredBlogs, searchQuery, dispatch }: Props
   }, [blogs]);
 
   const skeleton = [1, 2, 3];
+
+  const [filteredBlogs, setFilteredBlogs] = useState<TBlog[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      setFilteredBlogs,
+      setSearchQuery,
+      searchQuery,
+    }),
+    [setSearchQuery, setFilteredBlogs, searchQuery]
+  );
 
   return (
     <div>
@@ -48,6 +65,4 @@ const BlogFullListCore = ({ state, filteredBlogs, searchQuery, dispatch }: Props
       {blogs?.length !== 0 && <LoadMoreButton dispatch={dispatch} state={state} searchQuery={searchQuery} />}
     </div>
   );
-};
-
-export const BlogFullList = memo(BlogFullListCore);
+});

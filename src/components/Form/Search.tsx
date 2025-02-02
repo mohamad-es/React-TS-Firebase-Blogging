@@ -7,18 +7,10 @@ type Props<T> = {
   searchData: (query: string) => Promise<T[]>;
 };
 
-const Search = <T,>({
-  searchQuery,
-  setSearchQuery,
-  setFiltered,
-  searchData,
-}: Props<T> ) => {
-
+const Search = <T,>({ searchQuery, setSearchQuery, setFiltered, searchData }: Props<T>) => {
   const [searchLoading, setSearchLoading] = useState<boolean>(false);
 
-  const handleSearchChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleSearchChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
     setSearchQuery(query);
     setSearchLoading(true);

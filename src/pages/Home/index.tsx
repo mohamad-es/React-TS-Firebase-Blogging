@@ -1,32 +1,25 @@
-import { orderBy, limit } from "firebase/firestore";
-import BlogFullList from "src/components/shared/Blog/BlogFullList";
 import FeaturedBlog from "./_components/FeaturedBlog";
-import BlogFullListHeader from "src/components/shared/Blog/BlogFullListHeader";
-import { useAllBlogs } from "src/hooks/blog/useAllBlogs";
+import { orderBy, limit } from "firebase/firestore";
 import { useRef } from "react";
-import { TBlog } from "src/types/blog";
+import { BlogFullList, BlogFullListRef } from "src/components/shared/Blog/BlogFullList";
+import { BlogFullListHeader } from "src/components/shared/Blog/BlogFullListHeader";
 
 const Home = () => {
-  const ref = useRef<{
-    fitleredBlogs: TBlog[];
-    searchQuery: string;
-  }>(null);
-  const { state, dispatch } = useAllBlogs([orderBy("create_time", "desc"), limit(6)]);
+  const ref = useRef<BlogFullListRef>(null);
 
   return (
     <div className="flex flex-col bg-white">
       <FeaturedBlog />
 
       <div className="py-3 md:sticky top-[64px] border-b bg-white px-10 z-10">
-        <BlogFullListHeader state={state} ref={ref} />
+        <BlogFullListHeader
+          searchQuery={ref.current?.searchQuery!}
+          setFilteredBlogs={ref.current?.setFilteredBlogs!}
+          setSearchQuery={ref.current?.setSearchQuery!}
+        />
       </div>
 
-      <BlogFullList
-        filteredBlogs={ref.current?.fitleredBlogs}
-        searchQuery={ref.current?.searchQuery}
-        state={state}
-        dispatch={dispatch}
-      />
+      <BlogFullList ref={ref} filterQuery={[orderBy("create_time", "desc"), limit(6)]} />
     </div>
   );
 };

@@ -1,23 +1,14 @@
 import { limit, orderBy, where } from "firebase/firestore";
 import { useParams } from "react-router";
 import TabsLayout from "src/components/shared/TabsLayout";
-import BlogFullList from "src/components/shared/Blog/BlogFullList";
-import BlogFullListHeader from "src/components/shared/Blog/BlogFullListHeader";
-import { useState } from "react";
-import { TBlog } from "src/types/blog";
-import { useAllBlogs } from "src/hooks/blog/useAllBlogs";
+import { useRef } from "react";
+import { BlogFullList, BlogFullListRef } from "src/components/shared/Blog/BlogFullList";
+import { BlogFullListHeader } from "src/components/shared/Blog/BlogFullListHeader";
 
 const Profile = () => {
   const params = useParams();
 
-  const [fitleredBlogs, setFilteredBlogs] = useState<TBlog[]>([]);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-
-  const { dispatch, state } = useAllBlogs([
-    orderBy("create_time", "desc"),
-    limit(6),
-    where("user_id", "==", params.uid),
-  ]);
+  const ref = useRef<BlogFullListRef>(null);
 
   return (
     <div>
@@ -33,14 +24,16 @@ const Profile = () => {
       >
         <div className="py-3 sticky top-[102px] border-b bg-white px-10 z-10">
           <BlogFullListHeader
-            state={state}
-            setFilteredBlogs={setFilteredBlogs}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
+            searchQuery={ref.current?.searchQuery!}
+            setFilteredBlogs={ref.current?.setFilteredBlogs!}
+            setSearchQuery={ref.current?.setSearchQuery!}
           />
         </div>
 
-        <BlogFullList filteredBlogs={fitleredBlogs} searchQuery={searchQuery} dispatch={dispatch} state={state} />
+        <BlogFullList
+          ref={ref}
+          filterQuery={[orderBy("create_time", "desc"), limit(6), where("user_id", "==", params.uid)]}
+        />
       </TabsLayout>
     </div>
   );

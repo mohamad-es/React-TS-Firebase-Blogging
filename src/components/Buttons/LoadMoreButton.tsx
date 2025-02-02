@@ -4,7 +4,7 @@ import { TBlog } from "src/types/blog";
 import { TFetchingWithLoadMore } from "src/types/states";
 
 type Props<T> = {
-  searchQuery: string;
+  searchQuery: string | undefined;
   state: TFetchingWithLoadMore<TBlog[]>;
   dispatch: Dispatch<TFetchingWithLoadMoreAction<T>> | Dispatch<TFetchingWithLoadMoreAction<T>>;
 };

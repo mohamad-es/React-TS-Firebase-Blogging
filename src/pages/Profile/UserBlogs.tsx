@@ -19,7 +19,7 @@ const UserBlogs = () => {
     <RenderState
       loading={loading && page === 1}
       error={error}
-      data={blogs?.length}
+      data={blogs}
       emptyListText={profile_data.not_found}
     >
       {blogs && (

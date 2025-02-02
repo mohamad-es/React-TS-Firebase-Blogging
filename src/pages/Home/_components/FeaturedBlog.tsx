@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import UserProfileCard from "src/components/shared/User/UserProfileCard";
 import { home_data } from "src/data/home";
 import { convertFirebaseTimestampToDate } from "src/utils/ConvertTime";
-import FeaturedBlogSkeleton from "./FeaturedBlogSkeleton";
+import FeaturedBlogSkeleton from "../../../components/Skeleton/FeaturedBlogSkeleton";
 import { useReadBlog } from "src/hooks/blog/useReadBlog";
 import RenderState from "src/components/shared/RenderState";
 
