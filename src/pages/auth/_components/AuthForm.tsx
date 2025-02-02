@@ -1,54 +1,37 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import SubmitButton from "src/components/buttons/SubmitButton";
+import Input from "src/components/form/Input";
 import { TAuthForms } from "src/types/auth";
+import { TFetchingStates } from "src/types/states";
 
 type Props = {
   auth_data: TAuthForms;
   submitFunction: SubmitHandler<FieldValues>;
-  loading: boolean;
+  state: TFetchingStates<unknown>;
 };
 
-const AuthForm = ({ auth_data, submitFunction, loading }: Props) => {
+const AuthForm = ({ auth_data, submitFunction, state }: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    mode: "all",
-  });
+  } = useForm();
 
   return (
-    <div className="flex flex-1 justify-center items-center">
+    <div className="flex flex-1 h-full justify-center items-center">
       <div className="w-96">
         <h1 className="text-3xl mb-7">{auth_data.title}</h1>
-        <form
-          className="grid gap-5 grid-cols-1 "
-          onSubmit={handleSubmit(submitFunction)}
-        >
+
+        <form className="grid gap-5 grid-cols-1" onSubmit={handleSubmit(submitFunction)}>
           {auth_data.inputs.map((form) => (
-            <div className="flex flex-col">
-              <label className="mb-2">{form.label}</label>
-              <input
-                {...register(form.name, {
-                  required: form.required,
-                  pattern: form.pattern,
-                })}
-                className="placeholder:text-sm h-10"
-                placeholder={form.placeholder}
-                autoComplete="off"
-              />
-              <div className="text-red-500 text-sm mt-2">
-                {errors[form.name]?.message as string}
-              </div>
-            </div>
+            <Input key={form.name} register={register} errors={errors} input={{ ...form }} />
           ))}
 
-          <button className="btn btn-primary mt-3 text-white" type="submit">
-            {loading ? (
-              <div className="loading loading-infinity" />
-            ) : (
-              auth_data.button
-            )}
-          </button>
+          <SubmitButton
+            title={auth_data.button}
+            loading={state.loading}
+            className="w-32"
+          />
         </form>
       </div>
     </div>

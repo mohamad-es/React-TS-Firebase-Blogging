@@ -1,74 +1,56 @@
 import { Image01Icon } from "hugeicons-react";
-import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import ErrorAlert from "src/components/global/ErrorAlert";
-import Loading from "src/components/global/Loading";
-import { getSingleBlog } from "src/services/blogServices";
-import { TBlog } from "src/types/blog";
+import UserProfileCard from "src/components/shared/User/UserProfileCard";
+import { home_data } from "src/data/home";
 import { convertFirebaseTimestampToDate } from "src/utils/ConvertTime";
+import FeaturedBlogSkeleton from "./FeaturedBlogSkeleton";
+import { useReadBlog } from "src/hooks/blog/useReadBlog";
+import RenderState from "src/components/shared/RenderState";
 
 const FeaturedBlog = () => {
-  const [blog, setBlog] = useState<TBlog>();
-  const [error, setError] = useState();
-  const [loading, setLoading] = useState();
-
-  const featureBlogId = "T1Fxk8JmRkLB8tEVa4xw";
-
-  useEffect(() => {
-    getSingleBlog({
-      blogId: featureBlogId,
-      setBlog,
-      setError,
-      setLoading,
-    });
-  }, []);
-
-  if (loading) return <Loading />;
-  if (error) return <ErrorAlert text="Blog Does not exist" />;
+  const blogId = "cikC09CLQzRZpXpslIGS";
+  const { state } = useReadBlog(blogId);
+  const { data: blog, error, loading } = state;
 
   return (
-    <div className="flex gap-16 mb-20">
-      <div className="flex-1">
-        <div>
-          <div className="font-normal">Featured Blog</div>
-          <Link
-            to={`/blog/${featureBlogId}`}
-            className="mt-6 text-5xl mb-14 font-extrabold block hover:text-blue-600 transition-all"
-          >
-            {blog?.title}
-          </Link>
-          <div className="flex gap-5 mt-12 justify-between items-center">
-            <div className="flex items-center gap-4 ">
-              <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-xl">
-                A
-              </div>
-              <div>
-                <Link
-                  className="transition-all hover:text-blue-600"
-                  to={`/${blog?.user_id}`}
-                >
-                  {blog?.user_email}
-                </Link>
-                
-              </div>
+    <RenderState loading={loading} error={error} loadingRender={<FeaturedBlogSkeleton />}>
+      {blog && (
+        <div className="flex-col flex lg:flex-row gap-16 w-screen mb-20 max-w-[1440px] mx-auto pt-10">
+          <div className="flex-1 flex flex-col justify-between">
+            <div>
+              <div className="font-normal">{home_data.feature_blog.title}</div>
+              <Link
+                to={`/blog/${blogId}`}
+                className="mt-6 text-5xl font-black block hover:text-blue-600 transition-all"
+              >
+                {blog?.title}
+              </Link>
             </div>
-            <p className="text-sm">
-              Create time: {blog?.create_time &&
-                convertFirebaseTimestampToDate(blog.create_time)}
-            </p>
+
+            <div className="flex flex-wrap gap-5 justify-between items-center">
+              <UserProfileCard
+                img=""
+                error={error!}
+                loading={loading!}
+                user_email={blog?.user_email}
+                user_id={blog?.user_id}
+              />
+
+              <p className="text-sm">
+                {home_data.feature_blog.create_time}:{" "}
+                {blog?.create_time && convertFirebaseTimestampToDate(blog?.create_time)}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex-1">
+            <div className="rounded-2xl border flex items-center overflow-hidden justify-center h-72">
+              {blog?.img ? <img className="w-full h-full object-cover" src={blog?.img} /> : <Image01Icon size={200} />}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="flex-1">
-        <div className="rounded-2xl border flex items-center overflow-hidden justify-center h-72">
-          {blog?.img ? (
-            <img className="w-full h-full object-cover" src={blog.img} />
-          ) : (
-            <Image01Icon size={200} />
-          )}
-        </div>
-      </div>
-    </div>
+      )}
+    </RenderState>
   );
 };
 

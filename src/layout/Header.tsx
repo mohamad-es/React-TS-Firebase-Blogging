@@ -1,93 +1,89 @@
-import { onAuthStateChanged, User } from "@firebase/auth";
-import { useEffect, useRef, useState } from "react";
+import { onAuthStateChanged } from "@firebase/auth";
+import { useEffect, useReducer } from "react";
 import { auth } from "src/config/firebaseConfig";
 import Navbar from "./_components/Navbar";
 import { layout_data } from "src/data/layout";
-import { Link, useNavigate } from "react-router-dom";
-import { logOut } from "src/hooks/useAuth";
-import { toastInstance } from "src/utils/Toast";
-import {
-  Logout02Icon,
-  PencilEdit02Icon,
-  UserCircleIcon,
-} from "hugeicons-react";
-import Dropdown from "src/components/Dropdown";
+import { Link } from "react-router-dom";
+import { PencilEdit02Icon } from "hugeicons-react";
+import RenderState from "src/components/shared/RenderState";
+import UserProfileDropdown from "./_components/UserProfileDropdown";
+import { fetchingReducer } from "src/reducers/fetchingReducer";
+import { fetchingStates } from "src/states/states";
 
 const Header = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  const dropdownRef = useRef<HTMLDetailsElement | null>(null);
-
-  const navigate = useNavigate();
-
-  const handleLogOut = () => {
-    console.log("Logging out..."); // Debugging statement
-    logOut();
-    toastInstance({
-      text: "User Successfully Logged out",
-      type: "success",
-    });
-    navigate("/login");
-  };
+  const [state, dispatch] = useReducer(fetchingReducer, fetchingStates());
 
   useEffect(() => {
-    onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
+    try {
+      dispatch({ type: "PENDING" });
+      onAuthStateChanged(auth, (currentUser) => {
+        dispatch({ type: "SUCCESS", payload: currentUser });
+      });
+    } catch (error) {
+      dispatch({ type: "ERROR", payload: "Failed to load user" });
+    }
   }, []);
 
   return (
-    <div className=" sticky top-0 z-10 bg-white py-3 border-b">
-      <div className="flex justify-between items-center max-w-7xl mx-auto">
-        <div className="flex items-center">
-          <div className="font-bold text-xl">{layout_data.header.title}</div>
-          <Navbar list={layout_data.header.navbar} />
-        </div>
-        <div className="flex gap-2">
-          {loading ? (
-            <div className="loading loading-bars" />
-          ) : user ? (
-            <div className="flex gap-4 items-center">
-              <Link to="/write" className="flex items-center gap-2 me-10 ">
-                {layout_data.header.write}
-                <PencilEdit02Icon size={20} />
-              </Link>
+    <RenderState error={state.error} loading={state.loading}>
+      <div className="sticky hidden lg:block top-0 z-50 bg-white py-3">
+        <div className="flex justify-between items-center max-w-[1440px] mx-auto">
+          <div className="flex items-center">
+            <div className="font-bold text-xl">{layout_data.header.title}</div>
+            <Navbar list={layout_data.header.navbar} />
+          </div>
+          <div className="flex gap-2">
+            {state.data ? (
+              <div className="flex gap-4 items-center">
+                <Link to="/write" className="flex items-center gap-2 me-5">
+                  {layout_data.header.write}
+                  <PencilEdit02Icon size={20} />
+                </Link>
 
-              <Dropdown
-                dropdownRef={dropdownRef}
-                summary={auth?.currentUser?.email!}
-              >
-                {layout_data.header.profile_list.map((item) => (
-                  <li key={item}>
-                    <Link
-                      to={item === "Profile" ? `${user.uid}` : "/login"}
-                      onClick={() => {
-                        dropdownRef.current?.removeAttribute("open");
-                        if (item === "Logout") {
-                          handleLogOut(); // Correctly invoke the function
-                        }
-                      }}
-                      className="flex justify-between items-center gap-1 "
-                    >
-                      {item}
-                      {item === "Profile" ? (
-                        <UserCircleIcon size={18} />
-                      ) : (
-                        <Logout02Icon size={18} />
-                      )}
-                    </Link>
-                  </li>
-                ))}
-              </Dropdown>
-            </div>
-          ) : (
-            <Navbar list={layout_data.header.auth} />
-          )}
+                <UserProfileDropdown user={state.data} />
+              </div>
+            ) : (
+              <Navbar list={layout_data.header.auth} />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      <div className="navbar-start lg:hidden">
+        <div className="dropdown">
+          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
+            </svg>
+          </div>
+          <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+            <li>
+              <a>Item 1</a>
+            </li>
+            <li>
+              <a>Parent</a>
+              <ul className="p-2">
+                <li>
+                  <a>Submenu 1</a>
+                </li>
+                <li>
+                  <a>Submenu 2</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a>Item 3</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </RenderState>
   );
 };
 

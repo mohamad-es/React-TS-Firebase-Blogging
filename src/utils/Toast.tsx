@@ -1,12 +1,7 @@
 import { toast } from "react-toastify";
 
-type Props = {
-  text: string;
-  type: "success" | "error";
-};
-
-export const toastInstance = ({ text, type }: Props) => {
-  toast[type](text, {
+const successToast = (message: string) => {
+  toast.success(message, {
     position: "top-right",
     autoClose: 5000,
     closeOnClick: true,
@@ -14,3 +9,13 @@ export const toastInstance = ({ text, type }: Props) => {
   });
 };
 
+const errorToast = (message: string) => {
+  toast.error(message, {
+    position: "top-right",
+    autoClose: 5000,
+    closeOnClick: true,
+    pauseOnHover: true,
+  });
+};
+
+export { errorToast, successToast };

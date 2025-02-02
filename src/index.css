@@ -8,8 +8,13 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: "Inter";
+@font-face {
+  font-family: Manrope;
+  src: url("/font/Manrope.ttf");
+}
+
+* {
+  font-family: "Manrope";
 }
 
 .button:focus,
@@ -57,30 +62,32 @@ pre {
 /* RichTextEditor.css */
 .ql-container {
   border: none !important;
+  padding: 10px !important;
   /* Adjust the radius as needed */
 }
 
 .ql-toolbar {
   border: none !important;
-  padding: 10px;
+  padding: 20px !important;
   margin-bottom: 10px;
   position: sticky;
-  top: 68.8px;
+  top: 64px;
   z-index: 10;
+  background: #e6e6e6;
 }
 
 .ql-editor::before {
-  font-size: 22px !important
+  font-size: 22px !important;
 }
 
-.ql-editor>* {
+.ql-editor > * {
   font-size: 18px !important;
-  line-height: 36px
+  line-height: 36px;
 }
 
 @layer base {
-  input {
-    @apply input outline outline-1 outline-gray-400;
+  .input {
+    @apply !rounded-xl !text-sm;
   }
 
   label {
@@ -121,5 +128,9 @@ pre {
 
   .btn-error {
     @apply !text-white !bg-red-500;
+  }
+
+  .skeleton {
+    @apply !rounded-lg;
   }
 }
