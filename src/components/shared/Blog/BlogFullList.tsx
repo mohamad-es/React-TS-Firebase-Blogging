@@ -3,7 +3,7 @@ import BlogCard from "./BlogCard";
 import BlogCardSkeleton from "./BlogCardSkeleton";
 import { TFetchingWithLoadMore } from "src/types/states";
 import { TFetchingWithLoadMoreAction } from "src/types/actions";
-import { Dispatch, useRef, useEffect } from "react";
+import { Dispatch, useRef, useEffect, memo } from "react";
 import RenderState from "../RenderState";
 import LoadMoreButton from "src/components/buttons/LoadMoreButton";
 
@@ -14,7 +14,7 @@ type Props = {
   dispatch: Dispatch<TFetchingWithLoadMoreAction<TBlog[]>>;
 };
 
-const BlogFullList = ({ state, filteredBlogs, searchQuery, dispatch }: Props) => {
+const BlogFullListCore = ({ state, filteredBlogs, searchQuery, dispatch }: Props) => {
   const { data: blogs, error, loading } = state;
   const isInitialFetch = useRef(true);
 
@@ -50,4 +50,4 @@ const BlogFullList = ({ state, filteredBlogs, searchQuery, dispatch }: Props) =>
   );
 };
 
-export default BlogFullList;
+export const BlogFullList = memo(BlogFullListCore);

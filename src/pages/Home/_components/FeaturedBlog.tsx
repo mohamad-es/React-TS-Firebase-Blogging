@@ -29,6 +29,7 @@ const FeaturedBlog = () => {
 
             <div className="flex flex-wrap gap-5 justify-between items-center">
               <UserProfileCard
+                img=""
                 error={error!}
                 loading={loading!}
                 user_email={blog?.user_email}
